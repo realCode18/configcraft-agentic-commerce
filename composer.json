@@ -20,7 +20,8 @@
       "php -l includes/class-product-data-extractor.php",
       "php -l includes/class-product-readiness-evaluator.php",
       "php -l includes/class-catalog-auditor.php",
-      "php -l includes/class-admin-page.php"
+      "php -l includes/class-admin-page.php",
+      "php -l tests/playground-smoke.php"
     ],
     "phpcs": "phpcs --standard=phpcs.xml.dist"
   },

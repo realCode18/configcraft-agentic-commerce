@@ -26,3 +26,18 @@ jobs:
       - run: composer lint
       - run: composer phpcs
       - run: composer test
+
+  playground:
+    runs-on: ubuntu-latest
+    needs: php
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+      - name: Smoke test in WordPress and WooCommerce
+        run: >-
+          npx --yes @wp-playground/cli@3.1.50 php
+          --mount=.:/wordpress/wp-content/plugins/configcraft-agentic-commerce
+          --blueprint=tests/playground-blueprint.json
+          -- /wordpress/wp-content/plugins/configcraft-agentic-commerce/tests/playground-smoke.php

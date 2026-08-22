@@ -27,6 +27,15 @@ composer phpcs
 composer test
 ```
 
+Run the WordPress and WooCommerce smoke test in an isolated Playground environment:
+
+```bash
+npx --yes @wp-playground/cli@latest php \
+  --mount=.:/wordpress/wp-content/plugins/configcraft-agentic-commerce \
+  --blueprint=tests/playground-blueprint.json \
+  -- /wordpress/wp-content/plugins/configcraft-agentic-commerce/tests/playground-smoke.php
+```
+
 Copy or symlink the repository into `wp-content/plugins/configcraft-agentic-commerce`, activate it, and open **WooCommerce > AI Commerce**.
 
 ## Extension hooks
