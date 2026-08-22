@@ -2,14 +2,17 @@
 
 ConfigCraft Agentic Commerce is a WordPress plugin that audits WooCommerce catalogs for AI discovery and agentic commerce readiness.
 
-The initial MVP is intentionally local and diagnostic. It does not call AI providers, expose write operations, collect telemetry, or promise placement on third-party platforms.
+The plugin is intentionally local and diagnostic. It does not call AI providers, expose write operations, collect telemetry, or promise placement on third-party platforms.
 
 ## Current functionality
 
 - Adds **WooCommerce > AI Commerce**.
-- Audits the latest 25 published products.
+- Shows a quick audit of the latest 25 published products.
+- Scans the complete published catalog in small background batches.
+- Persists results locally and paginates them with the lowest scores first.
 - Scores product title, description, price, image, category, brand, identifier, SKU, attributes, shipping data, and variations.
 - Links every finding back to the WooCommerce product editor.
+- Adds live scoring and practical remediation guidance to each product editor.
 - Provides filters for custom product data and catalog-specific rules.
 
 ## Requirements
@@ -43,6 +46,7 @@ Copy or symlink the repository into `wp-content/plugins/configcraft-agentic-comm
 - `configcraft_agentic_commerce_product_data`
 - `configcraft_agentic_commerce_product_issues`
 - `configcraft_agentic_commerce_audit_limit`
+- `configcraft_agentic_commerce_batch_size`
 
 ## Roadmap
 

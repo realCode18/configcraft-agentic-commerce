@@ -62,6 +62,7 @@ final class Catalog_Auditor {
 		$results     = array();
 		$total_score = 0;
 		$ready       = 0;
+		$needs_work  = 0;
 		$at_risk     = 0;
 
 		foreach ( $query->products as $product ) {
@@ -70,6 +71,9 @@ final class Catalog_Auditor {
 
 			if ( 'ready' === $evaluation['status'] ) {
 				++$ready;
+			}
+			if ( 'needs_work' === $evaluation['status'] ) {
+				++$needs_work;
 			}
 			if ( 'at_risk' === $evaluation['status'] ) {
 				++$at_risk;
@@ -94,6 +98,7 @@ final class Catalog_Auditor {
 				'scanned'        => $scanned,
 				'average_score'  => $scanned ? (int) round( $total_score / $scanned ) : 0,
 				'ready'          => $ready,
+				'needs_work'     => $needs_work,
 				'at_risk'        => $at_risk,
 			),
 		);

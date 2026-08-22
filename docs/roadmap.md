@@ -6,8 +6,8 @@
 - [x] WooCommerce admin page.
 - [x] Product-level score and structured findings.
 - [x] Unit tests for readiness rules.
-- [ ] Audit pagination and background processing.
-- [ ] Product detail panel with remediation guidance.
+- [x] Audit pagination and background processing.
+- [x] Product detail panel with remediation guidance.
 - [ ] Store-level shipping and returns checks.
 
 ## Milestone 2 — Discovery simulation

@@ -3,7 +3,7 @@
  * Plugin Name:       ConfigCraft Agentic Commerce
  * Plugin URI:        https://www.configcraftsuite.com/
  * Description:       Audits WooCommerce product catalogs for AI discovery and agentic commerce readiness.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Requires at least: 6.6
  * Requires PHP:      7.4
  * Requires Plugins:  woocommerce
@@ -19,7 +19,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'CCAC_VERSION', '0.1.0' );
+define( 'CCAC_VERSION', '0.2.0' );
 define( 'CCAC_FILE', __FILE__ );
 define( 'CCAC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'CCAC_URL', plugin_dir_url( __FILE__ ) );
@@ -27,7 +27,13 @@ define( 'CCAC_URL', plugin_dir_url( __FILE__ ) );
 require_once CCAC_PATH . 'includes/class-product-readiness-evaluator.php';
 require_once CCAC_PATH . 'includes/class-product-data-extractor.php';
 require_once CCAC_PATH . 'includes/class-catalog-auditor.php';
+require_once CCAC_PATH . 'includes/class-database.php';
+require_once CCAC_PATH . 'includes/class-audit-repository.php';
+require_once CCAC_PATH . 'includes/class-background-audit.php';
+require_once CCAC_PATH . 'includes/class-issue-catalog.php';
+require_once CCAC_PATH . 'includes/class-product-meta-box.php';
 require_once CCAC_PATH . 'includes/class-admin-page.php';
 require_once CCAC_PATH . 'includes/class-plugin.php';
 
+register_activation_hook( CCAC_FILE, array( 'ConfigCraft\\AgenticCommerce\\Database', 'install' ) );
 add_action( 'plugins_loaded', array( 'ConfigCraft\\AgenticCommerce\\Plugin', 'instance' ), 20 );

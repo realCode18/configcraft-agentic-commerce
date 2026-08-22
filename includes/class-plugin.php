@@ -40,16 +40,23 @@ final class Plugin {
 	 * @return void
 	 */
 	private function boot() {
+		Database::maybe_upgrade();
+
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			add_action( 'admin_notices', array( $this, 'render_woocommerce_notice' ) );
 			return;
 		}
 
-		$evaluator = new Product_Readiness_Evaluator();
-		$extractor = new Product_Data_Extractor();
-		$auditor   = new Catalog_Auditor( $extractor, $evaluator );
+		$evaluator  = new Product_Readiness_Evaluator();
+		$extractor  = new Product_Data_Extractor();
+		$auditor    = new Catalog_Auditor( $extractor, $evaluator );
+		$repository = new Audit_Repository();
+		$background = new Background_Audit( $repository, $extractor, $evaluator );
+		$background->hooks();
+		$meta_box = new Product_Meta_Box( $extractor, $evaluator );
+		$meta_box->hooks();
 
-		$admin_page = new Admin_Page( $auditor );
+		$admin_page = new Admin_Page( $auditor, $repository, $background );
 		$admin_page->hooks();
 	}
 
