@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<ruleset name="ConfigCraft Agentic Commerce">
+  <description>WordPress and PHP compatibility checks for the plugin.</description>
+
+  <file>configcraft-agentic-commerce.php</file>
+  <file>includes</file>
+
+  <exclude-pattern>vendor/*</exclude-pattern>
+
+  <arg name="basepath" value="."/>
+  <arg name="colors"/>
+  <arg value="sp"/>
+
+  <config name="testVersion" value="7.4-"/>
+
+  <rule ref="PHPCompatibilityWP"/>
+  <rule ref="WordPress">
+    <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+  </rule>
+
+  <rule ref="WordPress.WP.I18n">
+    <properties>
+      <property name="text_domain" type="array">
+        <element value="configcraft-agentic-commerce"/>
+      </property>
+    </properties>
+  </rule>
+
+  <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+    <properties>
+      <property name="prefixes" type="array">
+        <element value="ccac"/>
+        <element value="CCAC"/>
+        <element value="ConfigCraft"/>
+      </property>
+    </properties>
+  </rule>
+
+  <rule ref="WordPress.WP.Capabilities">
+    <properties>
+      <property name="custom_capabilities" type="array">
+        <element value="manage_woocommerce"/>
+      </property>
+    </properties>
+  </rule>
+</ruleset>

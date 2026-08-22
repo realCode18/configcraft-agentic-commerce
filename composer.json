@@ -1,0 +1,33 @@
+{
+  "name": "configcraft/configcraft-agentic-commerce",
+  "description": "WooCommerce catalog readiness audits for AI discovery and agentic commerce.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "phpunit/phpunit": "^9.6",
+    "wp-coding-standards/wpcs": "^3.0"
+  },
+  "scripts": {
+    "test": "phpunit --configuration phpunit.xml.dist",
+    "lint": [
+      "php -l configcraft-agentic-commerce.php",
+      "php -l includes/class-plugin.php",
+      "php -l includes/class-product-data-extractor.php",
+      "php -l includes/class-product-readiness-evaluator.php",
+      "php -l includes/class-catalog-auditor.php",
+      "php -l includes/class-admin-page.php"
+    ],
+    "phpcs": "phpcs --standard=phpcs.xml.dist"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "sort-packages": true
+  }
+}
