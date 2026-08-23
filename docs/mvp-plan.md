@@ -15,7 +15,7 @@
 | Inizio esecuzione | 23 agosto 2026 |
 | Release candidate | 8 settembre 2026 |
 | Invio previsto a WordPress.org | 9 settembre 2026 |
-| Tempo di sviluppo attivo stimato | 13 giorni lavorativi |
+| Tempo di sviluppo attivo stimato | 14 giorni di lavoro, incluso il rebranding già completato |
 | Revisione WordPress.org | Fino a 14 giorni lavorativi, esterni al nostro controllo |
 
 Le tempistiche presuppongono che non emergano incompatibilità bloccanti su un catalogo reale. Il tempo di revisione ufficiale parte dopo l'invio e può richiedere uno o più cicli di correzione.
@@ -299,12 +299,12 @@ Questi sono budget di progetto, non promesse assolute su hosting di terze parti.
 | Fase | Date | Durata | Risultato |
 | --- | --- | ---: | --- |
 | 0. Identità definitiva | 23 agosto | Completata | Rebranding completo DestinX e slug congelato |
-| 1. Hardening del nucleo | 25–26 agosto | 2 giorni | Scansione atomica, lock, retry e migrazioni |
-| 2. Store readiness | 27–28 agosto | 2 giorni | Checklist negozio con rimedi |
-| 3. Centro operativo | 31 agosto–1 settembre | 2 giorni | Filtri, ricerca, export e UX completa |
-| 4. Conformità | 2–3 settembre | 2 giorni | Sicurezza, privacy, i18n, accessibilità e multisite |
-| 5. Qualità e compatibilità | 4 e 7 settembre | 2 giorni | Matrice test, Plugin Check e performance |
-| 6. Beta reale | 8 settembre | 1 giorno | Test manuale su staging e release candidate |
+| 1. Hardening del nucleo | 24–25 agosto | 2 giorni | Scansione atomica, lock, retry e migrazioni |
+| 2. Store readiness | 26–27 agosto | 2 giorni | Checklist negozio con rimedi |
+| 3. Centro operativo | 28 e 31 agosto | 2 giorni | Filtri, ricerca, export e UX completa |
+| 4. Conformità | 1–2 settembre | 2 giorni | Sicurezza, privacy, i18n, accessibilità e multisite |
+| 5. Qualità e compatibilità | 3–4 settembre | 2 giorni | Matrice test, Plugin Check e performance |
+| 6. Beta reale | 7–8 settembre | 2 giorni | Test manuale su staging e release candidate |
 | 7. Pacchetto e invio | 9 settembre | 1 giorno | ZIP finale e domanda WordPress.org |
 | Revisione esterna | 10–29 settembre | Fino a 14 giorni lavorativi | Risposta del Plugin Review Team |
 
