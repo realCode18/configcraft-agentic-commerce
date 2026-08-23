@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.7.0
+Stable tag: 0.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,14 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 4. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.8.0 =
+
+* Added automated compatibility coverage for WordPress 6.6 through 7.1 and WooCommerce 8.2.5, 10.9.4, and the latest stable release.
+* Added progressive catalog tests for 0, 1, 26, 500, and 5,000 products with batch, dashboard, query, and memory budgets.
+* Added upgrade tests from versions 0.6.0 and 0.7.0, including data-preserving deactivation and reactivation.
+* Deactivation now cancels every pending scan action, clears scan locks, and discards only incomplete staging results.
+* Expanded scoring tests for physical, virtual, downloadable, purchasability, shipping, and stock-status behavior.
 
 = 0.7.0 =
 

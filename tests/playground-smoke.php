@@ -10,6 +10,15 @@ require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 $failures = array();
 
+if ( defined( 'DXAIC_EXPECTED_WP' ) && 0 !== strpos( get_bloginfo( 'version' ), DXAIC_EXPECTED_WP ) ) {
+	$failures[] = 'Expected WordPress ' . DXAIC_EXPECTED_WP . ', loaded ' . get_bloginfo( 'version' ) . '.';
+}
+
+if ( defined( 'DXAIC_EXPECTED_WC' ) && ( ! defined( 'WC_VERSION' ) || DXAIC_EXPECTED_WC !== WC_VERSION ) ) {
+	$loaded_woocommerce = defined( 'WC_VERSION' ) ? WC_VERSION : 'not loaded';
+	$failures[]         = 'Expected WooCommerce ' . DXAIC_EXPECTED_WC . ', loaded ' . $loaded_woocommerce . '.';
+}
+
 if ( ! class_exists( 'WooCommerce' ) ) {
 	$failures[] = 'WooCommerce did not load.';
 }

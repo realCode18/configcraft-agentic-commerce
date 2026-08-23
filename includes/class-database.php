@@ -33,6 +33,21 @@ final class Database {
 	}
 
 	/**
+	 * Stop unfinished work without deleting the last completed audit.
+	 *
+	 * @param bool $network_wide Whether WordPress is deactivating the plugin network-wide.
+	 * @return void
+	 */
+	public static function deactivate( $network_wide = false ) {
+		if ( is_multisite() && $network_wide ) {
+			self::for_each_site( array( __CLASS__, 'deactivate_current_site' ) );
+			return;
+		}
+
+		self::deactivate_current_site();
+	}
+
+	/**
 	 * Install schema for a site created while the plugin is network active.
 	 *
 	 * @param \WP_Site $site New site object.
@@ -145,10 +160,7 @@ final class Database {
 	private static function uninstall_current_site() {
 		global $wpdb;
 
-		if ( function_exists( 'as_unschedule_all_actions' ) ) {
-			as_unschedule_all_actions( Background_Audit::ACTION_HOOK, array(), Background_Audit::ACTION_GROUP );
-		}
-		wp_clear_scheduled_hook( Background_Audit::ACTION_HOOK );
+		self::deactivate_current_site();
 
 		$table_name        = self::table_name();
 		$legacy_table_name = self::legacy_table_name();
@@ -162,6 +174,40 @@ final class Database {
 		delete_option( Background_Audit::START_LOCK_OPTION );
 		delete_option( Background_Audit::PROCESS_LOCK_OPTION );
 		delete_option( Background_Audit::CATALOG_REVISION_OPTION );
+	}
+
+	/**
+	 * Stop unfinished scan work for the current site while preserving completed data.
+	 *
+	 * @return void
+	 */
+	private static function deactivate_current_site() {
+		global $wpdb;
+
+		if ( function_exists( 'as_unschedule_all_actions' ) ) {
+			// Omitting arguments and group cancels every batch for this plugin-owned hook.
+			as_unschedule_all_actions( Background_Audit::ACTION_HOOK );
+		}
+		wp_unschedule_hook( Background_Audit::ACTION_HOOK );
+
+		$state = get_option( Background_Audit::STATE_OPTION, array() );
+		if ( is_array( $state ) && isset( $state['status'] ) && in_array( $state['status'], array( 'queued', 'running' ), true ) ) {
+			$scan_id        = isset( $state['scan_id'] ) ? substr( sanitize_key( (string) $state['scan_id'] ), 0, 40 ) : '';
+			$active_scan_id = substr( sanitize_key( (string) get_option( self::ACTIVE_SCAN_OPTION, '' ) ), 0, 40 );
+			if ( '' !== $scan_id && $scan_id !== $active_scan_id ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+				$wpdb->delete( self::table_name(), array( 'scan_id' => $scan_id ), array( '%s' ) );
+			}
+
+			$state['status']      = 'failed';
+			$state['heartbeat']   = time();
+			$state['finished_at'] = current_time( 'mysql', true );
+			$state['error']       = __( 'The scan was stopped because the plugin was deactivated.', 'destinx-ai-commerce' );
+			update_option( Background_Audit::STATE_OPTION, $state, false );
+		}
+
+		delete_option( Background_Audit::START_LOCK_OPTION );
+		delete_option( Background_Audit::PROCESS_LOCK_OPTION );
 	}
 
 	/**

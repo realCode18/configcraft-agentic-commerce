@@ -77,6 +77,65 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 		$this->assertContains( 'variation_attributes_incomplete', $codes );
 	}
 
+	public function test_virtual_and_downloadable_products_do_not_require_shipping_data() {
+		$evaluator                  = new Product_Readiness_Evaluator();
+		$product                    = $this->complete_product();
+		$product['is_virtual']      = true;
+		$product['is_downloadable'] = true;
+		$product['weight']          = '';
+		$product['length']          = '';
+		$product['width']           = '';
+		$product['height']          = '';
+
+		$result = $evaluator->evaluate( $product );
+
+		$this->assertSame( 100, $result['score'] );
+		$this->assertNotContains( 'shipping_data_missing', array_column( $result['issues'], 'code' ) );
+	}
+
+	public function test_physical_product_without_weight_or_complete_dimensions_has_shipping_finding() {
+		$evaluator          = new Product_Readiness_Evaluator();
+		$product            = $this->complete_product();
+		$product['weight']  = '';
+		$product['length']  = '30';
+		$product['width']   = '';
+		$product['height']  = '12';
+
+		$result = $evaluator->evaluate( $product );
+
+		$this->assertSame( 96, $result['score'] );
+		$this->assertSame( 'ready', $result['status'] );
+		$this->assertContains( 'shipping_data_missing', array_column( $result['issues'], 'code' ) );
+	}
+
+	public function test_non_purchasable_configuration_is_distinct_from_normal_out_of_stock_state() {
+		$evaluator                  = new Product_Readiness_Evaluator();
+		$product                    = $this->complete_product();
+		$product['is_purchasable']  = false;
+		$not_purchasable            = $evaluator->evaluate( $product );
+		$product['stock_status']    = 'outofstock';
+		$normal_out_of_stock        = $evaluator->evaluate( $product );
+
+		$this->assertContains( 'product_not_purchasable', array_column( $not_purchasable['issues'], 'code' ) );
+		$this->assertNotContains( 'product_not_purchasable', array_column( $normal_out_of_stock['issues'], 'code' ) );
+		$this->assertSame( 100, $normal_out_of_stock['score'] );
+	}
+
+	public function test_unknown_stock_status_is_reported_and_score_is_bounded() {
+		$evaluator               = new Product_Readiness_Evaluator();
+		$product                 = $this->complete_product();
+		$product['stock_status'] = 'custom-state';
+		$unknown_stock           = $evaluator->evaluate( $product );
+
+		$this->assertSame( 96, $unknown_stock['score'] );
+		$this->assertContains( 'stock_status_unknown', array_column( $unknown_stock['issues'], 'code' ) );
+
+		$empty_product = array_fill_keys( array_keys( $this->complete_product() ), '' );
+		$bounded       = $evaluator->evaluate( $empty_product );
+		$this->assertGreaterThanOrEqual( 0, $bounded['score'] );
+		$this->assertLessThanOrEqual( 100, $bounded['score'] );
+	}
+
 	private function complete_product() {
 		return array(
 			'name'            => 'Waterproof hiking shoe for mountain trails',

@@ -21,7 +21,7 @@ The only active objective is a complete, local, WordPress.org-ready 1.0.0 releas
 - [x] Secure CSV export.
 - [x] Security, privacy, accessibility, and i18n audit.
 - [x] Multisite and WooCommerce compatibility declarations.
-- [ ] Expanded version and catalog-size test matrix.
+- [x] Expanded version, upgrade-lifecycle, performance, and catalog-size test matrix.
 - [x] Plugin Check with zero errors and zero warnings in strict mode.
 - [ ] WordPress.org icons, banners, screenshots, readme, and release ZIP.
 - [ ] Real staging test and 1.0.0 submission.

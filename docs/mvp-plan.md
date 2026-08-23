@@ -397,6 +397,8 @@ Gate: nessun problema di sicurezza noto, nessuna stringa UI non traducibile, nes
 
 ### Fase 5 — Qualità e compatibilità
 
+Stato: completata in anticipo il 23 agosto 2026 nella pre-release 0.8.0. La matrice e le misure riproducibili sono registrate in [test-matrix.md](test-matrix.md).
+
 Attività:
 
 - ampliare unit test delle regole;

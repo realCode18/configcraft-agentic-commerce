@@ -94,8 +94,8 @@ Questa checklist è un gate: una voce non verificata impedisce l'invio della 1.0
 - [ ] Azioni duplicate rimosse o ignorate in sicurezza.
 - [ ] Lock con scadenza e recupero scansione bloccata.
 - [ ] Fallback WP-Cron testato senza Action Scheduler.
-- [ ] Disattivazione non elimina i risultati ma interrompe attività non necessarie.
-- [ ] Disinstallazione annulla code ed elimina tabella, opzioni e transient del plugin.
+- [x] Disattivazione non elimina i risultati ma interrompe attività non necessarie.
+- [x] Disinstallazione annulla code ed elimina tabella, opzioni e transient del plugin.
 - [x] Multisite per-site e network testati, incluso un sito creato dopo network activation.
 
 ## Interfaccia amministrativa
@@ -133,7 +133,7 @@ Questa checklist è un gate: una voce non verificata impedisce l'invio della 1.0
 - [x] HPOS verificato e compatibilità dichiarata.
 - [x] Cart e Checkout Blocks non vengono alterati.
 - [x] Product Editor classico supportato; il Product Block Editor rimosso da WooCommerce 11 non viene dichiarato.
-- [ ] WooCommerce latest e versione precedente supportata in CI o QIT.
+- [x] WooCommerce latest e versione precedente supportata in CI o QIT.
 - [ ] Nessuna query diretta alle tabelle ordini.
 
 ## `readme.txt`
@@ -175,8 +175,8 @@ Questa checklist è un gate: una voce non verificata impedisce l'invio della 1.0
 - [x] WordPress Playground con WooCommerce.
 - [x] Plugin Check via WP-CLI in modalità strict.
 - [x] CI PHP 7.4, 8.1 e 8.4.
-- [ ] CI WordPress 6.6 e latest.
-- [ ] CI WooCommerce latest e precedente supportata.
+- [x] CI WordPress 6.6 e latest.
+- [x] CI WooCommerce latest e precedente supportata.
 - [ ] Test integrità ZIP.
 
 ## Test manuali finali

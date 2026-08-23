@@ -31,12 +31,16 @@
       "php -l includes/class-store-issue-catalog.php",
       "php -l includes/class-product-meta-box.php",
       "php -l includes/class-admin-page.php",
+      "php -l tests/ProductReadinessEvaluatorTest.php",
       "php -l tests/ScanStateTest.php",
       "php -l tests/CatalogCsvExporterTest.php",
       "php -l tests/StoreReadinessEvaluatorTest.php",
       "php -l tests/playground-smoke.php",
       "php -l tests/playground-multisite-smoke.php",
       "php -l tests/playground-browser-seed.php",
+      "php -l tests/playground-scale-smoke.php",
+      "php -l tests/playground-upgrade-seed.php",
+      "php -l tests/playground-upgrade-smoke.php",
       "php -l uninstall.php"
     ],
     "phpcs": "phpcs --standard=phpcs.xml.dist"

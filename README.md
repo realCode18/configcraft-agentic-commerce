@@ -69,6 +69,25 @@ npx --yes @wp-playground/cli@latest php \
   -- /wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-multisite-smoke.php
 ```
 
+Run the progressive 0, 1, 26, 500, and 5,000-product scale test:
+
+```bash
+npx --yes @wp-playground/cli@latest php \
+  --mount=.:/wordpress/wp-content/plugins/destinx-ai-commerce \
+  --blueprint=tests/playground-blueprint.json \
+  -- /wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-scale-smoke.php
+```
+
+Run the update, deactivation, and reactivation lifecycle test after building a previous tagged release in `build/previous/destinx-ai-commerce`:
+
+```bash
+npx --yes @wp-playground/cli@latest php \
+  --mount=build/previous/destinx-ai-commerce:/wordpress/wp-content/plugins/destinx-ai-commerce \
+  --mount=.:/wordpress/dxaic-current \
+  --blueprint=tests/playground-upgrade-blueprint.json \
+  -- /wordpress/dxaic-current/tests/playground-upgrade-smoke.php
+```
+
 Copy or symlink the repository into `wp-content/plugins/destinx-ai-commerce`, activate it, and open **WooCommerce > AI Commerce**.
 
 ## Privacy
@@ -87,7 +106,7 @@ All analysis and storage are local. The plugin does not read customer, order, pa
 
 ## Roadmap
 
-See the [submission-ready MVP plan](docs/mvp-plan.md), the [competitive analysis](docs/competitive-analysis.md), the [Free/Pro architecture](docs/free-pro-architecture.md), the [privacy inventory](docs/privacy.md), the [WordPress.org checklist](docs/wordpress-org-submission-checklist.md), and the concise [roadmap](docs/roadmap.md).
+See the [submission-ready MVP plan](docs/mvp-plan.md), the [test and performance matrix](docs/test-matrix.md), the [competitive analysis](docs/competitive-analysis.md), the [Free/Pro architecture](docs/free-pro-architecture.md), the [privacy inventory](docs/privacy.md), the [WordPress.org checklist](docs/wordpress-org-submission-checklist.md), and the concise [roadmap](docs/roadmap.md).
 
 ## License
 
