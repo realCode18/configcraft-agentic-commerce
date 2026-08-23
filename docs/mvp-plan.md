@@ -12,7 +12,7 @@
 | Dipendenza | WooCommerce |
 | Licenza | GPL-2.0-or-later |
 | Versione obiettivo | 1.0.0 |
-| Inizio esecuzione | 24 agosto 2026 |
+| Inizio esecuzione | 23 agosto 2026 |
 | Release candidate | 8 settembre 2026 |
 | Invio previsto a WordPress.org | 9 settembre 2026 |
 | Tempo di sviluppo attivo stimato | 13 giorni lavorativi |
