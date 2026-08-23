@@ -169,10 +169,19 @@ final class Admin_Page {
 		}
 		?>
 		<div class="wrap dxaic-wrap">
-			<h1><?php esc_html_e( 'AI Commerce Readiness', 'destinx-ai-commerce' ); ?></h1>
-			<p class="dxaic-intro">
-				<?php esc_html_e( 'Find catalog data that may prevent AI shopping assistants from understanding and recommending your products.', 'destinx-ai-commerce' ); ?>
-			</p>
+			<header class="dxaic-hero">
+				<div class="dxaic-hero__copy">
+					<p class="dxaic-eyebrow"><?php esc_html_e( 'DestinX AI Commerce', 'destinx-ai-commerce' ); ?></p>
+					<h1><?php esc_html_e( 'AI Commerce Readiness', 'destinx-ai-commerce' ); ?></h1>
+					<p class="dxaic-intro">
+						<?php esc_html_e( 'Find catalog data that may prevent AI shopping assistants from understanding and recommending your products.', 'destinx-ai-commerce' ); ?>
+					</p>
+				</div>
+				<div class="dxaic-hero__facts" aria-label="<?php esc_attr_e( 'Plugin service information', 'destinx-ai-commerce' ); ?>">
+					<span class="dxaic-fact"><span class="dxaic-fact__dot" aria-hidden="true"></span><?php esc_html_e( 'Local catalog audit', 'destinx-ai-commerce' ); ?></span>
+					<span class="dxaic-fact"><?php esc_html_e( 'No account or API key', 'destinx-ai-commerce' ); ?></span>
+				</div>
+			</header>
 
 			<?php $this->render_notice(); ?>
 			<?php $this->render_scan_control( $state, $snapshot ); ?>

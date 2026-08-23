@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.8.0
+Stable tag: 0.9.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,13 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 4. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.9.0 =
+
+* Redesigned the AI Commerce dashboard with a spacious, Apple-inspired interface aligned with the ConfigCraft visual system.
+* Added a clearer dashboard hero, privacy-first service information, softer metric cards, and more focused scan controls.
+* Refined store checks, catalog filters, tables, status pills, buttons, focus states, and responsive layouts.
+* Updated the product editor readiness panel to use the same visual language.
 
 = 0.8.0 =
 

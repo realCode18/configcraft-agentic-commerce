@@ -21,7 +21,7 @@
     },
     {
       "step": "runPHP",
-      "code": "<?php require '/wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-browser-seed.php';"
+      "code": "<?php require_once '/wordpress/wp-load.php'; wp_set_password( 'password', 1 ); wp_set_current_user( 1 ); require '/wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-browser-seed.php';"
     }
   ]
 }
