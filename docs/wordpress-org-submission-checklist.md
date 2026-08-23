@@ -167,14 +167,14 @@ Questa checklist è un gate: una voce non verificata impedisce l'invio della 1.0
 
 ## Test automatici finali
 
-- [ ] `composer validate --strict`.
-- [ ] Lint PHP di ogni file runtime e test.
-- [ ] WordPress Coding Standards senza errori.
-- [ ] PHPCompatibilityWP per PHP 7.4+.
-- [ ] PHPUnit completo.
-- [ ] WordPress Playground con WooCommerce.
-- [ ] Plugin Check via WP-CLI.
-- [ ] CI PHP 7.4, 8.1 e 8.4.
+- [x] `composer validate --strict`.
+- [x] Lint PHP di ogni file runtime e test.
+- [x] WordPress Coding Standards senza errori.
+- [x] PHPCompatibilityWP per PHP 7.4+.
+- [x] PHPUnit completo.
+- [x] WordPress Playground con WooCommerce.
+- [x] Plugin Check via WP-CLI in modalità strict.
+- [x] CI PHP 7.4, 8.1 e 8.4.
 - [ ] CI WordPress 6.6 e latest.
 - [ ] CI WooCommerce latest e precedente supportata.
 - [ ] Test integrità ZIP.
