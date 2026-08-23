@@ -96,6 +96,10 @@
 	font-size: 13px;
 }
 
+.dxaic-auto-refresh-controls {
+	margin: 10px 0 0;
+}
+
 .dxaic-panel h2 {
 	margin-top: 0;
 }
@@ -193,7 +197,6 @@
 
 .dxaic-results-panel {
 	margin-top: 24px;
-	overflow-x: auto;
 }
 
 .dxaic-filters {
@@ -260,6 +263,15 @@
 	margin-top: 4px;
 	color: #646970;
 	font-size: 12px;
+}
+
+.dxaic-table-scroll {
+	overflow-x: auto;
+}
+
+.dxaic-table-scroll:focus {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
 }
 
 .dxaic-status,

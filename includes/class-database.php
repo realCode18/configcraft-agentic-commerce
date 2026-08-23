@@ -18,6 +18,47 @@ final class Database {
 	const ACTIVE_SCAN_OPTION = 'dxaic_active_audit_scan';
 
 	/**
+	 * Install schema on one site or across a network activation.
+	 *
+	 * @param bool $network_wide Whether WordPress is activating the plugin network-wide.
+	 * @return void
+	 */
+	public static function activate( $network_wide = false ) {
+		if ( is_multisite() && $network_wide ) {
+			self::for_each_site( array( __CLASS__, 'install' ) );
+			return;
+		}
+
+		self::install();
+	}
+
+	/**
+	 * Install schema for a site created while the plugin is network active.
+	 *
+	 * @param \WP_Site $site New site object.
+	 * @return void
+	 */
+	public static function initialize_site( $site ) {
+		if ( ! is_multisite() || empty( $site->blog_id ) ) {
+			return;
+		}
+
+		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		if ( ! is_plugin_active_for_network( plugin_basename( DXAIC_FILE ) ) ) {
+			return;
+		}
+
+		switch_to_blog( (int) $site->blog_id );
+		try {
+			self::install();
+		} finally {
+			restore_current_blog();
+		}
+	}
+
+	/**
 	 * Return the site-specific results table name.
 	 *
 	 * @return string
@@ -88,6 +129,20 @@ final class Database {
 	 * @return void
 	 */
 	public static function uninstall() {
+		if ( is_multisite() ) {
+			self::for_each_site( array( __CLASS__, 'uninstall_current_site' ) );
+			return;
+		}
+
+		self::uninstall_current_site();
+	}
+
+	/**
+	 * Remove plugin-owned data from the current site.
+	 *
+	 * @return void
+	 */
+	private static function uninstall_current_site() {
 		global $wpdb;
 
 		if ( function_exists( 'as_unschedule_all_actions' ) ) {
@@ -107,6 +162,38 @@ final class Database {
 		delete_option( Background_Audit::START_LOCK_OPTION );
 		delete_option( Background_Audit::PROCESS_LOCK_OPTION );
 		delete_option( Background_Audit::CATALOG_REVISION_OPTION );
+	}
+
+	/**
+	 * Run a schema callback in every site without loading all site objects at once.
+	 *
+	 * @param callable $callback Callback that operates on the current site.
+	 * @return void
+	 */
+	private static function for_each_site( $callback ) {
+		$offset = 0;
+		do {
+			$site_ids   = get_sites(
+				array(
+					'fields' => 'ids',
+					'number' => 100,
+					'offset' => $offset,
+					'order'  => 'ASC',
+				)
+			);
+			$site_count = count( $site_ids );
+
+			foreach ( $site_ids as $site_id ) {
+				switch_to_blog( (int) $site_id );
+				try {
+					call_user_func( $callback );
+				} finally {
+					restore_current_blog();
+				}
+			}
+
+			$offset += $site_count;
+		} while ( 100 === $site_count );
 	}
 
 	/**

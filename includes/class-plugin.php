@@ -14,6 +14,19 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Plugin {
 	/**
+	 * Declare compatibility only for WooCommerce features the plugin actually touches.
+	 *
+	 * @return void
+	 */
+	public static function declare_woocommerce_compatibility() {
+		if ( ! class_exists( '\\Automattic\\WooCommerce\\Utilities\\FeaturesUtil' ) ) {
+			return;
+		}
+
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', DXAIC_FILE, true );
+	}
+
+	/**
 	 * Plugin instance.
 	 *
 	 * @var Plugin|null
@@ -41,6 +54,7 @@ final class Plugin {
 	 */
 	private function boot() {
 		Database::maybe_upgrade();
+		add_action( 'wp_initialize_site', array( 'DestinX\\AICommerce\\Database', 'initialize_site' ), 200 );
 
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			add_action( 'admin_notices', array( $this, 'render_woocommerce_notice' ) );

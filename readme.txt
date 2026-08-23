@@ -2,10 +2,10 @@
 Contributors: realcode18
 Tags: woocommerce, artificial intelligence, product feed, catalog, ecommerce
 Requires at least: 6.6
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.6.0
+Stable tag: 0.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,8 @@ Full scans run in small background batches through WooCommerce Action Scheduler,
 
 All analysis runs locally. This version does not contact external services and does not collect telemetry.
 
+The plugin does not read customer, order, payment, or checkout data. It does not set cookies or load remote assets. It stores only catalog audit results and operational scan state in the local WordPress database, and removes those records on uninstall, including across WordPress Multisite networks.
+
 Important: The plugin improves catalog data quality. It does not guarantee placement, ranking, recommendation, or legal compliance on any third-party AI platform.
 
 == Installation ==
@@ -46,7 +48,15 @@ Important: The plugin improves catalog data quality. It does not guarantee place
 
 = Does the plugin send product data to an AI provider? =
 
-No. Version 0.6.0 performs its audit locally and makes no external requests.
+No. The current Free plugin performs its audit locally and makes no external requests.
+
+= What data does the plugin collect or store? =
+
+It stores product IDs, readiness scores, finding codes, a product-data hash, scoring-model version, timestamps, and scan state in the local WordPress database. It does not read or store customer, order, payment, checkout, or visitor data, and it does not add cookies or telemetry.
+
+= What happens to plugin data on uninstall? =
+
+Uninstall removes the plugin's audit tables, options, locks, and scheduled work. On WordPress Multisite, cleanup runs separately for every site in the network. Deactivation alone preserves the latest audit.
 
 = Does it guarantee that ChatGPT or Gemini will show my products? =
 
@@ -64,6 +74,17 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 4. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.7.0 =
+
+* Added network-wide activation, new-site initialization, and complete Multisite uninstall cleanup.
+* Declared WooCommerce HPOS compatibility and added tested WooCommerce version headers.
+* Added an official translation template and documented its reproducible WP-CLI command.
+* Added accessible live status, progress labeling, table-region semantics, and descriptive control names.
+* Added pause and resume controls for automatic scan refresh, with reduced-motion support.
+* Documented the exact local data inventory, privacy boundaries, and uninstall behavior.
+* Added automated WooCommerce compatibility, accessibility markup, Multisite lifecycle, and uninstall tests.
+* Added official WordPress Plugin Check to the distribution-package CI gate.
 
 = 0.6.0 =
 

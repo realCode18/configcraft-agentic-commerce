@@ -22,6 +22,24 @@ if ( ! class_exists( 'DestinX\\AICommerce\\Catalog_Auditor' ) ) {
 	$failures[] = 'Plugin services did not load.';
 }
 
+if ( class_exists( 'Automattic\\WooCommerce\\Utilities\\FeaturesUtil' ) ) {
+	$compatibility = Automattic\WooCommerce\Utilities\FeaturesUtil::get_compatible_features_for_plugin( 'destinx-ai-commerce/destinx-ai-commerce.php' );
+	if ( ! in_array( 'custom_order_tables', $compatibility['compatible'], true ) ) {
+		$failures[] = 'HPOS compatibility was not declared.';
+	}
+}
+
+$plugin_headers = get_file_data(
+	DXAIC_FILE,
+	array(
+		'wc_requires' => 'WC requires at least',
+		'wc_tested'   => 'WC tested up to',
+	)
+);
+if ( '8.2' !== $plugin_headers['wc_requires'] || '11.0' !== $plugin_headers['wc_tested'] ) {
+	$failures[] = 'WooCommerce compatibility headers are missing or unexpected.';
+}
+
 if ( empty( $failures ) ) {
 	$term = wp_insert_term( 'Smoke Test Products', 'product_cat' );
 	if ( is_wp_error( $term ) && 'term_exists' === $term->get_error_code() ) {
@@ -436,6 +454,29 @@ if ( empty( $failures ) ) {
 		}
 		if ( false === strpos( $dashboard_html, 'Product or SKU' ) || false === strpos( $dashboard_html, 'Export filtered CSV' ) || false === strpos( $dashboard_html, 'Visible catalog data updated' ) ) {
 			$failures[] = 'The catalog operations toolbar or snapshot freshness message did not render.';
+		}
+		if ( false === strpos( $dashboard_html, 'aria-live="polite"' ) || false === strpos( $dashboard_html, 'Scrollable catalog results' ) || false === strpos( $dashboard_html, '<caption class="screen-reader-text">' ) ) {
+			$failures[] = 'The dashboard is missing its accessible status or table-region semantics.';
+		}
+
+		$complete_state = get_option( DestinX\AICommerce\Background_Audit::STATE_OPTION );
+		$running_state  = array_merge(
+			$complete_state,
+			array(
+				'status'     => 'running',
+				'processed'  => 1,
+				'total'      => 6,
+				'heartbeat'  => time(),
+				'finished_at' => '',
+			)
+		);
+		update_option( DestinX\AICommerce\Background_Audit::STATE_OPTION, $running_state, false );
+		ob_start();
+		$admin_page->render();
+		$running_dashboard_html = ob_get_clean();
+		update_option( DestinX\AICommerce\Background_Audit::STATE_OPTION, $complete_state, false );
+		if ( false === strpos( $running_dashboard_html, 'dxaic-auto-refresh-toggle' ) || false === strpos( $running_dashboard_html, 'aria-pressed="false"' ) ) {
+			$failures[] = 'The running scan has no accessible auto-refresh control.';
 		}
 
 		$meta_box = new DestinX\AICommerce\Product_Meta_Box( $extractor, $evaluator );

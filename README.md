@@ -19,6 +19,9 @@ The plugin is intentionally local and diagnostic. It does not call AI providers,
 - Links every finding back to the WooCommerce product editor.
 - Adds live scoring and practical remediation guidance to each product editor.
 - Checks 15 site-level readiness conditions separately from product scores, including HTTPS, indexing, store pages, policies, REST, and shipping.
+- Supports site-level and network-wide WordPress Multisite activation and cleanup.
+- Declares WooCommerce HPOS compatibility and does not read order tables.
+- Includes keyboard, reduced-motion, screen-reader, and responsive dashboard safeguards.
 - Provides filters for custom product data and catalog-specific rules.
 
 ## Requirements
@@ -36,6 +39,17 @@ composer phpcs
 composer test
 ```
 
+Regenerate the translation template with WP-CLI after changing a user-facing string:
+
+```bash
+wp i18n make-pot . languages/destinx-ai-commerce.pot \
+  --slug=destinx-ai-commerce \
+  --domain=destinx-ai-commerce \
+  --exclude=vendor,tests,docs \
+  --skip-js \
+  --headers='{"Report-Msgid-Bugs-To":"https://github.com/realCode18/destinx-ai-commerce/issues"}'
+```
+
 Run the WordPress and WooCommerce smoke test in an isolated Playground environment:
 
 ```bash
@@ -45,7 +59,21 @@ npx --yes @wp-playground/cli@latest php \
   -- /wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-smoke.php
 ```
 
+Run the network-activation, new-site, and network-uninstall lifecycle test:
+
+```bash
+npx --yes @wp-playground/cli@latest php \
+  --site-url=http://localhost \
+  --mount=.:/wordpress/wp-content/plugins/destinx-ai-commerce \
+  --blueprint=tests/playground-multisite-blueprint.json \
+  -- /wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-multisite-smoke.php
+```
+
 Copy or symlink the repository into `wp-content/plugins/destinx-ai-commerce`, activate it, and open **WooCommerce > AI Commerce**.
+
+## Privacy
+
+All analysis and storage are local. The plugin does not read customer, order, payment, or checkout data; it does not add cookies, telemetry, external requests, or remote assets. See the complete [local-data inventory](docs/privacy.md).
 
 ## Extension hooks
 
@@ -59,7 +87,7 @@ Copy or symlink the repository into `wp-content/plugins/destinx-ai-commerce`, ac
 
 ## Roadmap
 
-See the [submission-ready MVP plan](docs/mvp-plan.md), the [competitive analysis](docs/competitive-analysis.md), the [Free/Pro architecture](docs/free-pro-architecture.md), the [WordPress.org checklist](docs/wordpress-org-submission-checklist.md), and the concise [roadmap](docs/roadmap.md).
+See the [submission-ready MVP plan](docs/mvp-plan.md), the [competitive analysis](docs/competitive-analysis.md), the [Free/Pro architecture](docs/free-pro-architecture.md), the [privacy inventory](docs/privacy.md), the [WordPress.org checklist](docs/wordpress-org-submission-checklist.md), and the concise [roadmap](docs/roadmap.md).
 
 ## License
 

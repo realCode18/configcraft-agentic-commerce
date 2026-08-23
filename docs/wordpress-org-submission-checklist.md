@@ -48,13 +48,13 @@ Questa checklist è un gate: una voce non verificata impedisce l'invio della 1.0
 
 ## Privacy e servizi esterni
 
-- [ ] Nessuna richiesta HTTP esterna nell'MVP.
-- [ ] Nessuna telemetria, activation ping, heartbeat remoto o click tracking.
-- [ ] Nessun asset caricato da CDN, inclusi font e script.
-- [ ] Nessun iframe remoto in amministrazione.
-- [ ] Nessun dato prodotto inviato fuori dal sito.
-- [ ] Nessun dato cliente, ordine, pagamento o utente letto o memorizzato.
-- [ ] Il readme dichiara chiaramente che l'elaborazione è locale.
+- [x] Nessuna richiesta HTTP esterna nell'MVP.
+- [x] Nessuna telemetria, activation ping, heartbeat remoto o click tracking.
+- [x] Nessun asset caricato da CDN, inclusi font e script.
+- [x] Nessun iframe remoto in amministrazione.
+- [x] Nessun dato prodotto inviato fuori dal sito.
+- [x] Nessun dato cliente, ordine, pagamento o utente letto o memorizzato.
+- [x] Il readme dichiara chiaramente che l'elaborazione è locale.
 - [ ] Se in futuro viene aggiunto un servizio esterno: opt-in esplicito, circostanze, dati inviati, endpoint, Terms e Privacy Policy documentati.
 - [ ] Nessun link o credito nel frontend; eventuali crediti futuri saranno opt-in e disattivati per default.
 
@@ -96,7 +96,7 @@ Questa checklist è un gate: una voce non verificata impedisce l'invio della 1.0
 - [ ] Fallback WP-Cron testato senza Action Scheduler.
 - [ ] Disattivazione non elimina i risultati ma interrompe attività non necessarie.
 - [ ] Disinstallazione annulla code ed elimina tabella, opzioni e transient del plugin.
-- [ ] Multisite per-site e network testati, incluso un sito creato dopo network activation.
+- [x] Multisite per-site e network testati, incluso un sito creato dopo network activation.
 
 ## Interfaccia amministrativa
 
@@ -108,19 +108,19 @@ Questa checklist è un gate: una voce non verificata impedisce l'invio della 1.0
 - [ ] Colori non usati come unico mezzo per comunicare stato.
 - [ ] Focus visibile e ordine di tab logico.
 - [ ] Tabelle utilizzabili a zoom 200% e su schermi piccoli.
-- [ ] Label e nomi accessibili per controlli, progress e navigazione.
+- [x] Label e nomi accessibili per controlli, progress e navigazione.
 - [ ] Test keyboard-only completato.
 - [ ] Test contrasto completato.
 
 ## Internazionalizzazione
 
-- [ ] Tutte le stringhe sorgente sono in inglese.
-- [ ] Tutte le stringhe UI passano da funzioni i18n WordPress.
-- [ ] Text domain identico allo slug.
-- [ ] Placeholder documentati con commenti translators.
-- [ ] Stringhe plurali usano `_n()` correttamente.
-- [ ] Nessuna interpolazione che impedisca la traduzione.
-- [ ] POT generato e verificato.
+- [x] Tutte le stringhe sorgente sono in inglese.
+- [x] Tutte le stringhe UI passano da funzioni i18n WordPress.
+- [x] Text domain identico allo slug.
+- [x] Placeholder documentati con commenti translators.
+- [x] Stringhe plurali usano `_n()` correttamente.
+- [x] Nessuna interpolazione che impedisca la traduzione.
+- [x] POT generato e verificato.
 - [ ] Layout verificato con stringhe più lunghe.
 
 ## Compatibilità WooCommerce
@@ -130,9 +130,9 @@ Questa checklist è un gate: una voce non verificata impedisce l'invio della 1.0
 - [ ] Prodotti letti tramite API pubbliche `WC_Product`/CRUD.
 - [ ] Simple, variable, virtual e downloadable testati.
 - [ ] Brand nativo e global unique ID testati.
-- [ ] HPOS verificato e compatibilità dichiarata.
-- [ ] Cart e Checkout Blocks non vengono alterati.
-- [ ] Product Editor classico e nuovo Product Editor verificati o limitazione documentata.
+- [x] HPOS verificato e compatibilità dichiarata.
+- [x] Cart e Checkout Blocks non vengono alterati.
+- [x] Product Editor classico supportato; il Product Block Editor rimosso da WooCommerce 11 non viene dichiarato.
 - [ ] WooCommerce latest e versione precedente supportata in CI o QIT.
 - [ ] Nessuna query diretta alle tabelle ordini.
 

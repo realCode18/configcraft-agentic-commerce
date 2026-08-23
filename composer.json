@@ -35,6 +35,8 @@
       "php -l tests/CatalogCsvExporterTest.php",
       "php -l tests/StoreReadinessEvaluatorTest.php",
       "php -l tests/playground-smoke.php",
+      "php -l tests/playground-multisite-smoke.php",
+      "php -l tests/playground-browser-seed.php",
       "php -l uninstall.php"
     ],
     "phpcs": "phpcs --standard=phpcs.xml.dist"

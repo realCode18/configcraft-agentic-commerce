@@ -41,3 +41,35 @@ jobs:
           --mount=.:/wordpress/wp-content/plugins/destinx-ai-commerce
           --blueprint=tests/playground-blueprint.json
           -- /wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-smoke.php
+
+      - name: Smoke test the Multisite lifecycle
+        run: >-
+          npx --yes @wp-playground/cli@3.1.50 php
+          --site-url=http://localhost
+          --mount=.:/wordpress/wp-content/plugins/destinx-ai-commerce
+          --blueprint=tests/playground-multisite-blueprint.json
+          -- /wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-multisite-smoke.php
+
+  plugin-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build the WordPress.org distribution directory
+        run: |
+          mkdir -p build/destinx-ai-commerce
+          git archive --format=tar HEAD \
+            LICENSE.md \
+            assets \
+            composer.json \
+            destinx-ai-commerce.php \
+            includes \
+            languages \
+            readme.txt \
+            uninstall.php \
+            | tar -x -C build/destinx-ai-commerce
+      - name: Run official Plugin Check
+        uses: wordpress/plugin-check-action@v1.1.9
+        with:
+          build-dir: './build/destinx-ai-commerce'
+          include-experimental: false
+          slug: destinx-ai-commerce

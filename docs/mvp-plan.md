@@ -84,7 +84,7 @@ La pre-release 0.2.0 ha già completato circa il 55% del nucleo tecnico:
 - PHPUnit, WordPress Coding Standards e smoke test WordPress/WooCommerce;
 - CI su PHP 7.4, 8.1 e 8.4.
 
-Prima della 1.0.0 restano da completare robustezza della scansione, diagnosi del negozio, filtri ed export, accessibilità, internazionalizzazione, compatibilità, Plugin Check, asset e procedura WordPress.org. Il rebranding è completato.
+Le fasi di robustezza, diagnosi del negozio, centro operativo e conformità sono ora completate. Prima della 1.0.0 restano la matrice estesa di qualità e compatibilità, Plugin Check finale, asset, beta su staging e procedura WordPress.org.
 
 ## Perimetro funzionale 1.0.0
 
@@ -379,6 +379,8 @@ Attività:
 Gate: un merchant può individuare, aprire ed esportare tutti i prodotti con uno specifico problema senza leggere documentazione esterna.
 
 ### Fase 4 — Conformità
+
+Stato: completata in anticipo il 23 agosto 2026 nella pre-release 0.7.0.
 
 Attività:
 

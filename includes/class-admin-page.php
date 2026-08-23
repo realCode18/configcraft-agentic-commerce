@@ -246,19 +246,21 @@ final class Admin_Page {
 			<ul class="dxaic-store-checks">
 				<?php foreach ( $readiness['checks'] as $check ) : ?>
 					<?php
-					$status     = sanitize_key( $check['status'] );
-					$action_url = Store_Issue_Catalog::action_url( $check['code'] );
+					$status      = sanitize_key( $check['status'] );
+					$check_label = Store_Issue_Catalog::label( $check['code'] );
+					$action_url  = Store_Issue_Catalog::action_url( $check['code'] );
 					?>
 					<li class="dxaic-store-check dxaic-store-check--<?php echo esc_attr( $status ); ?>">
 						<div>
 							<span class="dxaic-check-status dxaic-check-status--<?php echo esc_attr( $status ); ?>"><?php echo esc_html( Store_Issue_Catalog::status_label( $status ) ); ?></span>
-							<strong><?php echo esc_html( Store_Issue_Catalog::label( $check['code'] ) ); ?></strong>
+							<strong><?php echo esc_html( $check_label ); ?></strong>
 						</div>
 						<?php if ( ! in_array( $status, array( 'pass', 'not_applicable' ), true ) ) : ?>
 							<p>
 								<?php echo esc_html( Store_Issue_Catalog::guidance( $check['code'] ) ); ?>
 								<?php if ( $action_url ) : ?>
-									<a href="<?php echo esc_url( $action_url ); ?>"><?php esc_html_e( 'Review setting', 'destinx-ai-commerce' ); ?></a>
+									<?php /* translators: %s: store readiness check label. */ ?>
+									<a href="<?php echo esc_url( $action_url ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Review setting: %s', 'destinx-ai-commerce' ), $check_label ) ); ?>"><?php esc_html_e( 'Review setting', 'destinx-ai-commerce' ); ?></a>
 								<?php endif; ?>
 							</p>
 						<?php endif; ?>
@@ -283,7 +285,7 @@ final class Admin_Page {
 		<div class="dxaic-scan-panel" data-dxaic-auto-refresh="<?php echo esc_attr( $is_running ? '1' : '0' ); ?>">
 			<div>
 				<h2><?php esc_html_e( 'Full catalog scan', 'destinx-ai-commerce' ); ?></h2>
-				<p><?php echo esc_html( $this->scan_status_label( $state ) ); ?></p>
+				<p aria-live="polite"><?php echo esc_html( $this->scan_status_label( $state ) ); ?></p>
 				<?php if ( ! empty( $snapshot['scanned_at'] ) ) : ?>
 					<p class="dxaic-data-freshness">
 						<?php
@@ -294,8 +296,18 @@ final class Admin_Page {
 					</p>
 				<?php endif; ?>
 				<?php if ( $is_running ) : ?>
-					<progress value="<?php echo esc_attr( $state['processed'] ); ?>" max="<?php echo esc_attr( max( 1, $state['total'] ) ); ?>"><?php echo esc_html( $progress ); ?>%</progress>
+					<progress aria-label="<?php esc_attr_e( 'Catalog scan progress', 'destinx-ai-commerce' ); ?>" value="<?php echo esc_attr( $state['processed'] ); ?>" max="<?php echo esc_attr( max( 1, $state['total'] ) ); ?>"><?php echo esc_html( $progress ); ?>%</progress>
 					<span><?php echo esc_html( $progress ); ?>%</span>
+					<p class="dxaic-auto-refresh-controls">
+						<button
+							type="button"
+							class="button-link dxaic-auto-refresh-toggle"
+							data-pause-label="<?php esc_attr_e( 'Pause automatic refresh', 'destinx-ai-commerce' ); ?>"
+							data-resume-label="<?php esc_attr_e( 'Resume automatic refresh', 'destinx-ai-commerce' ); ?>"
+							aria-pressed="false"
+							hidden
+						><?php esc_html_e( 'Pause automatic refresh', 'destinx-ai-commerce' ); ?></button>
+					</p>
 				<?php endif; ?>
 				<?php if ( 'failed' === $state['status'] && $state['error'] ) : ?>
 					<p class="dxaic-error"><?php echo esc_html( $state['error'] ); ?></p>
@@ -393,7 +405,7 @@ final class Admin_Page {
 		}
 		$has_filters = (bool) array_filter( $filters );
 		?>
-		<form class="dxaic-filters" method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>">
+		<form class="dxaic-filters" method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>" aria-label="<?php esc_attr_e( 'Catalog result filters', 'destinx-ai-commerce' ); ?>">
 			<input type="hidden" name="page" value="destinx-ai-commerce">
 			<div class="dxaic-filter-fields">
 				<label>
@@ -436,13 +448,13 @@ final class Admin_Page {
 			</div>
 		</form>
 		<div class="dxaic-results-toolbar">
-			<p>
+			<p aria-live="polite">
 				<?php
 				/* translators: %d: number of catalog products matching the current filters. */
 				echo esc_html( sprintf( _n( '%d product matches', '%d products match', $filtered_total, 'destinx-ai-commerce' ), $filtered_total ) );
 				?>
 			</p>
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" aria-label="<?php esc_attr_e( 'Export catalog results', 'destinx-ai-commerce' ); ?>">
 				<input type="hidden" name="action" value="<?php echo esc_attr( Catalog_Csv_Exporter::ACTION ); ?>">
 				<input type="hidden" name="dxaic_search" value="<?php echo esc_attr( $filters['search'] ); ?>">
 				<input type="hidden" name="dxaic_status" value="<?php echo esc_attr( $filters['status'] ); ?>">
@@ -463,7 +475,9 @@ final class Admin_Page {
 	 */
 	private function render_table( array $products ) {
 		?>
+		<div class="dxaic-table-scroll" tabindex="0" role="region" aria-label="<?php esc_attr_e( 'Scrollable catalog results', 'destinx-ai-commerce' ); ?>">
 		<table class="widefat striped dxaic-table">
+			<caption class="screen-reader-text"><?php esc_html_e( 'WooCommerce products and their AI commerce readiness findings', 'destinx-ai-commerce' ); ?></caption>
 			<thead><tr>
 				<th><?php esc_html_e( 'Product', 'destinx-ai-commerce' ); ?></th>
 				<th><?php esc_html_e( 'Score', 'destinx-ai-commerce' ); ?></th>
@@ -489,6 +503,7 @@ final class Admin_Page {
 				<?php endforeach; ?>
 			</tbody>
 		</table>
+		</div>
 		<?php
 	}
 
@@ -523,11 +538,14 @@ final class Admin_Page {
 
 		$visible = array_slice( $issues, 0, 4 );
 		foreach ( $visible as $issue ) {
+			$issue_label    = Issue_Catalog::label( $issue['code'] );
+			$issue_guidance = Issue_Catalog::guidance( $issue['code'] );
 			printf(
-				'<span class="dxaic-issue dxaic-issue--%1$s" title="%2$s">%3$s</span> ',
+				'<span class="dxaic-issue dxaic-issue--%1$s" title="%2$s" aria-label="%3$s">%4$s</span> ',
 				esc_attr( $issue['severity'] ),
-				esc_attr( Issue_Catalog::guidance( $issue['code'] ) ),
-				esc_html( Issue_Catalog::label( $issue['code'] ) )
+				esc_attr( $issue_guidance ),
+				esc_attr( $issue_label . '. ' . $issue_guidance ),
+				esc_html( $issue_label )
 			);
 		}
 
