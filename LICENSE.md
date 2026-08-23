@@ -1,6 +1,6 @@
 # License
 
-ConfigCraft Agentic Commerce is free software licensed under the GNU General Public License, version 2 or any later version.
+DestinX AI Commerce for WooCommerce is free software licensed under the GNU General Public License, version 2 or any later version.
 
 You may redistribute and modify it under the terms of that license. The software is distributed without any warranty; without even the implied warranty of merchantability or fitness for a particular purpose.
 

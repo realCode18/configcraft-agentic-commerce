@@ -1,11 +1,11 @@
-=== ConfigCraft Agentic Commerce ===
+=== DestinX AI Commerce for WooCommerce ===
 Contributors: realcode18
 Tags: woocommerce, artificial intelligence, product feed, catalog, ecommerce
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Audit WooCommerce product catalogs for AI discovery and agentic commerce readine
 
 == Description ==
 
-ConfigCraft Agentic Commerce finds incomplete or ambiguous WooCommerce product data that may prevent AI shopping assistants from understanding and recommending products.
+DestinX AI Commerce for WooCommerce finds incomplete or ambiguous WooCommerce product data that may prevent AI shopping assistants from understanding and recommending products.
 
 The plugin adds an AI Commerce screen under WooCommerce. It provides a quick preview of the latest products and a background scan of the full published catalog for:
 
@@ -33,14 +33,14 @@ Important: The plugin improves catalog data quality. It does not guarantee place
 
 1. Install and activate WooCommerce.
 2. Upload the plugin directory to `/wp-content/plugins/` or install the ZIP through Plugins > Add New.
-3. Activate ConfigCraft Agentic Commerce.
+3. Activate DestinX AI Commerce for WooCommerce.
 4. Open WooCommerce > AI Commerce.
 
 == Frequently Asked Questions ==
 
 = Does the plugin send product data to an AI provider? =
 
-No. Version 0.2.0 performs its audit locally and makes no external requests.
+No. Version 0.3.0 performs its audit locally and makes no external requests.
 
 = Does it guarantee that ChatGPT or Gemini will show my products? =
 
@@ -56,6 +56,12 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 2. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.3.0 =
+
+* Renamed the plugin to DestinX AI Commerce for WooCommerce.
+* Aligned the plugin slug, text domain, namespace, hooks, and internal prefixes.
+* Added the detailed WordPress.org MVP and submission plan.
 
 = 0.2.0 =
 

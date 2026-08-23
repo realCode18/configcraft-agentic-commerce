@@ -2,10 +2,10 @@
 /**
  * Full-catalog background scanning.
  *
- * @package ConfigCraftAgenticCommerce
+ * @package DestinXAICommerce
  */
 
-namespace ConfigCraft\AgenticCommerce;
+namespace DestinX\AICommerce;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -13,9 +13,9 @@ defined( 'ABSPATH' ) || exit;
  * Processes catalog audits in small WooCommerce-friendly batches.
  */
 final class Background_Audit {
-	const ACTION_HOOK  = 'configcraft_agentic_commerce_process_batch';
-	const ACTION_GROUP = 'configcraft-agentic-commerce';
-	const STATE_OPTION = 'ccac_background_audit_state';
+	const ACTION_HOOK  = 'destinx_ai_commerce_process_batch';
+	const ACTION_GROUP = 'destinx-ai-commerce';
+	const STATE_OPTION = 'dxaic_background_audit_state';
 
 	/**
 	 * Persistent audit result storage.
@@ -57,7 +57,7 @@ final class Background_Audit {
 	 * @return void
 	 */
 	public function hooks() {
-		add_action( 'admin_post_ccac_start_catalog_audit', array( $this, 'handle_start_request' ) );
+		add_action( 'admin_post_dxaic_start_catalog_audit', array( $this, 'handle_start_request' ) );
 		add_action( self::ACTION_HOOK, array( $this, 'process_batch' ), 10, 1 );
 	}
 
@@ -68,15 +68,15 @@ final class Background_Audit {
 	 */
 	public function handle_start_request() {
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_die( esc_html__( 'You do not have permission to start a catalog audit.', 'configcraft-agentic-commerce' ) );
+			wp_die( esc_html__( 'You do not have permission to start a catalog audit.', 'destinx-ai-commerce' ) );
 		}
 
-		check_admin_referer( 'ccac_start_catalog_audit' );
+		check_admin_referer( 'dxaic_start_catalog_audit' );
 		$started = $this->start();
 		$url     = add_query_arg(
-			'ccac_notice',
+			'dxaic_notice',
 			$started ? 'started' : 'already_running',
-			admin_url( 'admin.php?page=configcraft-agentic-commerce' )
+			admin_url( 'admin.php?page=destinx-ai-commerce' )
 		);
 
 		wp_safe_redirect( $url );
@@ -127,7 +127,7 @@ final class Background_Audit {
 			return;
 		}
 
-		$batch_size = (int) apply_filters( 'configcraft_agentic_commerce_batch_size', 25 );
+		$batch_size = (int) apply_filters( 'destinx_ai_commerce_batch_size', 25 );
 		$batch_size = max( 5, min( 100, $batch_size ) );
 
 		try {
@@ -146,7 +146,7 @@ final class Background_Audit {
 			foreach ( $query->products as $product ) {
 				$evaluation = $this->evaluator->evaluate( $this->extractor->extract( $product ) );
 				if ( ! $this->repository->save( $product->get_id(), $evaluation ) ) {
-					throw new \RuntimeException( __( 'The product audit result could not be saved.', 'configcraft-agentic-commerce' ) );
+					throw new \RuntimeException( __( 'The product audit result could not be saved.', 'destinx-ai-commerce' ) );
 				}
 			}
 

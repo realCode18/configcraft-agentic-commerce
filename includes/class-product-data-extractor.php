@@ -2,10 +2,10 @@
 /**
  * WooCommerce product data adapter.
  *
- * @package ConfigCraftAgenticCommerce
+ * @package DestinXAICommerce
  */
 
-namespace ConfigCraft\AgenticCommerce;
+namespace DestinX\AICommerce;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -50,7 +50,7 @@ final class Product_Data_Extractor {
 		 * @param array<string, mixed> $data    Audit data.
 		 * @param \WC_Product          $product Product instance.
 		 */
-		return apply_filters( 'configcraft_agentic_commerce_product_data', $data, $product );
+		return apply_filters( 'destinx_ai_commerce_product_data', $data, $product );
 	}
 
 	/**

@@ -2,7 +2,7 @@
 /**
  * Plugin uninstall cleanup.
  *
- * @package ConfigCraftAgenticCommerce
+ * @package DestinXAICommerce
  */
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
@@ -10,4 +10,4 @@ defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 require_once __DIR__ . '/includes/class-background-audit.php';
 require_once __DIR__ . '/includes/class-database.php';
 
-ConfigCraft\AgenticCommerce\Database::uninstall();
+DestinX\AICommerce\Database::uninstall();

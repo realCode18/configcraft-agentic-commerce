@@ -2,10 +2,10 @@
 /**
  * Main plugin bootstrap.
  *
- * @package ConfigCraftAgenticCommerce
+ * @package DestinXAICommerce
  */
 
-namespace ConfigCraft\AgenticCommerce;
+namespace DestinX\AICommerce;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -72,7 +72,7 @@ final class Plugin {
 		?>
 		<div class="notice notice-error">
 			<p>
-				<?php esc_html_e( 'ConfigCraft Agentic Commerce requires WooCommerce to be installed and active.', 'configcraft-agentic-commerce' ); ?>
+				<?php esc_html_e( 'DestinX AI Commerce for WooCommerce requires WooCommerce to be installed and active.', 'destinx-ai-commerce' ); ?>
 			</p>
 		</div>
 		<?php

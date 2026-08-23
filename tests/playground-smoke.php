@@ -2,7 +2,7 @@
 /**
  * WordPress Playground smoke test.
  *
- * @package ConfigCraftAgenticCommerce
+ * @package DestinXAICommerce
  */
 
 require_once '/wordpress/wp-load.php';
@@ -14,11 +14,11 @@ if ( ! class_exists( 'WooCommerce' ) ) {
 	$failures[] = 'WooCommerce did not load.';
 }
 
-if ( ! is_plugin_active( 'configcraft-agentic-commerce/configcraft-agentic-commerce.php' ) ) {
-	$failures[] = 'ConfigCraft Agentic Commerce is not active.';
+if ( ! is_plugin_active( 'destinx-ai-commerce/destinx-ai-commerce.php' ) ) {
+	$failures[] = 'DestinX AI Commerce for WooCommerce is not active.';
 }
 
-if ( ! class_exists( 'ConfigCraft\\AgenticCommerce\\Catalog_Auditor' ) ) {
+if ( ! class_exists( 'DestinX\\AICommerce\\Catalog_Auditor' ) ) {
 	$failures[] = 'Plugin services did not load.';
 }
 
@@ -33,7 +33,7 @@ if ( empty( $failures ) ) {
 	$product->set_description( str_repeat( 'Detailed information for customers and machine-readable catalog systems. ', 3 ) );
 	$product->set_status( 'publish' );
 	$product->set_regular_price( '119.00' );
-	$product->set_sku( 'CCAC-SMOKE-001' );
+	$product->set_sku( 'DXAIC-SMOKE-001' );
 	$product->set_image_id( 123 );
 	$product->set_category_ids( array( (int) $term['term_id'] ) );
 	$product->set_weight( '0.8' );
@@ -48,12 +48,12 @@ if ( empty( $failures ) ) {
 	$product->set_attributes( array( $attribute ) );
 
 	$product_id = $product->save();
-	update_post_meta( $product_id, '_brand', 'ConfigCraft Test Brand' );
+	update_post_meta( $product_id, '_brand', 'DestinX Test Brand' );
 	update_post_meta( $product_id, '_gtin', '1234567890123' );
 
-	$extractor = new ConfigCraft\AgenticCommerce\Product_Data_Extractor();
-	$evaluator = new ConfigCraft\AgenticCommerce\Product_Readiness_Evaluator();
-	$auditor   = new ConfigCraft\AgenticCommerce\Catalog_Auditor( $extractor, $evaluator );
+	$extractor = new DestinX\AICommerce\Product_Data_Extractor();
+	$evaluator = new DestinX\AICommerce\Product_Readiness_Evaluator();
+	$auditor   = new DestinX\AICommerce\Catalog_Auditor( $extractor, $evaluator );
 	$audit     = $auditor->audit( 25 );
 	$match     = null;
 
@@ -70,7 +70,7 @@ if ( empty( $failures ) ) {
 		$failures[] = 'Expected a readiness score of 100, received ' . $match['score'] . '.';
 	}
 
-	if ( ConfigCraft\AgenticCommerce\Database::VERSION !== get_option( ConfigCraft\AgenticCommerce\Database::VERSION_OPTION ) ) {
+	if ( DestinX\AICommerce\Database::VERSION !== get_option( DestinX\AICommerce\Database::VERSION_OPTION ) ) {
 		$failures[] = 'The plugin database schema was not installed.';
 	}
 
@@ -81,15 +81,15 @@ if ( empty( $failures ) ) {
 		$incomplete_product->save();
 	}
 
-	$repository = new ConfigCraft\AgenticCommerce\Audit_Repository();
-	$background = new ConfigCraft\AgenticCommerce\Background_Audit( $repository, $extractor, $evaluator );
+	$repository = new DestinX\AICommerce\Audit_Repository();
+	$background = new DestinX\AICommerce\Background_Audit( $repository, $extractor, $evaluator );
 	add_filter(
-		'configcraft_agentic_commerce_batch_size',
+		'destinx_ai_commerce_batch_size',
 		static function () {
 			return 5;
 		}
 	);
-	delete_option( ConfigCraft\AgenticCommerce\Background_Audit::STATE_OPTION );
+	delete_option( DestinX\AICommerce\Background_Audit::STATE_OPTION );
 	$repository->clear();
 
 	if ( ! $background->start() ) {
@@ -130,7 +130,7 @@ if ( empty( $failures ) ) {
 		}
 
 		wp_set_current_user( 1 );
-		$admin_page = new ConfigCraft\AgenticCommerce\Admin_Page( $auditor, $repository, $background );
+		$admin_page = new DestinX\AICommerce\Admin_Page( $auditor, $repository, $background );
 		ob_start();
 		$admin_page->render();
 		$dashboard_html = ob_get_clean();
@@ -138,7 +138,7 @@ if ( empty( $failures ) ) {
 			$failures[] = 'The persisted catalog dashboard did not render its completed results.';
 		}
 
-		$meta_box = new ConfigCraft\AgenticCommerce\Product_Meta_Box( $extractor, $evaluator );
+		$meta_box = new DestinX\AICommerce\Product_Meta_Box( $extractor, $evaluator );
 		ob_start();
 		$meta_box->render( get_post( $product_id ) );
 		$product_panel_html = ob_get_clean();
@@ -147,7 +147,7 @@ if ( empty( $failures ) ) {
 		}
 	}
 
-	if ( '' === ConfigCraft\AgenticCommerce\Issue_Catalog::guidance( 'brand_missing' ) ) {
+	if ( '' === DestinX\AICommerce\Issue_Catalog::guidance( 'brand_missing' ) ) {
 		$failures[] = 'Product remediation guidance is unavailable.';
 	}
 }

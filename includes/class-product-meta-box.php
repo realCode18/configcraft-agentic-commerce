@@ -2,10 +2,10 @@
 /**
  * Product editor readiness panel.
  *
- * @package ConfigCraftAgenticCommerce
+ * @package DestinXAICommerce
  */
 
-namespace ConfigCraft\AgenticCommerce;
+namespace DestinX\AICommerce;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -54,8 +54,8 @@ final class Product_Meta_Box {
 	 */
 	public function register_meta_box() {
 		add_meta_box(
-			'ccac-product-readiness',
-			__( 'AI Commerce Readiness', 'configcraft-agentic-commerce' ),
+			'dxaic-product-readiness',
+			__( 'AI Commerce Readiness', 'destinx-ai-commerce' ),
 			array( $this, 'render' ),
 			'product',
 			'side',
@@ -72,22 +72,22 @@ final class Product_Meta_Box {
 	public function render( $post ) {
 		$product = wc_get_product( $post->ID );
 		if ( ! $product ) {
-			echo '<p>' . esc_html__( 'Save the product before running its readiness evaluation.', 'configcraft-agentic-commerce' ) . '</p>';
+			echo '<p>' . esc_html__( 'Save the product before running its readiness evaluation.', 'destinx-ai-commerce' ) . '</p>';
 			return;
 		}
 
 		$evaluation = $this->evaluator->evaluate( $this->extractor->extract( $product ) );
 		?>
-		<div class="ccac-product-score">
+		<div class="dxaic-product-score">
 			<strong><?php echo esc_html( $evaluation['score'] ); ?>/100</strong>
-			<span class="ccac-status ccac-status--<?php echo esc_attr( $evaluation['status'] ); ?>">
+			<span class="dxaic-status dxaic-status--<?php echo esc_attr( $evaluation['status'] ); ?>">
 				<?php echo esc_html( Issue_Catalog::status_label( $evaluation['status'] ) ); ?>
 			</span>
 		</div>
 		<?php if ( empty( $evaluation['issues'] ) ) : ?>
-			<p class="ccac-clear"><?php esc_html_e( 'No catalog findings for this product.', 'configcraft-agentic-commerce' ); ?></p>
+			<p class="dxaic-clear"><?php esc_html_e( 'No catalog findings for this product.', 'destinx-ai-commerce' ); ?></p>
 		<?php else : ?>
-			<div class="ccac-remediation-list">
+			<div class="dxaic-remediation-list">
 				<?php foreach ( $evaluation['issues'] as $issue ) : ?>
 					<details>
 						<summary><?php echo esc_html( Issue_Catalog::label( $issue['code'] ) ); ?></summary>
@@ -96,7 +96,7 @@ final class Product_Meta_Box {
 				<?php endforeach; ?>
 			</div>
 		<?php endif; ?>
-		<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=configcraft-agentic-commerce' ) ); ?>"><?php esc_html_e( 'Open full catalog audit', 'configcraft-agentic-commerce' ); ?></a></p>
+		<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=destinx-ai-commerce' ) ); ?>"><?php esc_html_e( 'Open full catalog audit', 'destinx-ai-commerce' ); ?></a></p>
 		<?php
 	}
 }

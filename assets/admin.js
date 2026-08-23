@@ -1,7 +1,7 @@
 (function () {
 	'use strict';
 
-	var scanPanel = document.querySelector('[data-ccac-auto-refresh="1"]');
+	var scanPanel = document.querySelector('[data-dxaic-auto-refresh="1"]');
 	if (!scanPanel) {
 		return;
 	}

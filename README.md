@@ -1,6 +1,6 @@
-# ConfigCraft Agentic Commerce
+# DestinX AI Commerce for WooCommerce
 
-ConfigCraft Agentic Commerce is a WordPress plugin that audits WooCommerce catalogs for AI discovery and agentic commerce readiness.
+DestinX AI Commerce for WooCommerce is a WordPress plugin that audits WooCommerce catalogs for AI discovery and agentic commerce readiness.
 
 The plugin is intentionally local and diagnostic. It does not call AI providers, expose write operations, collect telemetry, or promise placement on third-party platforms.
 
@@ -34,23 +34,23 @@ Run the WordPress and WooCommerce smoke test in an isolated Playground environme
 
 ```bash
 npx --yes @wp-playground/cli@latest php \
-  --mount=.:/wordpress/wp-content/plugins/configcraft-agentic-commerce \
+  --mount=.:/wordpress/wp-content/plugins/destinx-ai-commerce \
   --blueprint=tests/playground-blueprint.json \
-  -- /wordpress/wp-content/plugins/configcraft-agentic-commerce/tests/playground-smoke.php
+  -- /wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-smoke.php
 ```
 
-Copy or symlink the repository into `wp-content/plugins/configcraft-agentic-commerce`, activate it, and open **WooCommerce > AI Commerce**.
+Copy or symlink the repository into `wp-content/plugins/destinx-ai-commerce`, activate it, and open **WooCommerce > AI Commerce**.
 
 ## Extension hooks
 
-- `configcraft_agentic_commerce_product_data`
-- `configcraft_agentic_commerce_product_issues`
-- `configcraft_agentic_commerce_audit_limit`
-- `configcraft_agentic_commerce_batch_size`
+- `destinx_ai_commerce_product_data`
+- `destinx_ai_commerce_product_issues`
+- `destinx_ai_commerce_audit_limit`
+- `destinx_ai_commerce_batch_size`
 
 ## Roadmap
 
-See [docs/roadmap.md](docs/roadmap.md).
+See the [submission-ready MVP plan](docs/mvp-plan.md), the [WordPress.org checklist](docs/wordpress-org-submission-checklist.md), and the concise [roadmap](docs/roadmap.md).
 
 ## License
 

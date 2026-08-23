@@ -1,21 +1,21 @@
-.ccac-wrap {
+.dxaic-wrap {
 	max-width: 1280px;
 }
 
-.ccac-intro {
+.dxaic-intro {
 	max-width: 760px;
 	font-size: 15px;
 }
 
-.ccac-summary {
+.dxaic-summary {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 	gap: 16px;
 	margin: 24px 0;
 }
 
-.ccac-metric,
-.ccac-panel {
+.dxaic-metric,
+.dxaic-panel {
 	box-sizing: border-box;
 	border: 1px solid #dcdcde;
 	border-radius: 8px;
@@ -23,47 +23,47 @@
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-.ccac-metric {
+.dxaic-metric {
 	padding: 18px;
 	border-top: 4px solid #646970;
 }
 
-.ccac-metric--primary {
+.dxaic-metric--primary {
 	border-top-color: #3858e9;
 }
 
-.ccac-metric--success {
+.dxaic-metric--success {
 	border-top-color: #008a20;
 }
 
-.ccac-metric--warning {
+.dxaic-metric--warning {
 	border-top-color: #dba617;
 }
 
-.ccac-metric--danger {
+.dxaic-metric--danger {
 	border-top-color: #d63638;
 }
 
-.ccac-metric span,
-.ccac-metric strong {
+.dxaic-metric span,
+.dxaic-metric strong {
 	display: block;
 }
 
-.ccac-metric span {
+.dxaic-metric span {
 	margin-bottom: 8px;
 	color: #50575e;
 }
 
-.ccac-metric strong {
+.dxaic-metric strong {
 	font-size: 28px;
 	line-height: 1.15;
 }
 
-.ccac-panel {
+.dxaic-panel {
 	padding: 20px;
 }
 
-.ccac-scan-panel {
+.dxaic-scan-panel {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -76,38 +76,38 @@
 	background: #fff;
 }
 
-.ccac-scan-panel h2,
-.ccac-scan-panel p {
+.dxaic-scan-panel h2,
+.dxaic-scan-panel p {
 	margin-top: 0;
 }
 
-.ccac-scan-panel progress {
+.dxaic-scan-panel progress {
 	width: min(420px, 70vw);
 	height: 12px;
 	margin-right: 8px;
 }
 
-.ccac-error {
+.dxaic-error {
 	color: #b32d2e;
 }
 
-.ccac-panel h2 {
+.dxaic-panel h2 {
 	margin-top: 0;
 }
 
-.ccac-table th:nth-child(2),
-.ccac-table td:nth-child(2) {
+.dxaic-table th:nth-child(2),
+.dxaic-table td:nth-child(2) {
 	width: 90px;
 }
 
-.ccac-table th:nth-child(3),
-.ccac-table td:nth-child(3) {
+.dxaic-table th:nth-child(3),
+.dxaic-table td:nth-child(3) {
 	width: 120px;
 }
 
-.ccac-status,
-.ccac-issue,
-.ccac-more {
+.dxaic-status,
+.dxaic-issue,
+.dxaic-more {
 	display: inline-block;
 	margin: 2px 2px 2px 0;
 	padding: 3px 8px;
@@ -116,30 +116,30 @@
 	line-height: 1.4;
 }
 
-.ccac-status--ready,
-.ccac-clear {
+.dxaic-status--ready,
+.dxaic-clear {
 	color: #006b1b;
 }
 
-.ccac-status--ready,
-.ccac-issue--low {
+.dxaic-status--ready,
+.dxaic-issue--low {
 	background: #edfaef;
 }
 
-.ccac-status--needs_work,
-.ccac-issue--medium,
-.ccac-more {
+.dxaic-status--needs_work,
+.dxaic-issue--medium,
+.dxaic-more {
 	background: #fcf0c3;
 	color: #614200;
 }
 
-.ccac-status--at_risk,
-.ccac-issue--high {
+.dxaic-status--at_risk,
+.dxaic-issue--high {
 	background: #fce8e8;
 	color: #8a2424;
 }
 
-.ccac-product-score {
+.dxaic-product-score {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -147,38 +147,38 @@
 	margin-bottom: 12px;
 }
 
-.ccac-product-score > strong {
+.dxaic-product-score > strong {
 	font-size: 24px;
 }
 
-.ccac-remediation-list details {
+.dxaic-remediation-list details {
 	padding: 9px 0;
 	border-top: 1px solid #dcdcde;
 }
 
-.ccac-remediation-list summary {
+.dxaic-remediation-list summary {
 	cursor: pointer;
 	font-weight: 600;
 }
 
-.ccac-remediation-list p {
+.dxaic-remediation-list p {
 	margin-bottom: 0;
 	color: #50575e;
 }
 
 @media screen and (max-width: 782px) {
-	.ccac-summary {
+	.dxaic-summary {
 		grid-template-columns: repeat(2, minmax(140px, 1fr));
 	}
 
-	.ccac-scan-panel {
+	.dxaic-scan-panel {
 		align-items: flex-start;
 		flex-direction: column;
 	}
 }
 
 @media screen and (max-width: 480px) {
-	.ccac-summary {
+	.dxaic-summary {
 		grid-template-columns: 1fr;
 	}
 }

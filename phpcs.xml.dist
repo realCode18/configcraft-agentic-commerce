@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<ruleset name="ConfigCraft Agentic Commerce">
+<ruleset name="DestinX AI Commerce for WooCommerce">
   <description>WordPress and PHP compatibility checks for the plugin.</description>
 
-  <file>configcraft-agentic-commerce.php</file>
+  <file>destinx-ai-commerce.php</file>
   <file>includes</file>
 
   <exclude-pattern>vendor/*</exclude-pattern>
@@ -21,7 +21,7 @@
   <rule ref="WordPress.WP.I18n">
     <properties>
       <property name="text_domain" type="array">
-        <element value="configcraft-agentic-commerce"/>
+        <element value="destinx-ai-commerce"/>
       </property>
     </properties>
   </rule>
@@ -29,9 +29,9 @@
   <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
     <properties>
       <property name="prefixes" type="array">
-        <element value="ccac"/>
-        <element value="CCAC"/>
-        <element value="ConfigCraft"/>
+        <element value="dxaic"/>
+        <element value="DXAIC"/>
+        <element value="DestinX"/>
       </property>
     </properties>
   </rule>

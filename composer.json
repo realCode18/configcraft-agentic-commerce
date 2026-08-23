@@ -1,5 +1,5 @@
 {
-  "name": "configcraft/configcraft-agentic-commerce",
+  "name": "destinx/destinx-ai-commerce",
   "description": "WooCommerce catalog readiness audits for AI discovery and agentic commerce.",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
@@ -15,7 +15,7 @@
   "scripts": {
     "test": "phpunit --configuration phpunit.xml.dist",
     "lint": [
-      "php -l configcraft-agentic-commerce.php",
+      "php -l destinx-ai-commerce.php",
       "php -l includes/class-plugin.php",
       "php -l includes/class-product-data-extractor.php",
       "php -l includes/class-product-readiness-evaluator.php",

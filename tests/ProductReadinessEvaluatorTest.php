@@ -1,6 +1,6 @@
 <?php
 
-use ConfigCraft\AgenticCommerce\Product_Readiness_Evaluator;
+use DestinX\AICommerce\Product_Readiness_Evaluator;
 use PHPUnit\Framework\TestCase;
 
 final class ProductReadinessEvaluatorTest extends TestCase {

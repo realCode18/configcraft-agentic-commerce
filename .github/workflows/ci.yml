@@ -38,6 +38,6 @@ jobs:
       - name: Smoke test in WordPress and WooCommerce
         run: >-
           npx --yes @wp-playground/cli@3.1.50 php
-          --mount=.:/wordpress/wp-content/plugins/configcraft-agentic-commerce
+          --mount=.:/wordpress/wp-content/plugins/destinx-ai-commerce
           --blueprint=tests/playground-blueprint.json
-          -- /wordpress/wp-content/plugins/configcraft-agentic-commerce/tests/playground-smoke.php
+          -- /wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-smoke.php

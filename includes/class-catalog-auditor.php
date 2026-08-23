@@ -2,10 +2,10 @@
 /**
  * Catalog audit orchestration.
  *
- * @package ConfigCraftAgenticCommerce
+ * @package DestinXAICommerce
  */
 
-namespace ConfigCraft\AgenticCommerce;
+namespace DestinX\AICommerce;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -45,7 +45,7 @@ final class Catalog_Auditor {
 	 * @return array<string, mixed>
 	 */
 	public function audit( $limit = 25 ) {
-		$limit = (int) apply_filters( 'configcraft_agentic_commerce_audit_limit', $limit );
+		$limit = (int) apply_filters( 'destinx_ai_commerce_audit_limit', $limit );
 		$limit = max( 1, min( 100, $limit ) );
 
 		$query = wc_get_products(

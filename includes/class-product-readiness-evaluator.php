@@ -2,10 +2,10 @@
 /**
  * Pure product readiness rules.
  *
- * @package ConfigCraftAgenticCommerce
+ * @package DestinXAICommerce
  */
 
-namespace ConfigCraft\AgenticCommerce;
+namespace DestinX\AICommerce;
 
 /**
  * Applies deterministic readiness rules to normalized product data.
@@ -71,7 +71,7 @@ final class Product_Readiness_Evaluator {
 			$issues[] = $this->issue( 'variations_missing', 'high', 20 );
 		}
 
-		$issues = apply_filters( 'configcraft_agentic_commerce_product_issues', $issues, $data );
+		$issues = apply_filters( 'destinx_ai_commerce_product_issues', $issues, $data );
 		$score  = 100;
 		foreach ( $issues as $issue ) {
 			$score -= isset( $issue['penalty'] ) ? (int) $issue['penalty'] : 0;

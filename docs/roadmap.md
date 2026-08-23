@@ -1,33 +1,33 @@
 # Roadmap
 
-## Milestone 1 — Local catalog audit
+The only active objective is a complete, local, WordPress.org-ready 1.0.0 release of DestinX AI Commerce for WooCommerce.
 
-- [x] Installable WordPress plugin scaffold.
-- [x] WooCommerce admin page.
-- [x] Product-level score and structured findings.
-- [x] Unit tests for readiness rules.
-- [x] Audit pagination and background processing.
-- [x] Product detail panel with remediation guidance.
-- [ ] Store-level shipping and returns checks.
+## Completed foundation
 
-## Milestone 2 — Discovery simulation
+- [x] Installable WooCommerce plugin.
+- [x] Deterministic product scoring and structured findings.
+- [x] Quick preview and full-catalog background scan.
+- [x] Persistent, paginated results.
+- [x] Product editor remediation panel.
+- [x] Unit, coding-standard, and WordPress Playground tests.
+- [x] DestinX product identity and WordPress.org slug decision.
 
-- [ ] Query simulator using catalog attributes.
-- [ ] Explain why products match or fail a query.
-- [ ] Structured catalog export.
-- [ ] Compatibility tests for common brand and identifier plugins.
+## 1.0.0 submission track
 
-## Milestone 3 — Agentic commerce protocols
+- [ ] Atomic scan snapshots, locks, retries, and stale-scan recovery.
+- [ ] Complete simple/variable/virtual/downloadable product rules.
+- [ ] Store readiness checklist.
+- [ ] Dashboard search and filters.
+- [ ] Secure CSV export.
+- [ ] Security, privacy, accessibility, and i18n audit.
+- [ ] Multisite and WooCommerce compatibility declarations.
+- [ ] Expanded version and catalog-size test matrix.
+- [ ] Plugin Check with zero errors.
+- [ ] WordPress.org icons, banners, screenshots, readme, and release ZIP.
+- [ ] Real staging test and 1.0.0 submission.
 
-- [ ] Read-only merchant discovery profile.
-- [ ] UCP compatibility layer after specification validation.
-- [ ] ACP/product discovery compatibility after specification validation.
-- [ ] Protocol health checks and version reporting.
+The detailed scope, schedule, gates, and acceptance criteria are in [mvp-plan.md](mvp-plan.md). The release cannot be submitted until every item in [wordpress-org-submission-checklist.md](wordpress-org-submission-checklist.md) is verified.
 
-## Milestone 4 — ConfigCraft service
+## Post-MVP parking lot
 
-- [ ] License integration with ConfigCraft Suite.
-- [ ] Explicit opt-in connection flow.
-- [ ] Scheduled monitoring and alerts.
-- [ ] Multi-store agency dashboard.
-- [ ] White-label reports and history.
+No post-MVP item is developed before the WordPress.org release is stable. Candidates include optional ConfigCraft monitoring, multi-store reporting, history and alerts, discovery simulation, and protocol adapters after specification validation.

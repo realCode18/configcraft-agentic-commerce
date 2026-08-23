@@ -17,7 +17,7 @@
     },
     {
       "step": "activatePlugin",
-      "pluginPath": "/wordpress/wp-content/plugins/configcraft-agentic-commerce/configcraft-agentic-commerce.php"
+      "pluginPath": "/wordpress/wp-content/plugins/destinx-ai-commerce/destinx-ai-commerce.php"
     }
   ]
 }

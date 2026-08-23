@@ -2,10 +2,10 @@
 /**
  * Plugin database schema management.
  *
- * @package ConfigCraftAgenticCommerce
+ * @package DestinXAICommerce
  */
 
-namespace ConfigCraft\AgenticCommerce;
+namespace DestinX\AICommerce;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Database {
 	const VERSION        = '1.0.0';
-	const VERSION_OPTION = 'ccac_database_version';
+	const VERSION_OPTION = 'dxaic_database_version';
 
 	/**
 	 * Return the site-specific results table name.
@@ -24,7 +24,7 @@ final class Database {
 	public static function table_name() {
 		global $wpdb;
 
-		return $wpdb->prefix . 'ccac_audit_results';
+		return $wpdb->prefix . 'dxaic_audit_results';
 	}
 
 	/**
