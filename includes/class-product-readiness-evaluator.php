@@ -11,6 +11,8 @@ namespace DestinX\AICommerce;
  * Applies deterministic readiness rules to normalized product data.
  */
 final class Product_Readiness_Evaluator {
+	const MODEL_VERSION = '1.0.0';
+
 	/**
 	 * Evaluate normalized product data.
 	 *
@@ -33,7 +35,8 @@ final class Product_Readiness_Evaluator {
 			$issues[] = $this->issue( 'description_incomplete', 'medium', 8 );
 		}
 
-		if ( '' === trim( isset( $data['price'] ) ? (string) $data['price'] : '' ) ) {
+		$has_price = '' !== trim( isset( $data['price'] ) ? (string) $data['price'] : '' );
+		if ( ! $has_price ) {
 			$issues[] = $this->issue( 'price_missing', 'high', 20 );
 		}
 
@@ -61,27 +64,58 @@ final class Product_Readiness_Evaluator {
 			$issues[] = $this->issue( 'attributes_missing', 'low', 4 );
 		}
 
+		$is_variable = ! empty( $data['is_variable'] );
 		$is_physical = empty( $data['is_virtual'] ) && empty( $data['is_downloadable'] );
-		$has_size    = ! empty( $data['length'] ) && ! empty( $data['width'] ) && ! empty( $data['height'] );
-		if ( $is_physical && empty( $data['weight'] ) && ! $has_size ) {
+		if ( $is_variable && ! empty( $data['all_variations_virtual_or_downloadable'] ) ) {
+			$is_physical = false;
+		}
+		$has_size          = ! empty( $data['length'] ) && ! empty( $data['width'] ) && ! empty( $data['height'] );
+		$has_shipping_data = ! empty( $data['weight'] ) || $has_size || ! empty( $data['has_variation_shipping_data'] );
+		if ( $is_physical && ! $has_shipping_data ) {
 			$issues[] = $this->issue( 'shipping_data_missing', 'low', 4 );
 		}
 
-		if ( ! empty( $data['is_variable'] ) && empty( $data['variation_count'] ) ) {
-			$issues[] = $this->issue( 'variations_missing', 'high', 20 );
+		if ( $is_variable ) {
+			$variation_count = isset( $data['variation_count'] ) ? (int) $data['variation_count'] : 0;
+			if ( 0 === $variation_count ) {
+				$issues[] = $this->issue( 'variations_missing', 'high', 20 );
+			} else {
+				$purchasable_count  = isset( $data['purchasable_variation_count'] ) ? (int) $data['purchasable_variation_count'] : 0;
+				$missing_prices     = isset( $data['variation_missing_price_count'] ) ? (int) $data['variation_missing_price_count'] : 0;
+				$missing_attributes = isset( $data['variation_missing_attribute_count'] ) ? (int) $data['variation_missing_attribute_count'] : 0;
+
+				if ( $has_price && 0 === $purchasable_count ) {
+					$issues[] = $this->issue( 'variations_not_purchasable', 'high', 20 );
+				}
+				if ( $has_price && 0 < $missing_prices ) {
+					$issues[] = $this->issue( 'variation_prices_missing', 'medium', 8 );
+				}
+				if ( 0 < $missing_attributes ) {
+					$issues[] = $this->issue( 'variation_attributes_incomplete', 'medium', 6 );
+				}
+			}
+		} elseif ( $has_price && isset( $data['is_purchasable'] ) && ! $data['is_purchasable'] && 'outofstock' !== ( isset( $data['stock_status'] ) ? $data['stock_status'] : '' ) ) {
+			$issues[] = $this->issue( 'product_not_purchasable', 'high', 20 );
+		}
+
+		$known_stock_statuses = array( 'instock', 'outofstock', 'onbackorder' );
+		if ( isset( $data['stock_status'] ) && ! in_array( $data['stock_status'], $known_stock_statuses, true ) ) {
+			$issues[] = $this->issue( 'stock_status_unknown', 'low', 4 );
 		}
 
 		$issues = apply_filters( 'destinx_ai_commerce_product_issues', $issues, $data );
-		$score  = 100;
+		usort( $issues, array( $this, 'compare_issues' ) );
+		$score = 100;
 		foreach ( $issues as $issue ) {
 			$score -= isset( $issue['penalty'] ) ? (int) $issue['penalty'] : 0;
 		}
 		$score = max( 0, min( 100, $score ) );
 
 		return array(
-			'score'  => $score,
-			'status' => $this->get_status( $score ),
-			'issues' => array_values( $issues ),
+			'model_version' => self::MODEL_VERSION,
+			'score'         => $score,
+			'status'        => $this->get_status( $score, $issues ),
+			'issues'        => array_values( $issues ),
 		);
 	}
 
@@ -104,19 +138,56 @@ final class Product_Readiness_Evaluator {
 	/**
 	 * Convert a numeric score into a stable status.
 	 *
-	 * @param int $score Readiness score.
+	 * @param int                              $score  Readiness score.
+	 * @param array<int, array<string, mixed>> $issues Product issues.
 	 * @return string
 	 */
-	private function get_status( $score ) {
+	private function get_status( $score, array $issues ) {
+		if ( 50 > $score ) {
+			return 'at_risk';
+		}
+
+		foreach ( $issues as $issue ) {
+			if ( isset( $issue['severity'] ) && 'high' === $issue['severity'] ) {
+				return 'needs_work';
+			}
+		}
+
 		if ( 80 <= $score ) {
 			return 'ready';
 		}
 
-		if ( 50 <= $score ) {
-			return 'needs_work';
+		return 'needs_work';
+	}
+
+	/**
+	 * Sort severe, high-penalty findings first with a deterministic tie-breaker.
+	 *
+	 * @param array<string, mixed> $left  First issue.
+	 * @param array<string, mixed> $right Second issue.
+	 * @return int
+	 */
+	private function compare_issues( array $left, array $right ) {
+		$severity_weights = array(
+			'high'   => 3,
+			'medium' => 2,
+			'low'    => 1,
+		);
+		$left_key         = isset( $left['severity'] ) ? (string) $left['severity'] : '';
+		$right_key        = isset( $right['severity'] ) ? (string) $right['severity'] : '';
+		$left_severity    = isset( $severity_weights[ $left_key ] ) ? $severity_weights[ $left_key ] : 0;
+		$right_severity   = isset( $severity_weights[ $right_key ] ) ? $severity_weights[ $right_key ] : 0;
+		if ( $left_severity !== $right_severity ) {
+			return $right_severity <=> $left_severity;
 		}
 
-		return 'at_risk';
+		$left_penalty  = isset( $left['penalty'] ) ? (int) $left['penalty'] : 0;
+		$right_penalty = isset( $right['penalty'] ) ? (int) $right['penalty'] : 0;
+		if ( $left_penalty !== $right_penalty ) {
+			return $right_penalty <=> $left_penalty;
+		}
+
+		return strcmp( isset( $left['code'] ) ? (string) $left['code'] : '', isset( $right['code'] ) ? (string) $right['code'] : '' );
 	}
 
 	/**

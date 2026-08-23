@@ -9,8 +9,10 @@ The plugin is intentionally local and diagnostic. It does not call AI providers,
 - Adds **WooCommerce > AI Commerce**.
 - Shows a quick audit of the latest 25 published products.
 - Scans the complete published catalog in small background batches.
+- Keeps the last completed snapshot visible until a replacement scan finishes atomically.
+- Deduplicates jobs and recovers safely from retries, catalog changes, and stale scans.
 - Persists results locally and paginates them with the lowest scores first.
-- Scores product title, description, price, image, category, brand, identifier, SKU, attributes, shipping data, and variations.
+- Scores product title, description, price, image, category, brand, identifier, SKU, attributes, shipping data, variations, and purchasability with model version 1.0.0.
 - Links every finding back to the WooCommerce product editor.
 - Adds live scoring and practical remediation guidance to each product editor.
 - Provides filters for custom product data and catalog-specific rules.
@@ -47,6 +49,8 @@ Copy or symlink the repository into `wp-content/plugins/destinx-ai-commerce`, ac
 - `destinx_ai_commerce_product_issues`
 - `destinx_ai_commerce_audit_limit`
 - `destinx_ai_commerce_batch_size`
+- `destinx_ai_commerce_max_retries`
+- `destinx_ai_commerce_stale_scan_seconds`
 
 ## Roadmap
 

@@ -20,28 +20,34 @@ final class Product_Data_Extractor {
 	 * @return array<string, mixed>
 	 */
 	public function extract( $product ) {
-		$data = array(
-			'id'                => $product->get_id(),
-			'name'              => $product->get_name(),
-			'description'       => $product->get_description(),
-			'short_description' => $product->get_short_description(),
-			'sku'               => $product->get_sku(),
-			'identifier'        => $this->get_identifier( $product ),
-			'brand'             => $this->get_brand( $product ),
-			'price'             => $product->get_price(),
-			'image_id'          => $product->get_image_id(),
-			'category_ids'      => $product->get_category_ids(),
-			'attribute_count'   => count( $product->get_attributes() ),
-			'is_virtual'        => $product->is_virtual(),
-			'is_downloadable'   => $product->is_downloadable(),
-			'weight'            => $product->get_weight(),
-			'length'            => $product->get_length(),
-			'width'             => $product->get_width(),
-			'height'            => $product->get_height(),
-			'is_variable'       => $product->is_type( 'variable' ),
-			'variation_count'   => $product->is_type( 'variable' ) ? count( $product->get_children() ) : 0,
-			'is_purchasable'    => $product->is_purchasable(),
-			'stock_status'      => $product->get_stock_status(),
+		$variation_summary = $this->get_variation_summary( $product );
+		$data              = array(
+			'id'                                     => $product->get_id(),
+			'name'                                   => $product->get_name(),
+			'description'                            => $product->get_description(),
+			'short_description'                      => $product->get_short_description(),
+			'sku'                                    => $product->get_sku(),
+			'identifier'                             => $this->get_identifier( $product ),
+			'brand'                                  => $this->get_brand( $product ),
+			'price'                                  => $product->get_price(),
+			'image_id'                               => $product->get_image_id(),
+			'category_ids'                           => $product->get_category_ids(),
+			'attribute_count'                        => count( $product->get_attributes() ),
+			'is_virtual'                             => $product->is_virtual(),
+			'is_downloadable'                        => $product->is_downloadable(),
+			'weight'                                 => $product->get_weight(),
+			'length'                                 => $product->get_length(),
+			'width'                                  => $product->get_width(),
+			'height'                                 => $product->get_height(),
+			'is_variable'                            => $product->is_type( 'variable' ),
+			'variation_count'                        => $variation_summary['count'],
+			'purchasable_variation_count'            => $variation_summary['purchasable_count'],
+			'variation_missing_price_count'          => $variation_summary['missing_price_count'],
+			'variation_missing_attribute_count'      => $variation_summary['missing_attribute_count'],
+			'has_variation_shipping_data'            => $variation_summary['has_shipping_data'],
+			'all_variations_virtual_or_downloadable' => $variation_summary['all_virtual_or_downloadable'],
+			'is_purchasable'                         => $product->is_purchasable(),
+			'stock_status'                           => $product->get_stock_status(),
 		);
 
 		/**
@@ -51,6 +57,66 @@ final class Product_Data_Extractor {
 		 * @param \WC_Product          $product Product instance.
 		 */
 		return apply_filters( 'destinx_ai_commerce_product_data', $data, $product );
+	}
+
+	/**
+	 * Summarize child variations without exposing WooCommerce objects to the evaluator.
+	 *
+	 * @param \WC_Product $product Product instance.
+	 * @return array<string, mixed>
+	 */
+	private function get_variation_summary( $product ) {
+		$summary = array(
+			'count'                       => 0,
+			'purchasable_count'           => 0,
+			'missing_price_count'         => 0,
+			'missing_attribute_count'     => 0,
+			'has_shipping_data'           => false,
+			'all_virtual_or_downloadable' => false,
+		);
+		if ( ! $product->is_type( 'variable' ) ) {
+			return $summary;
+		}
+
+		$children                               = method_exists( $product, 'get_visible_children' ) ? $product->get_visible_children() : $product->get_children();
+		$summary['count']                       = count( $children );
+		$summary['all_virtual_or_downloadable'] = ! empty( $children );
+		foreach ( $children as $variation_id ) {
+			$variation = wc_get_product( $variation_id );
+			if ( ! $variation ) {
+				++$summary['missing_price_count'];
+				++$summary['missing_attribute_count'];
+				$summary['all_virtual_or_downloadable'] = false;
+				continue;
+			}
+
+			if ( $variation->is_purchasable() ) {
+				++$summary['purchasable_count'];
+			}
+			if ( '' === trim( (string) $variation->get_price() ) ) {
+				++$summary['missing_price_count'];
+			}
+			$attributes = array_filter(
+				$variation->get_variation_attributes(),
+				static function ( $value ) {
+					return '' !== trim( (string) $value );
+				}
+			);
+			if ( empty( $attributes ) ) {
+				++$summary['missing_attribute_count'];
+			}
+
+			$is_physical = ! $variation->is_virtual() && ! $variation->is_downloadable();
+			if ( $is_physical ) {
+				$summary['all_virtual_or_downloadable'] = false;
+				$has_size                               = '' !== $variation->get_length() && '' !== $variation->get_width() && '' !== $variation->get_height();
+				if ( '' !== $variation->get_weight() || $has_size ) {
+					$summary['has_shipping_data'] = true;
+				}
+			}
+		}
+
+		return $summary;
 	}
 
 	/**

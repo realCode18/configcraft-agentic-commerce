@@ -11,7 +11,9 @@ The plugin is split into small services with explicit responsibilities:
 7. `Product_Meta_Box` shows live readiness guidance in the WooCommerce product editor.
 8. `Admin_Page` renders progress, aggregate metrics, and paginated results without exposing a public API.
 
-The evaluator is kept independent from WooCommerce objects so its rules can be unit tested and later reused by WP-CLI commands, read-only protocol adapters, and optional add-ons. Full scans use WooCommerce Action Scheduler when available and fall back to a single WordPress Cron event. Results and scan state are removed on uninstall.
+The evaluator is kept independent from WooCommerce objects so its versioned rules can be unit tested and later reused by WP-CLI commands, read-only protocol adapters, and optional add-ons. Full scans use WooCommerce Action Scheduler when available and fall back to a single WordPress Cron event.
+
+Each full scan writes to an isolated `scan_id`. The active snapshot pointer changes only after every batch succeeds, unpublished products are pruned, and one reconciliation pass handles catalog changes detected during processing. The previous snapshot therefore remains readable during queued, running, retrying, failed, and stale-scan states. Results, locks, schedules, and scan state are removed on uninstall.
 
 ## Product boundaries
 

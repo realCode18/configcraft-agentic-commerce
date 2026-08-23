@@ -138,11 +138,11 @@ Il punteggio resta deterministico e spiegabile:
 - base: 100;
 - ogni problema contiene `code`, `severity` e `penalty`;
 - il punteggio finale è limitato fra 0 e 100;
-- `Ready`: 80–100;
-- `Needs work`: 50–79;
+- `Ready`: 80–100 e nessun problema ad alta severità;
+- `Needs work`: 50–79, oppure 80–100 con almeno un problema ad alta severità;
 - `At risk`: 0–49.
 
-La 1.0.0 congelerà una versione esplicita delle regole. Ogni futura variazione sostanziale dei pesi incrementerà la versione del modello e verrà dichiarata nel changelog. Il pannello deve sempre spiegare quali penalità hanno prodotto il risultato; non useremo un punteggio opaco generato da AI.
+La pre-release 0.4.0 introduce e congela il modello `1.0.0`. Ogni futura variazione sostanziale dei pesi incrementerà la versione del modello e verrà dichiarata nel changelog. Il pannello deve sempre spiegare quali penalità hanno prodotto il risultato; non useremo un punteggio opaco generato da AI.
 
 ### 5. Controlli a livello negozio
 
@@ -332,6 +332,8 @@ Attività:
 Gate: nessuna occorrenza pubblica obsoleta del precedente nome ConfigCraft Agentic Commerce; suite precedente ancora verde.
 
 ### Fase 1 — Hardening del nucleo
+
+Stato: completata in anticipo il 23 agosto 2026 nella pre-release 0.4.0.
 
 Attività:
 

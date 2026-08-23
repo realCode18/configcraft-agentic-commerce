@@ -229,6 +229,9 @@ final class Admin_Page {
 		if ( 'already_running' === $notice ) {
 			echo '<div class="notice notice-warning inline"><p>' . esc_html__( 'A catalog scan is already running.', 'destinx-ai-commerce' ) . '</p></div>';
 		}
+		if ( 'failed' === $notice ) {
+			echo '<div class="notice notice-error inline"><p>' . esc_html__( 'The catalog scan could not be scheduled. Review the error below and try again.', 'destinx-ai-commerce' ) . '</p></div>';
+		}
 	}
 
 	/**

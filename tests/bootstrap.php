@@ -16,3 +16,4 @@ if ( ! function_exists( 'apply_filters' ) ) {
 }
 
 require_once dirname( __DIR__ ) . '/includes/class-product-readiness-evaluator.php';
+require_once dirname( __DIR__ ) . '/includes/class-scan-state.php';
