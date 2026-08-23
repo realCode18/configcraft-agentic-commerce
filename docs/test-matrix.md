@@ -1,6 +1,6 @@
 # Test and performance matrix
 
-This document records the reproducible quality gate for DestinX AI Commerce 0.9.0. Measurements are development-environment reference values, not hosting guarantees.
+This document records the reproducible quality gate for DestinX AI Commerce 0.10.0. Measurements are development-environment reference values, not hosting guarantees.
 
 ## Supported-version matrix
 
@@ -13,7 +13,7 @@ This document records the reproducible quality gate for DestinX AI Commerce 0.9.
 | Upgrade | Persistent fixtures created on plugin 0.6.0 and 0.7.0, then updated to the current build |
 | Lifecycle | Clean activation, schema upgrade, deactivate/reactivate, site and network uninstall, and post-network-activation site creation |
 
-The integration smoke test covers simple and variable products, catalog reconciliation, retries, stale scans, atomic snapshots, search, combined filters, pagination, protected CSV export, Store Readiness, permissions, invalid nonces, accessibility markup, and the product editor panel. Unit fixtures additionally cover virtual and downloadable products.
+The integration smoke test covers simple and variable products, the external-pricing contract, persisted pricing metadata, exact-SKU collision handling, catalog reconciliation, retries, stale scans, atomic snapshots, search, combined filters, pagination, protected CSV export, Store Readiness, permissions, invalid nonces, accessibility markup, and the product editor panel. Unit fixtures additionally cover virtual and downloadable products.
 
 ## Catalog scale gate
 
@@ -23,13 +23,13 @@ Reference run on 23 August 2026:
 
 | Products | Batches | Total scan | Slowest batch |
 | ---: | ---: | ---: | ---: |
-| 0 | 0 | 0.019 s | 0 s |
-| 1 | 1 | 0.066 s | 0.040 s |
-| 26 | 1 | 0.194 s | 0.172 s |
-| 500 | 5 | 2.479 s | 0.502 s |
-| 5,000 | 50 | 26.620 s | 0.697 s |
+| 0 | 0 | 0.021 s | 0 s |
+| 1 | 1 | 0.057 s | 0.033 s |
+| 26 | 1 | 0.196 s | 0.174 s |
+| 500 | 5 | 2.606 s | 0.521 s |
+| 5,000 | 50 | 28.891 s | 0.662 s |
 
-After the 5,000-product scan, the results dashboard rendered in 0.064 seconds using 24 database queries. Peak process memory was 126,877,696 bytes, below the 128 MiB project ceiling of 134,217,728 bytes. Every batch remained below the 10-second project ceiling, and dashboard rendering remained below 1.5 seconds.
+After the 5,000-product scan, the results dashboard rendered in 0.071 seconds using 24 database queries. Peak process memory was 126,877,696 bytes, below the 128 MiB project ceiling of 134,217,728 bytes. Every batch remained below the 10-second project ceiling, and dashboard rendering remained below 1.5 seconds.
 
 ## Lifecycle invariants
 

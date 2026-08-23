@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.9.0
+Stable tag: 0.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ The plugin adds an AI Commerce screen under WooCommerce. It provides a quick pre
 
 Every product receives a score and a list of actionable findings. Full-scan results are saved locally, ordered by the lowest score, and split into manageable pages. A product editor panel explains how to correct each finding.
 
-Saved results can be searched by product name or SKU and filtered by status, finding, and product category. The current result set can be exported as a UTF-8 CSV. Export cells are neutralized against spreadsheet formulas, and the download requires the same WooCommerce management permission and a valid WordPress nonce.
+Saved results can be searched by partial product name or exact SKU and filtered by status, finding, and product category. The current result set can be exported as a UTF-8 CSV. Export cells are neutralized against spreadsheet formulas, and the download requires the same WooCommerce management permission and a valid WordPress nonce.
 
 A separate Store Readiness checklist checks HTTPS, search visibility, permalinks, WooCommerce location and currency, cart and checkout pages, privacy, terms, refunds and returns, REST availability, published products, and shipping configuration. Store checks never change product scores and do not claim legal compliance.
 
@@ -52,7 +52,7 @@ No. The current Free plugin performs its audit locally and makes no external req
 
 = What data does the plugin collect or store? =
 
-It stores product IDs, readiness scores, finding codes, a product-data hash, scoring-model version, timestamps, and scan state in the local WordPress database. It does not read or store customer, order, payment, checkout, or visitor data, and it does not add cookies or telemetry.
+It stores product IDs, readiness scores, finding codes, normalized pricing context, a product-data hash, scoring-model version, timestamps, and scan state in the local WordPress database. It does not read or store customer, order, payment, checkout, or visitor data, and it does not add cookies or telemetry.
 
 = What happens to plugin data on uninstall? =
 
@@ -74,6 +74,13 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 4. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.10.0 =
+
+* Added a public pricing-context contract for dynamic, quote-based, and externally managed product prices.
+* External pricing engines can now prevent false missing-price and purchasability findings by explicitly declaring price availability.
+* Added visible pricing-source context to catalog results, product panels, and CSV exports.
+* Changed SKU lookup to exact matching while preserving partial product-title search.
 
 = 0.9.0 =
 

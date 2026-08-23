@@ -373,6 +373,7 @@ final class Admin_Page {
 				'score'    => $row['score'],
 				'status'   => $row['status'],
 				'issues'   => $row['issues'],
+				'pricing'  => $row['pricing'],
 			);
 		}
 
@@ -502,6 +503,11 @@ final class Admin_Page {
 								<span class="dxaic-product-sku">
 									<?php /* translators: %s: product SKU. */ ?>
 									<?php echo esc_html( sprintf( __( 'SKU: %s', 'destinx-ai-commerce' ), $product['sku'] ) ); ?>
+								</span>
+							<?php endif; ?>
+							<?php if ( ! empty( $product['pricing'] ) ) : ?>
+								<span class="dxaic-product-pricing dxaic-product-pricing--<?php echo esc_attr( $product['pricing']['mode'] ); ?>">
+									<?php echo esc_html( Pricing_Context::display_label( $product['pricing'] ) ); ?>
 								</span>
 							<?php endif; ?>
 						</td>

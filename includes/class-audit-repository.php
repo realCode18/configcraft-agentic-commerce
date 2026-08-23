@@ -38,11 +38,16 @@ final class Audit_Repository {
 				'score'         => (int) $evaluation['score'],
 				'status'        => sanitize_key( $evaluation['status'] ),
 				'issues'        => wp_json_encode( $evaluation['issues'] ),
+				'pricing'       => wp_json_encode(
+					Pricing_Context::normalize(
+						isset( $evaluation['pricing'] ) ? $evaluation['pricing'] : array()
+					)
+				),
 				'product_hash'  => sanitize_key( $product_hash ),
 				'model_version' => isset( $evaluation['model_version'] ) ? substr( sanitize_text_field( $evaluation['model_version'] ), 0, 20 ) : '',
 				'scanned_at'    => current_time( 'mysql', true ),
 			),
-			array( '%s', '%d', '%d', '%s', '%s', '%s', '%s', '%s' )
+			array( '%s', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s' )
 		);
 
 		return false !== $result;
@@ -187,7 +192,7 @@ final class Audit_Repository {
 		$per_page = max( 1, min( 500, (int) $per_page ) );
 		$offset   = ( $page - 1 ) * $per_page;
 		$query    = $this->prepare_filtered_query(
-			'snapshot.product_id, snapshot.score, snapshot.status, snapshot.issues, snapshot.product_hash, snapshot.model_version, snapshot.scanned_at',
+			'snapshot.product_id, snapshot.score, snapshot.status, snapshot.issues, snapshot.pricing, snapshot.product_hash, snapshot.model_version, snapshot.scanned_at',
 			$scan_id,
 			$filters,
 			'ORDER BY snapshot.score ASC, snapshot.product_id DESC LIMIT %d OFFSET %d',
@@ -203,6 +208,7 @@ final class Audit_Repository {
 			if ( ! is_array( $row['issues'] ) ) {
 				$row['issues'] = array();
 			}
+			$row['pricing'] = Pricing_Context::normalize( json_decode( $row['pricing'], true ) );
 		}
 		unset( $row );
 
@@ -363,10 +369,10 @@ final class Audit_Repository {
 
 		if ( '' !== $filters['search'] ) {
 			$like    = '%' . $wpdb->esc_like( $filters['search'] ) . '%';
-			$where[] = '(product.post_title LIKE %s OR EXISTS (SELECT 1 FROM %i AS sku WHERE sku.post_id = snapshot.product_id AND sku.meta_key = \'_sku\' AND sku.meta_value LIKE %s))';
+			$where[] = '(product.post_title LIKE %s OR EXISTS (SELECT 1 FROM %i AS sku WHERE sku.post_id = snapshot.product_id AND sku.meta_key = \'_sku\' AND sku.meta_value = %s))';
 			$args[]  = $like;
 			$args[]  = $wpdb->postmeta;
-			$args[]  = $like;
+			$args[]  = $filters['search'];
 		}
 
 		if ( '' !== $filters['status'] ) {

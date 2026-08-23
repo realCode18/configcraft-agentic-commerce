@@ -87,6 +87,7 @@ final class Catalog_Auditor {
 				'score'    => $evaluation['score'],
 				'status'   => $evaluation['status'],
 				'issues'   => $evaluation['issues'],
+				'pricing'  => $evaluation['pricing'],
 			);
 		}
 

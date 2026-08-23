@@ -11,7 +11,7 @@ namespace DestinX\AICommerce;
  * Applies deterministic readiness rules to normalized product data.
  */
 final class Product_Readiness_Evaluator {
-	const MODEL_VERSION = '1.0.0';
+	const MODEL_VERSION = '1.1.0';
 
 	/**
 	 * Evaluate normalized product data.
@@ -35,10 +35,15 @@ final class Product_Readiness_Evaluator {
 			$issues[] = $this->issue( 'description_incomplete', 'medium', 8 );
 		}
 
-		$has_price = '' !== trim( isset( $data['price'] ) ? (string) $data['price'] : '' );
+		$pricing   = Pricing_Context::normalize(
+			isset( $data['pricing'] ) ? $data['pricing'] : array(),
+			isset( $data['price'] ) ? $data['price'] : ''
+		);
+		$has_price = ! empty( $pricing['is_available'] );
 		if ( ! $has_price ) {
 			$issues[] = $this->issue( 'price_missing', 'high', 20 );
 		}
+		$uses_woocommerce_purchase_state = Pricing_Context::uses_woocommerce_purchase_state( $pricing );
 
 		if ( empty( $data['image_id'] ) ) {
 			$issues[] = $this->issue( 'image_missing', 'medium', 8 );
@@ -84,17 +89,17 @@ final class Product_Readiness_Evaluator {
 				$missing_prices     = isset( $data['variation_missing_price_count'] ) ? (int) $data['variation_missing_price_count'] : 0;
 				$missing_attributes = isset( $data['variation_missing_attribute_count'] ) ? (int) $data['variation_missing_attribute_count'] : 0;
 
-				if ( $has_price && 0 === $purchasable_count ) {
+				if ( $has_price && $uses_woocommerce_purchase_state && 0 === $purchasable_count ) {
 					$issues[] = $this->issue( 'variations_not_purchasable', 'high', 20 );
 				}
-				if ( $has_price && 0 < $missing_prices ) {
+				if ( $has_price && $uses_woocommerce_purchase_state && 0 < $missing_prices ) {
 					$issues[] = $this->issue( 'variation_prices_missing', 'medium', 8 );
 				}
 				if ( 0 < $missing_attributes ) {
 					$issues[] = $this->issue( 'variation_attributes_incomplete', 'medium', 6 );
 				}
 			}
-		} elseif ( $has_price && isset( $data['is_purchasable'] ) && ! $data['is_purchasable'] && 'outofstock' !== ( isset( $data['stock_status'] ) ? $data['stock_status'] : '' ) ) {
+		} elseif ( $has_price && $uses_woocommerce_purchase_state && isset( $data['is_purchasable'] ) && ! $data['is_purchasable'] && 'outofstock' !== ( isset( $data['stock_status'] ) ? $data['stock_status'] : '' ) ) {
 			$issues[] = $this->issue( 'product_not_purchasable', 'high', 20 );
 		}
 
@@ -116,6 +121,7 @@ final class Product_Readiness_Evaluator {
 			'score'         => $score,
 			'status'        => $this->get_status( $score, $issues ),
 			'issues'        => array_values( $issues ),
+			'pricing'       => $pricing,
 		);
 	}
 

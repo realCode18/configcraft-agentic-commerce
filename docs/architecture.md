@@ -2,18 +2,19 @@
 
 The plugin is split into small services with explicit responsibilities:
 
-1. `Product_Data_Extractor` converts WooCommerce products into a stable, filterable payload.
-2. `Product_Readiness_Evaluator` applies pure readiness rules and returns machine-readable issues.
-3. `Catalog_Auditor` provides the non-persistent quick catalog preview.
-4. `Background_Audit` processes the full published catalog in bounded batches.
-5. `Audit_Repository` persists product results in the plugin-owned audit table.
-6. `Issue_Catalog` maps stable issue codes to translated labels and practical guidance.
-7. `Product_Meta_Box` shows live readiness guidance in the WooCommerce product editor.
-8. `Store_Data_Extractor` normalizes local WordPress and WooCommerce configuration.
-9. `Store_Readiness_Evaluator` applies a versioned, product-score-independent checklist.
-10. `Store_Issue_Catalog` maps store checks to translated guidance and local settings links.
-11. `Catalog_Csv_Exporter` streams permission-checked, nonce-protected, spreadsheet-safe filtered exports without creating public files.
-12. `Admin_Page` renders progress, aggregate metrics, store checks, searchable and filterable product results, and snapshot freshness without exposing a public API.
+1. `Pricing_Context` normalizes native, dynamic, quote-based, externally managed, and not-applicable pricing metadata.
+2. `Product_Data_Extractor` converts WooCommerce products into a stable, filterable payload.
+3. `Product_Readiness_Evaluator` applies pure readiness rules and returns machine-readable issues.
+4. `Catalog_Auditor` provides the non-persistent quick catalog preview.
+5. `Background_Audit` processes the full published catalog in bounded batches.
+6. `Audit_Repository` persists product results in the plugin-owned audit table.
+7. `Issue_Catalog` maps stable issue codes to translated labels and practical guidance.
+8. `Product_Meta_Box` shows live readiness guidance in the WooCommerce product editor.
+9. `Store_Data_Extractor` normalizes local WordPress and WooCommerce configuration.
+10. `Store_Readiness_Evaluator` applies a versioned, product-score-independent checklist.
+11. `Store_Issue_Catalog` maps store checks to translated guidance and local settings links.
+12. `Catalog_Csv_Exporter` streams permission-checked, nonce-protected, spreadsheet-safe filtered exports without creating public files.
+13. `Admin_Page` renders progress, aggregate metrics, store checks, searchable and filterable product results, pricing provenance, and snapshot freshness without exposing a public API.
 
 The evaluator is kept independent from WooCommerce objects so its versioned rules can be unit tested and later reused by WP-CLI commands, read-only protocol adapters, and optional add-ons. Full scans use WooCommerce Action Scheduler when available and fall back to a single WordPress Cron event.
 

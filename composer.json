@@ -17,6 +17,7 @@
     "lint": [
       "php -l destinx-ai-commerce.php",
       "php -l includes/class-plugin.php",
+	  "php -l includes/class-pricing-context.php",
       "php -l includes/class-product-data-extractor.php",
       "php -l includes/class-product-readiness-evaluator.php",
       "php -l includes/class-store-data-extractor.php",

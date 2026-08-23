@@ -97,6 +97,32 @@ if ( empty( $failures ) ) {
 		$failures[] = 'Expected a readiness score of 100, received ' . $match['score'] . '.';
 	}
 
+	$dynamic_pricing_filter = static function ( $data, $candidate ) use ( $product_id ) {
+		if ( (int) $candidate->get_id() !== $product_id ) {
+			return $data;
+		}
+
+		$data['price']   = '';
+		$data['pricing'] = array(
+			'mode'         => 'dynamic',
+			'source'       => 'smoke_pricing_engine',
+			'label'        => 'Smoke pricing engine',
+			'is_available' => true,
+		);
+		$data['is_purchasable'] = false;
+
+		return $data;
+	};
+	add_filter( 'destinx_ai_commerce_product_data', $dynamic_pricing_filter, 10, 2 );
+	$dynamic_evaluation = $evaluator->evaluate( $extractor->extract( wc_get_product( $product_id ) ) );
+	remove_filter( 'destinx_ai_commerce_product_data', $dynamic_pricing_filter, 10 );
+	if ( 100 !== $dynamic_evaluation['score'] || 'dynamic' !== $dynamic_evaluation['pricing']['mode'] ) {
+		$failures[] = 'A declared dynamic price was not accepted by the public pricing contract: ' . wp_json_encode( $dynamic_evaluation ) . '.';
+	}
+	if ( in_array( 'price_missing', array_column( $dynamic_evaluation['issues'], 'code' ), true ) ) {
+		$failures[] = 'A declared dynamic price received a missing-price finding.';
+	}
+
 	$variable_attribute = new WC_Product_Attribute();
 	$variable_attribute->set_name( 'Size' );
 	$variable_attribute->set_options( array( 'Medium' ) );
@@ -144,6 +170,10 @@ if ( empty( $failures ) ) {
 	global $wpdb;
 	$legacy_table = DestinX\AICommerce\Database::legacy_table_name();
 	$new_table    = DestinX\AICommerce\Database::table_name();
+	$pricing_column = $wpdb->get_var( $wpdb->prepare( 'SHOW COLUMNS FROM %i LIKE %s', $new_table, 'pricing' ) );
+	if ( 'pricing' !== $pricing_column ) {
+		$failures[] = 'The pricing context column is missing from the audit schema.';
+	}
 	$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $legacy_table ) );
 	$wpdb->query( $wpdb->prepare( 'DELETE FROM %i', $new_table ) );
 	delete_option( DestinX\AICommerce\Database::ACTIVE_SCAN_OPTION );
@@ -216,12 +246,13 @@ if ( empty( $failures ) ) {
 			$failures[] = 'The initial snapshot was not activated.';
 		}
 
+		$incomplete_product_ids = array();
 		for ( $index = 1; $index <= 5; $index++ ) {
 			$incomplete_product = new WC_Product_Simple();
 			$name = 1 === $index ? '=Incomplete smoke product 1' : 'Incomplete smoke product ' . $index;
 			$incomplete_product->set_name( $name );
 			$incomplete_product->set_status( 'publish' );
-			$incomplete_product->save();
+			$incomplete_product_ids[] = $incomplete_product->save();
 		}
 
 		if ( ! $background->start() ) {
@@ -301,9 +332,13 @@ if ( empty( $failures ) ) {
 		if ( DestinX\AICommerce\Product_Readiness_Evaluator::MODEL_VERSION !== $second_page[0]['model_version'] ) {
 			$failures[] = 'The scoring model version was not stored with the snapshot: ' . wp_json_encode( $second_page[0] ) . '.';
 		}
+		if ( 'fixed' !== $second_page[0]['pricing']['mode'] || 'woocommerce' !== $second_page[0]['pricing']['source'] || empty( $second_page[0]['pricing']['is_available'] ) ) {
+			$failures[] = 'The normalized pricing context was not stored with the snapshot: ' . wp_json_encode( $second_page[0] ) . '.';
+		}
 
+		update_post_meta( $incomplete_product_ids[0], '_sku', 'DXAIC-SMOKE-001-EXTENDED' );
 		if ( 1 !== $repository->count( array( 'search' => 'DXAIC-SMOKE-001' ) ) ) {
-			$failures[] = 'Searching the active snapshot by SKU did not return one product.';
+			$failures[] = 'Exact SKU search returned a partial-SKU collision.';
 		}
 		if ( 5 !== $repository->count( array( 'search' => 'Incomplete smoke product' ) ) ) {
 			$failures[] = 'Searching the active snapshot by product name did not return all matching products.';
@@ -344,7 +379,7 @@ if ( empty( $failures ) ) {
 		if ( 5 !== $exported || 0 !== strpos( $csv_content, "\xEF\xBB\xBF" ) ) {
 			$failures[] = 'The filtered CSV export did not return five UTF-8 rows.';
 		}
-		if ( false === strpos( $csv_content, "'=Incomplete smoke product 1" ) || false === strpos( $csv_content, 'brand_missing' ) ) {
+		if ( false === strpos( $csv_content, "'=Incomplete smoke product 1" ) || false === strpos( $csv_content, 'brand_missing' ) || false === strpos( $csv_content, 'Fixed price' ) ) {
 			$failures[] = 'The CSV export did not neutralize formulas or include finding codes.';
 		}
 		if ( false === has_action( 'admin_post_' . DestinX\AICommerce\Catalog_Csv_Exporter::ACTION ) ) {
@@ -463,6 +498,9 @@ if ( empty( $failures ) ) {
 		}
 		if ( false === strpos( $dashboard_html, 'Product or SKU' ) || false === strpos( $dashboard_html, 'Export filtered CSV' ) || false === strpos( $dashboard_html, 'Visible catalog data updated' ) ) {
 			$failures[] = 'The catalog operations toolbar or snapshot freshness message did not render.';
+		}
+		if ( false === strpos( $dashboard_html, 'Fixed price' ) || false === strpos( $dashboard_html, 'WooCommerce' ) ) {
+			$failures[] = 'The catalog dashboard did not render stored pricing context.';
 		}
 		if ( false === strpos( $dashboard_html, 'aria-live="polite"' ) || false === strpos( $dashboard_html, 'Scrollable catalog results' ) || false === strpos( $dashboard_html, '<caption class="screen-reader-text">' ) ) {
 			$failures[] = 'The dashboard is missing its accessible status or table-region semantics.';

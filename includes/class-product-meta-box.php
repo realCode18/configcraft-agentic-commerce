@@ -84,6 +84,9 @@ final class Product_Meta_Box {
 				<?php echo esc_html( Issue_Catalog::status_label( $evaluation['status'] ) ); ?>
 			</span>
 		</div>
+		<p class="dxaic-product-pricing dxaic-product-pricing--<?php echo esc_attr( $evaluation['pricing']['mode'] ); ?>">
+			<?php echo esc_html( Pricing_Context::display_label( $evaluation['pricing'] ) ); ?>
+		</p>
 		<?php if ( empty( $evaluation['issues'] ) ) : ?>
 			<p class="dxaic-clear"><?php esc_html_e( 'No catalog findings for this product.', 'destinx-ai-commerce' ); ?></p>
 		<?php else : ?>

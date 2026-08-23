@@ -11,7 +11,46 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 		$this->assertSame( 100, $result['score'] );
 		$this->assertSame( 'ready', $result['status'] );
 		$this->assertSame( array(), $result['issues'] );
-		$this->assertSame( '1.0.0', $result['model_version'] );
+		$this->assertSame( '1.1.0', $result['model_version'] );
+		$this->assertTrue( $result['pricing']['is_available'] );
+	}
+
+	public function test_external_dynamic_price_is_available_without_native_woocommerce_price() {
+		$evaluator         = new Product_Readiness_Evaluator();
+		$product           = $this->complete_product();
+		$product['price']  = '';
+		$product['pricing'] = array(
+			'mode'         => 'dynamic',
+			'source'       => 'configcraft',
+			'label'        => 'ConfigCraft',
+			'is_available' => true,
+		);
+		$product['is_purchasable'] = false;
+
+		$result = $evaluator->evaluate( $product );
+		$codes  = array_column( $result['issues'], 'code' );
+
+		$this->assertSame( 100, $result['score'] );
+		$this->assertSame( 'ready', $result['status'] );
+		$this->assertNotContains( 'price_missing', $codes );
+		$this->assertNotContains( 'product_not_purchasable', $codes );
+		$this->assertSame( 'dynamic', $result['pricing']['mode'] );
+		$this->assertSame( 'configcraft', $result['pricing']['source'] );
+	}
+
+	public function test_dynamic_mode_without_explicit_price_availability_still_reports_missing_price() {
+		$evaluator          = new Product_Readiness_Evaluator();
+		$product            = $this->complete_product();
+		$product['price']   = '';
+		$product['pricing'] = array(
+			'mode'   => 'dynamic',
+			'source' => 'custom_engine',
+			'label'  => 'Custom engine',
+		);
+
+		$result = $evaluator->evaluate( $product );
+
+		$this->assertContains( 'price_missing', array_column( $result['issues'], 'code' ) );
 	}
 
 	public function test_missing_commerce_fields_reduce_score() {
@@ -141,6 +180,12 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 			'name'            => 'Waterproof hiking shoe for mountain trails',
 			'description'     => str_repeat( 'Detailed product information. ', 5 ),
 			'price'           => '119.00',
+			'pricing'         => array(
+				'mode'         => 'fixed',
+				'source'       => 'woocommerce',
+				'label'        => 'WooCommerce',
+				'is_available' => true,
+			),
 			'image_id'        => 10,
 			'category_ids'    => array( 2 ),
 			'brand'           => 'Example Brand',

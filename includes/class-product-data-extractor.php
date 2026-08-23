@@ -21,6 +21,7 @@ final class Product_Data_Extractor {
 	 */
 	public function extract( $product ) {
 		$variation_summary = $this->get_variation_summary( $product );
+		$price             = $product->get_price();
 		$data              = array(
 			'id'                                     => $product->get_id(),
 			'name'                                   => $product->get_name(),
@@ -29,7 +30,8 @@ final class Product_Data_Extractor {
 			'sku'                                    => $product->get_sku(),
 			'identifier'                             => $this->get_identifier( $product ),
 			'brand'                                  => $this->get_brand( $product ),
-			'price'                                  => $product->get_price(),
+			'price'                                  => $price,
+			'pricing'                                => Pricing_Context::from_woocommerce_price( $price ),
 			'image_id'                               => $product->get_image_id(),
 			'category_ids'                           => $product->get_category_ids(),
 			'attribute_count'                        => count( $product->get_attributes() ),

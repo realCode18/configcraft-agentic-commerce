@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * Creates and upgrades the local catalog audit table.
  */
 final class Database {
-	const VERSION            = '2.0.0';
+	const VERSION            = '3.0.0';
 	const VERSION_OPTION     = 'dxaic_database_version';
 	const ACTIVE_SCAN_OPTION = 'dxaic_active_audit_scan';
 
@@ -113,6 +113,7 @@ final class Database {
 			score smallint(3) unsigned NOT NULL DEFAULT 0,
 			status varchar(20) NOT NULL DEFAULT '',
 			issues longtext NOT NULL,
+			pricing longtext NOT NULL,
 			product_hash char(64) NOT NULL DEFAULT '',
 			model_version varchar(20) NOT NULL DEFAULT '',
 			scanned_at datetime NOT NULL,
@@ -266,8 +267,8 @@ final class Database {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$inserted = $wpdb->query(
 				$wpdb->prepare(
-					"INSERT INTO %i (scan_id, product_id, score, status, issues, product_hash, model_version, scanned_at)
-					SELECT %s, product_id, score, status, issues, '', 'pre-1.0', scanned_at FROM %i",
+					"INSERT INTO %i (scan_id, product_id, score, status, issues, pricing, product_hash, model_version, scanned_at)
+					SELECT %s, product_id, score, status, issues, '{}', '', 'pre-1.0', scanned_at FROM %i",
 					$table_name,
 					$scan_id,
 					$legacy_table_name

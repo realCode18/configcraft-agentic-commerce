@@ -44,6 +44,12 @@ La Free non deve verificare se il Pro esiste. Conosce solo contratti generici di
 - `destinx_ai_commerce_audit_limit`
 - `destinx_ai_commerce_batch_size`
 
+Il payload prodotto espone gia` un contesto `pricing` normalizzato. Un motore
+esterno puo` dichiarare modalita`, sorgente, etichetta, disponibilita` e range
+facoltativo senza cambiare il valutatore Free o falsificare il prezzo nativo
+WooCommerce. La disponibilita` deve essere esplicita: la sola modalita`
+`dynamic` non elimina il finding di prezzo mancante.
+
 ### Da stabilizzare prima dell'ecosistema add-on
 
 - costante/versione del contratto API distinta dalla versione del plugin;
