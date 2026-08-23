@@ -141,19 +141,26 @@ final class Admin_Page {
 			wp_die( esc_html__( 'You do not have permission to access this page.', 'destinx-ai-commerce' ) );
 		}
 
-		$page            = max( 1, (int) filter_input( INPUT_GET, 'dxaic_paged', FILTER_SANITIZE_NUMBER_INT ) );
-		$per_page        = 20;
-		$state           = $this->background->get_state();
-		$stored_summary  = $this->repository->get_summary();
-		$store_readiness = $this->store_evaluator->evaluate( $this->store_extractor->extract() );
+		$page              = max( 1, (int) filter_input( INPUT_GET, 'dxaic_paged', FILTER_SANITIZE_NUMBER_INT ) );
+		$per_page          = 20;
+		$filters           = $this->get_request_filters();
+		$state             = $this->background->get_state();
+		$snapshot          = $this->repository->get_snapshot_metadata();
+		$stored_summary    = $this->repository->get_summary();
+		$store_readiness   = $this->store_evaluator->evaluate( $this->store_extractor->extract() );
+		$has_full_snapshot = '' !== $snapshot['scan_id'];
+		$filtered_total    = 0;
 
-		if ( 0 < $stored_summary['scanned'] ) {
-			$products   = $this->hydrate_stored_results( $this->repository->get_page( $page, $per_page ) );
-			$summary    = array_merge(
+		if ( $has_full_snapshot ) {
+			$filtered_total = $this->repository->count( $filters );
+			$total_pages    = max( 1, (int) ceil( $filtered_total / $per_page ) );
+			$page           = min( $page, $total_pages );
+			$products       = $this->hydrate_stored_results( $this->repository->get_page( $page, $per_page, $filters ) );
+			$summary        = array_merge(
 				$stored_summary,
 				array( 'total_products' => max( (int) $state['total'], $stored_summary['scanned'] ) )
 			);
-			$is_preview = false;
+			$is_preview     = false;
 		} else {
 			$audit      = $this->auditor->audit();
 			$products   = $audit['products'];
@@ -168,7 +175,7 @@ final class Admin_Page {
 			</p>
 
 			<?php $this->render_notice(); ?>
-			<?php $this->render_scan_control( $state ); ?>
+			<?php $this->render_scan_control( $state, $snapshot ); ?>
 
 			<div class="dxaic-summary" aria-label="<?php esc_attr_e( 'Catalog audit summary', 'destinx-ai-commerce' ); ?>">
 				<?php $this->render_metric( __( 'Average score', 'destinx-ai-commerce' ), $summary['average_score'] . '/100', 'primary' ); ?>
@@ -180,23 +187,26 @@ final class Admin_Page {
 
 			<?php $this->render_store_readiness( $store_readiness ); ?>
 
-			<?php if ( empty( $products ) ) : ?>
+			<?php if ( $is_preview && empty( $products ) ) : ?>
 				<div class="notice notice-info inline"><p><?php esc_html_e( 'No published WooCommerce products were found.', 'destinx-ai-commerce' ); ?></p></div>
-			<?php else : ?>
+			<?php elseif ( $is_preview ) : ?>
 				<div class="dxaic-panel">
-					<h2><?php echo esc_html( $is_preview ? __( 'Quick preview', 'destinx-ai-commerce' ) : __( 'Catalog results', 'destinx-ai-commerce' ) ); ?></h2>
-					<p>
-						<?php
-						echo esc_html(
-							$is_preview
-								? __( 'This preview scans the latest 25 products. Start a full catalog scan to persist and paginate all results.', 'destinx-ai-commerce' )
-								: __( 'Products with the lowest readiness score are shown first.', 'destinx-ai-commerce' )
-						);
-						?>
-					</p>
+					<h2><?php esc_html_e( 'Quick preview', 'destinx-ai-commerce' ); ?></h2>
+					<p><?php esc_html_e( 'This preview scans the latest 25 products. Start a full catalog scan to persist, filter, and export all results.', 'destinx-ai-commerce' ); ?></p>
 					<?php $this->render_table( $products ); ?>
-					<?php if ( ! $is_preview ) : ?>
-						<?php $this->render_pagination( $page, $per_page, $stored_summary['scanned'] ); ?>
+				</div>
+			<?php elseif ( 0 === $stored_summary['scanned'] ) : ?>
+				<div class="notice notice-info inline"><p><?php esc_html_e( 'The latest full scan found no published WooCommerce products.', 'destinx-ai-commerce' ); ?></p></div>
+			<?php else : ?>
+				<div class="dxaic-panel dxaic-results-panel">
+					<h2><?php esc_html_e( 'Catalog results', 'destinx-ai-commerce' ); ?></h2>
+					<p><?php esc_html_e( 'Search by product or SKU, then narrow results by status, finding, or category.', 'destinx-ai-commerce' ); ?></p>
+					<?php $this->render_catalog_filters( $filters, $filtered_total ); ?>
+					<?php if ( empty( $products ) ) : ?>
+						<div class="notice notice-info inline"><p><?php esc_html_e( 'No products match the current filters.', 'destinx-ai-commerce' ); ?></p></div>
+					<?php else : ?>
+						<?php $this->render_table( $products ); ?>
+						<?php $this->render_pagination( $page, $per_page, $filtered_total, $filters ); ?>
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
@@ -229,7 +239,7 @@ final class Admin_Page {
 					</span>
 					<span class="dxaic-check-status dxaic-check-status--fail">
 						<?php /* translators: %d: number of store checks that need action. */ ?>
-						<?php echo esc_html( sprintf( __( '%d actions needed', 'destinx-ai-commerce' ), $readiness['summary']['fail'] ) ); ?>
+						<?php echo esc_html( sprintf( _n( '%d action needed', '%d actions needed', $readiness['summary']['fail'], 'destinx-ai-commerce' ), $readiness['summary']['fail'] ) ); ?>
 					</span>
 				</p>
 			</div>
@@ -262,10 +272,11 @@ final class Admin_Page {
 	/**
 	 * Render scan status and the start action.
 	 *
-	 * @param array<string, mixed> $state Background scan state.
+	 * @param array<string, mixed> $state    Background scan state.
+	 * @param array<string, mixed> $snapshot Visible snapshot metadata.
 	 * @return void
 	 */
-	private function render_scan_control( array $state ) {
+	private function render_scan_control( array $state, array $snapshot ) {
 		$is_running = in_array( $state['status'], array( 'queued', 'running' ), true );
 		$progress   = $state['total'] ? (int) round( ( $state['processed'] / $state['total'] ) * 100 ) : 0;
 		?>
@@ -273,6 +284,15 @@ final class Admin_Page {
 			<div>
 				<h2><?php esc_html_e( 'Full catalog scan', 'destinx-ai-commerce' ); ?></h2>
 				<p><?php echo esc_html( $this->scan_status_label( $state ) ); ?></p>
+				<?php if ( ! empty( $snapshot['scanned_at'] ) ) : ?>
+					<p class="dxaic-data-freshness">
+						<?php
+						$updated_at = get_date_from_gmt( $snapshot['scanned_at'], get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
+						/* translators: 1: visible catalog data date and time, 2: scoring model version. */
+						echo esc_html( sprintf( __( 'Visible catalog data updated on %1$s with scoring model %2$s.', 'destinx-ai-commerce' ), $updated_at, $snapshot['model_version'] ) );
+						?>
+					</p>
+				<?php endif; ?>
 				<?php if ( $is_running ) : ?>
 					<progress value="<?php echo esc_attr( $state['processed'] ); ?>" max="<?php echo esc_attr( max( 1, $state['total'] ) ); ?>"><?php echo esc_html( $progress ); ?>%</progress>
 					<span><?php echo esc_html( $progress ); ?>%</span>
@@ -327,6 +347,7 @@ final class Admin_Page {
 			$products[] = array(
 				'id'       => $row['product_id'],
 				'name'     => $product->get_name(),
+				'sku'      => $product->get_sku(),
 				'edit_url' => get_edit_post_link( $row['product_id'], 'raw' ),
 				'score'    => $row['score'],
 				'status'   => $row['status'],
@@ -335,6 +356,103 @@ final class Admin_Page {
 		}
 
 		return $products;
+	}
+
+	/**
+	 * Read and normalize the read-only result filters from the URL.
+	 *
+	 * @return array<string, int|string>
+	 */
+	private function get_request_filters() {
+		return Audit_Repository::normalize_filters(
+			array(
+				'search'   => filter_input( INPUT_GET, 'dxaic_search', FILTER_UNSAFE_RAW ),
+				'status'   => filter_input( INPUT_GET, 'dxaic_status', FILTER_UNSAFE_RAW ),
+				'issue'    => filter_input( INPUT_GET, 'dxaic_issue', FILTER_UNSAFE_RAW ),
+				'category' => filter_input( INPUT_GET, 'dxaic_category', FILTER_SANITIZE_NUMBER_INT ),
+			)
+		);
+	}
+
+	/**
+	 * Render catalog search, filters, matching count, and protected export action.
+	 *
+	 * @param array<string, int|string> $filters        Active normalized filters.
+	 * @param int                       $filtered_total Matching result count.
+	 * @return void
+	 */
+	private function render_catalog_filters( array $filters, $filtered_total ) {
+		$categories = get_terms(
+			array(
+				'taxonomy'   => 'product_cat',
+				'hide_empty' => false,
+			)
+		);
+		if ( is_wp_error( $categories ) ) {
+			$categories = array();
+		}
+		$has_filters = (bool) array_filter( $filters );
+		?>
+		<form class="dxaic-filters" method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>">
+			<input type="hidden" name="page" value="destinx-ai-commerce">
+			<div class="dxaic-filter-fields">
+				<label>
+					<span><?php esc_html_e( 'Product or SKU', 'destinx-ai-commerce' ); ?></span>
+					<input type="search" name="dxaic_search" value="<?php echo esc_attr( $filters['search'] ); ?>" maxlength="100" placeholder="<?php esc_attr_e( 'Search catalog', 'destinx-ai-commerce' ); ?>">
+				</label>
+				<label>
+					<span><?php esc_html_e( 'Status', 'destinx-ai-commerce' ); ?></span>
+					<select name="dxaic_status">
+						<option value=""><?php esc_html_e( 'All statuses', 'destinx-ai-commerce' ); ?></option>
+						<?php foreach ( array( 'ready', 'needs_work', 'at_risk' ) as $status ) : ?>
+							<option value="<?php echo esc_attr( $status ); ?>" <?php selected( $filters['status'], $status ); ?>><?php echo esc_html( Issue_Catalog::status_label( $status ) ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</label>
+				<label>
+					<span><?php esc_html_e( 'Finding', 'destinx-ai-commerce' ); ?></span>
+					<select name="dxaic_issue">
+						<option value=""><?php esc_html_e( 'All findings', 'destinx-ai-commerce' ); ?></option>
+						<?php foreach ( Issue_Catalog::codes() as $issue_code ) : ?>
+							<option value="<?php echo esc_attr( $issue_code ); ?>" <?php selected( $filters['issue'], $issue_code ); ?>><?php echo esc_html( Issue_Catalog::label( $issue_code ) ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</label>
+				<label>
+					<span><?php esc_html_e( 'Category', 'destinx-ai-commerce' ); ?></span>
+					<select name="dxaic_category">
+						<option value="0"><?php esc_html_e( 'All categories', 'destinx-ai-commerce' ); ?></option>
+						<?php foreach ( $categories as $category ) : ?>
+							<option value="<?php echo esc_attr( $category->term_id ); ?>" <?php selected( (int) $filters['category'], (int) $category->term_id ); ?>><?php echo esc_html( $category->name ); ?></option>
+						<?php endforeach; ?>
+					</select>
+				</label>
+			</div>
+			<div class="dxaic-filter-actions">
+				<button type="submit" class="button button-primary"><?php esc_html_e( 'Apply filters', 'destinx-ai-commerce' ); ?></button>
+				<?php if ( $has_filters ) : ?>
+					<a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=destinx-ai-commerce' ) ); ?>"><?php esc_html_e( 'Clear filters', 'destinx-ai-commerce' ); ?></a>
+				<?php endif; ?>
+			</div>
+		</form>
+		<div class="dxaic-results-toolbar">
+			<p>
+				<?php
+				/* translators: %d: number of catalog products matching the current filters. */
+				echo esc_html( sprintf( _n( '%d product matches', '%d products match', $filtered_total, 'destinx-ai-commerce' ), $filtered_total ) );
+				?>
+			</p>
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+				<input type="hidden" name="action" value="<?php echo esc_attr( Catalog_Csv_Exporter::ACTION ); ?>">
+				<input type="hidden" name="dxaic_search" value="<?php echo esc_attr( $filters['search'] ); ?>">
+				<input type="hidden" name="dxaic_status" value="<?php echo esc_attr( $filters['status'] ); ?>">
+				<input type="hidden" name="dxaic_issue" value="<?php echo esc_attr( $filters['issue'] ); ?>">
+				<input type="hidden" name="dxaic_category" value="<?php echo esc_attr( $filters['category'] ); ?>">
+				<?php wp_nonce_field( Catalog_Csv_Exporter::NONCE_ACTION ); ?>
+				<button type="submit" class="button" <?php disabled( 0 === $filtered_total ); ?>><?php esc_html_e( 'Export filtered CSV', 'destinx-ai-commerce' ); ?></button>
+			</form>
+		</div>
+		<?php
 	}
 
 	/**
@@ -355,7 +473,15 @@ final class Admin_Page {
 			<tbody>
 				<?php foreach ( $products as $product ) : ?>
 					<tr>
-						<td><a href="<?php echo esc_url( $product['edit_url'] ); ?>"><strong><?php echo esc_html( $product['name'] ); ?></strong></a></td>
+						<td>
+							<a href="<?php echo esc_url( $product['edit_url'] ); ?>"><strong><?php echo esc_html( $product['name'] ); ?></strong></a>
+							<?php if ( '' !== $product['sku'] ) : ?>
+								<span class="dxaic-product-sku">
+									<?php /* translators: %s: product SKU. */ ?>
+									<?php echo esc_html( sprintf( __( 'SKU: %s', 'destinx-ai-commerce' ), $product['sku'] ) ); ?>
+								</span>
+							<?php endif; ?>
+						</td>
 						<td><strong><?php echo esc_html( $product['score'] ); ?>/100</strong></td>
 						<td><span class="dxaic-status dxaic-status--<?php echo esc_attr( $product['status'] ); ?>"><?php echo esc_html( Issue_Catalog::status_label( $product['status'] ) ); ?></span></td>
 						<td><?php $this->render_issues( $product['issues'] ); ?></td>
@@ -416,22 +542,30 @@ final class Admin_Page {
 	/**
 	 * Render stored result pagination.
 	 *
-	 * @param int $page       Current page.
-	 * @param int $per_page   Results per page.
-	 * @param int $total_rows Total stored results.
+	 * @param int                       $page       Current page.
+	 * @param int                       $per_page   Results per page.
+	 * @param int                       $total_rows Total stored results.
+	 * @param array<string, int|string> $filters    Active filters to preserve.
 	 * @return void
 	 */
-	private function render_pagination( $page, $per_page, $total_rows ) {
+	private function render_pagination( $page, $per_page, $total_rows, array $filters ) {
 		$total_pages = (int) ceil( $total_rows / $per_page );
 		if ( 2 > $total_pages ) {
 			return;
 		}
 
 		$placeholder = 999999999;
+		$query_args  = array_merge(
+			array(
+				'page'        => 'destinx-ai-commerce',
+				'dxaic_paged' => $placeholder,
+			),
+			$this->filter_query_args( $filters )
+		);
 		$base        = str_replace(
 			(string) $placeholder,
 			'%#%',
-			esc_url( add_query_arg( 'dxaic_paged', $placeholder, admin_url( 'admin.php?page=destinx-ai-commerce' ) ) )
+			esc_url( add_query_arg( $query_args, admin_url( 'admin.php' ) ) )
 		);
 		$links       = paginate_links(
 			array(
@@ -447,6 +581,30 @@ final class Admin_Page {
 		if ( $links ) {
 			echo '<div class="tablenav"><div class="tablenav-pages">' . wp_kses_post( $links ) . '</div></div>';
 		}
+	}
+
+	/**
+	 * Convert normalized filters into non-empty dashboard query arguments.
+	 *
+	 * @param array<string, int|string> $filters Normalized filters.
+	 * @return array<string, int|string>
+	 */
+	private function filter_query_args( array $filters ) {
+		$args = array();
+		if ( '' !== $filters['search'] ) {
+			$args['dxaic_search'] = $filters['search'];
+		}
+		if ( '' !== $filters['status'] ) {
+			$args['dxaic_status'] = $filters['status'];
+		}
+		if ( '' !== $filters['issue'] ) {
+			$args['dxaic_issue'] = $filters['issue'];
+		}
+		if ( 0 < $filters['category'] ) {
+			$args['dxaic_category'] = $filters['category'];
+		}
+
+		return $args;
 	}
 
 	/**

@@ -364,6 +364,8 @@ Gate: fixture automatizzate coprono almeno un negozio pronto, uno incompleto e u
 
 ### Fase 3 — Centro operativo
 
+Stato: completata in anticipo il 23 agosto 2026 nella pre-release 0.6.0.
+
 Attività:
 
 - ricerca prodotto e SKU;

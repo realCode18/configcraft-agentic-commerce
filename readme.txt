@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.5.0
+Stable tag: 0.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,8 @@ The plugin adds an AI Commerce screen under WooCommerce. It provides a quick pre
 * Variable completeness, variation prices, attributes, and purchasability.
 
 Every product receives a score and a list of actionable findings. Full-scan results are saved locally, ordered by the lowest score, and split into manageable pages. A product editor panel explains how to correct each finding.
+
+Saved results can be searched by product name or SKU and filtered by status, finding, and product category. The current result set can be exported as a UTF-8 CSV. Export cells are neutralized against spreadsheet formulas, and the download requires the same WooCommerce management permission and a valid WordPress nonce.
 
 A separate Store Readiness checklist checks HTTPS, search visibility, permalinks, WooCommerce location and currency, cart and checkout pages, privacy, terms, refunds and returns, REST availability, published products, and shipping configuration. Store checks never change product scores and do not claim legal compliance.
 
@@ -44,7 +46,7 @@ Important: The plugin improves catalog data quality. It does not guarantee place
 
 = Does the plugin send product data to an AI provider? =
 
-No. Version 0.5.0 performs its audit locally and makes no external requests.
+No. Version 0.6.0 performs its audit locally and makes no external requests.
 
 = Does it guarantee that ChatGPT or Gemini will show my products? =
 
@@ -57,10 +59,21 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 == Screenshots ==
 
 1. Catalog readiness summary, full-scan progress, and product findings.
-2. Store readiness checklist with direct links to relevant local settings.
-3. Product editor panel with score and remediation guidance.
+2. Search, status, finding, and category filters with secure CSV export.
+3. Store readiness checklist with direct links to relevant local settings.
+4. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.6.0 =
+
+* Added product-name and SKU search across the active full-catalog snapshot.
+* Added combinable status, finding, and product-category filters.
+* Added matching-result counts and filter-preserving pagination.
+* Added protected UTF-8 CSV export for the current filtered result set.
+* Added spreadsheet formula-injection protection to exported cells.
+* Added visible snapshot freshness and scoring-model information.
+* Added SKU context directly below each catalog result.
 
 = 0.5.0 =
 

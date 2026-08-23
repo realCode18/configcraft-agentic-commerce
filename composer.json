@@ -24,6 +24,7 @@
       "php -l includes/class-catalog-auditor.php",
       "php -l includes/class-database.php",
       "php -l includes/class-audit-repository.php",
+      "php -l includes/class-catalog-csv-exporter.php",
       "php -l includes/class-scan-state.php",
       "php -l includes/class-background-audit.php",
       "php -l includes/class-issue-catalog.php",
@@ -31,6 +32,7 @@
       "php -l includes/class-product-meta-box.php",
       "php -l includes/class-admin-page.php",
       "php -l tests/ScanStateTest.php",
+      "php -l tests/CatalogCsvExporterTest.php",
       "php -l tests/StoreReadinessEvaluatorTest.php",
       "php -l tests/playground-smoke.php",
       "php -l uninstall.php"

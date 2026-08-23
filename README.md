@@ -12,6 +12,9 @@ The plugin is intentionally local and diagnostic. It does not call AI providers,
 - Keeps the last completed snapshot visible until a replacement scan finishes atomically.
 - Deduplicates jobs and recovers safely from retries, catalog changes, and stale scans.
 - Persists results locally and paginates them with the lowest scores first.
+- Searches full-scan results by product name or SKU and filters them by status, finding, and category.
+- Exports the current filtered result set as a nonce-protected, spreadsheet-safe UTF-8 CSV.
+- Shows when the visible catalog snapshot was updated and which scoring model produced it.
 - Scores product title, description, price, image, category, brand, identifier, SKU, attributes, shipping data, variations, and purchasability with model version 1.0.0.
 - Links every finding back to the WooCommerce product editor.
 - Adds live scoring and practical remediation guidance to each product editor.

@@ -14,6 +14,32 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Issue_Catalog {
 	/**
+	 * Return every stable finding code supported by scoring model 1.
+	 *
+	 * @return array<int, string>
+	 */
+	public static function codes() {
+		return array(
+			'title_too_short',
+			'description_incomplete',
+			'price_missing',
+			'image_missing',
+			'category_missing',
+			'brand_missing',
+			'identifier_missing',
+			'sku_missing',
+			'attributes_missing',
+			'shipping_data_missing',
+			'variations_missing',
+			'variations_not_purchasable',
+			'variation_prices_missing',
+			'variation_attributes_incomplete',
+			'product_not_purchasable',
+			'stock_status_unknown',
+		);
+	}
+
+	/**
 	 * Return the display label for a finding.
 	 *
 	 * @param string $code Finding code.

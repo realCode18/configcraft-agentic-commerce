@@ -17,8 +17,8 @@ The only active objective is a complete, local, WordPress.org-ready 1.0.0 releas
 - [x] Atomic scan snapshots, locks, retries, and stale-scan recovery.
 - [x] Complete simple/variable/virtual/downloadable product rules.
 - [x] Store readiness checklist.
-- [ ] Dashboard search and filters.
-- [ ] Secure CSV export.
+- [x] Dashboard search and filters.
+- [x] Secure CSV export.
 - [ ] Security, privacy, accessibility, and i18n audit.
 - [ ] Multisite and WooCommerce compatibility declarations.
 - [ ] Expanded version and catalog-size test matrix.

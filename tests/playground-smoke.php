@@ -191,7 +191,8 @@ if ( empty( $failures ) ) {
 
 		for ( $index = 1; $index <= 5; $index++ ) {
 			$incomplete_product = new WC_Product_Simple();
-			$incomplete_product->set_name( 'Incomplete smoke product ' . $index );
+			$name = 1 === $index ? '=Incomplete smoke product 1' : 'Incomplete smoke product ' . $index;
+			$incomplete_product->set_name( $name );
 			$incomplete_product->set_status( 'publish' );
 			$incomplete_product->save();
 		}
@@ -274,6 +275,87 @@ if ( empty( $failures ) ) {
 			$failures[] = 'The scoring model version was not stored with the snapshot: ' . wp_json_encode( $second_page[0] ) . '.';
 		}
 
+		if ( 1 !== $repository->count( array( 'search' => 'DXAIC-SMOKE-001' ) ) ) {
+			$failures[] = 'Searching the active snapshot by SKU did not return one product.';
+		}
+		if ( 5 !== $repository->count( array( 'search' => 'Incomplete smoke product' ) ) ) {
+			$failures[] = 'Searching the active snapshot by product name did not return all matching products.';
+		}
+		if ( 5 !== $repository->count( array( 'status' => 'at_risk' ) ) ) {
+			$failures[] = 'The catalog status filter returned an incorrect count.';
+		}
+		if ( 5 !== $repository->count( array( 'issue' => 'brand_missing' ) ) ) {
+			$failures[] = 'The catalog finding filter returned an incorrect count.';
+		}
+		if ( 1 !== $repository->count( array( 'category' => (int) $term['term_id'] ) ) ) {
+			$failures[] = 'The product category filter returned an incorrect count.';
+		}
+
+		$filtered_rows = $repository->get_page(
+			1,
+			20,
+			array(
+				'status' => 'at_risk',
+				'issue'  => 'sku_missing',
+			)
+		);
+		if ( 5 !== count( $filtered_rows ) ) {
+			$failures[] = 'Combined catalog filters did not return the expected products.';
+		}
+
+		$snapshot_metadata = $repository->get_snapshot_metadata();
+		if ( 6 !== $snapshot_metadata['products'] || empty( $snapshot_metadata['scanned_at'] ) || DestinX\AICommerce\Product_Readiness_Evaluator::MODEL_VERSION !== $snapshot_metadata['model_version'] ) {
+			$failures[] = 'The visible snapshot metadata is incomplete: ' . wp_json_encode( $snapshot_metadata ) . '.';
+		}
+
+		$csv_exporter = new DestinX\AICommerce\Catalog_Csv_Exporter( $repository );
+		$csv_stream   = fopen( 'php://temp', 'w+' );
+		$exported     = $csv_exporter->export( $csv_stream, array( 'issue' => 'brand_missing' ) );
+		rewind( $csv_stream );
+		$csv_content = stream_get_contents( $csv_stream );
+		fclose( $csv_stream );
+		if ( 5 !== $exported || 0 !== strpos( $csv_content, "\xEF\xBB\xBF" ) ) {
+			$failures[] = 'The filtered CSV export did not return five UTF-8 rows.';
+		}
+		if ( false === strpos( $csv_content, "'=Incomplete smoke product 1" ) || false === strpos( $csv_content, 'brand_missing' ) ) {
+			$failures[] = 'The CSV export did not neutralize formulas or include finding codes.';
+		}
+		if ( false === has_action( 'admin_post_' . DestinX\AICommerce\Catalog_Csv_Exporter::ACTION ) ) {
+			$failures[] = 'The authenticated CSV export action was not registered.';
+		}
+
+		$wp_die_filter = static function () {
+			return static function ( $message ) {
+				throw new RuntimeException( wp_strip_all_tags( (string) $message ) );
+			};
+		};
+		add_filter( 'wp_die_handler', $wp_die_filter );
+		wp_set_current_user( 0 );
+		$capability_blocked = false;
+		try {
+			$csv_exporter->handle_request();
+		} catch ( RuntimeException $exception ) {
+			$capability_blocked = false !== strpos( $exception->getMessage(), 'permission' );
+		}
+		if ( ! $capability_blocked ) {
+			$failures[] = 'The CSV export handler did not reject an unauthorized user.';
+		}
+
+		wp_set_current_user( 1 );
+		$_REQUEST['_wpnonce'] = 'invalid-export-nonce';
+		$_POST['_wpnonce']    = 'invalid-export-nonce';
+		$nonce_blocked        = false;
+		try {
+			$csv_exporter->handle_request();
+		} catch ( RuntimeException $exception ) {
+			$nonce_blocked = true;
+		}
+		if ( ! $nonce_blocked ) {
+			$failures[] = 'The CSV export handler did not reject an invalid nonce.';
+		}
+		unset( $_REQUEST['_wpnonce'], $_POST['_wpnonce'] );
+		remove_filter( 'wp_die_handler', $wp_die_filter );
+
 		$stale_scan_id = wp_generate_uuid4();
 		$repository->save( $stale_scan_id, $product_id, $evaluator->evaluate( $extractor->extract( wc_get_product( $product_id ) ) ) );
 		update_option(
@@ -351,6 +433,9 @@ if ( empty( $failures ) ) {
 		}
 		if ( false === strpos( $dashboard_html, 'Store readiness' ) || false === strpos( $dashboard_html, 'Technical store settings are checked separately' ) ) {
 			$failures[] = 'The store readiness checklist did not render separately from product scoring.';
+		}
+		if ( false === strpos( $dashboard_html, 'Product or SKU' ) || false === strpos( $dashboard_html, 'Export filtered CSV' ) || false === strpos( $dashboard_html, 'Visible catalog data updated' ) ) {
+			$failures[] = 'The catalog operations toolbar or snapshot freshness message did not render.';
 		}
 
 		$meta_box = new DestinX\AICommerce\Product_Meta_Box( $extractor, $evaluator );

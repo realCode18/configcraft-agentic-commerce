@@ -82,6 +82,7 @@ final class Catalog_Auditor {
 			$results[] = array(
 				'id'       => $product->get_id(),
 				'name'     => $product->get_name(),
+				'sku'      => $product->get_sku(),
 				'edit_url' => get_edit_post_link( $product->get_id(), 'raw' ),
 				'score'    => $evaluation['score'],
 				'status'   => $evaluation['status'],

@@ -12,7 +12,8 @@ The plugin is split into small services with explicit responsibilities:
 8. `Store_Data_Extractor` normalizes local WordPress and WooCommerce configuration.
 9. `Store_Readiness_Evaluator` applies a versioned, product-score-independent checklist.
 10. `Store_Issue_Catalog` maps store checks to translated guidance and local settings links.
-11. `Admin_Page` renders progress, aggregate metrics, store checks, and paginated product results without exposing a public API.
+11. `Catalog_Csv_Exporter` streams permission-checked, nonce-protected, spreadsheet-safe filtered exports without creating public files.
+12. `Admin_Page` renders progress, aggregate metrics, store checks, searchable and filterable product results, and snapshot freshness without exposing a public API.
 
 The evaluator is kept independent from WooCommerce objects so its versioned rules can be unit tested and later reused by WP-CLI commands, read-only protocol adapters, and optional add-ons. Full scans use WooCommerce Action Scheduler when available and fall back to a single WordPress Cron event.
 

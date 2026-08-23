@@ -53,6 +53,8 @@ final class Plugin {
 		$repository = new Audit_Repository();
 		$background = new Background_Audit( $repository, $extractor, $evaluator );
 		$background->hooks();
+		$csv_exporter = new Catalog_Csv_Exporter( $repository );
+		$csv_exporter->hooks();
 		$meta_box = new Product_Meta_Box( $extractor, $evaluator );
 		$meta_box->hooks();
 
