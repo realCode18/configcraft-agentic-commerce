@@ -32,12 +32,17 @@ Questa checklist è un gate: una voce non verificata impedisce l'invio della 1.0
 
 ## Modello gratuito e commerciale
 
+- [ ] La Free è il plugin principale e completa interamente il proprio scopo di audit locale.
+- [ ] La Free funziona senza Pro, account, licenza, ConfigCraft o servizi esterni.
 - [ ] Tutte le funzioni incluse nel plugin funzionano senza pagamento.
 - [ ] Nessun limite a tempo, quota artificiale, trial o sandbox.
 - [ ] Nessuna funzione locale disabilitata da una licenza.
 - [ ] Nessun controllo licenza nell'MVP WordPress.org.
+- [ ] Nessuna classe o funzione Pro disabilitata è inclusa nel pacchetto Free.
 - [ ] Nessun codice premium incluso nella repository SVN.
 - [ ] Nessun pulsante che installi o aggiorni codice da server esterni.
+- [ ] Nessuna funzione Free cambia o smette di funzionare quando il Pro è assente o la sua licenza scade.
+- [ ] Il Pro futuro è un add-on separato che dipende dalla Free e usa contratti pubblici.
 - [ ] Eventuali futuri servizi ConfigCraft forniranno funzionalità sostanziale e non sola validazione licenza.
 - [ ] Eventuali upsell futuri saranno limitati alla pagina del plugin, non ingannevoli e non invasivi.
 
@@ -243,4 +248,3 @@ Questa checklist è un gate: una voce non verificata impedisce l'invio della 1.0
 - [Plugin Check](https://wordpress.org/plugins/plugin-check/)
 - [WooCommerce extension best practices](https://developer.woocommerce.com/docs/extensions/best-practices-extensions/extension-development-best-practices/)
 - [WooCommerce compatibility](https://developer.woocommerce.com/docs/extensions/best-practices-extensions/compatibility)
-

@@ -50,7 +50,7 @@ Copy or symlink the repository into `wp-content/plugins/destinx-ai-commerce`, ac
 
 ## Roadmap
 
-See the [submission-ready MVP plan](docs/mvp-plan.md), the [WordPress.org checklist](docs/wordpress-org-submission-checklist.md), and the concise [roadmap](docs/roadmap.md).
+See the [submission-ready MVP plan](docs/mvp-plan.md), the [competitive analysis](docs/competitive-analysis.md), the [Free/Pro architecture](docs/free-pro-architecture.md), the [WordPress.org checklist](docs/wordpress-org-submission-checklist.md), and the concise [roadmap](docs/roadmap.md).
 
 ## License
 

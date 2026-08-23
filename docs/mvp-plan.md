@@ -36,6 +36,14 @@ La versione 1.0.0 sarà:
 
 ConfigCraft Suite non farà parte del flusso obbligatorio dell'MVP. Potrà essere collegata in futuro come servizio opzionale reale per monitoraggio multi-store, storico remoto e reportistica, con consenso esplicito, termini e privacy documentati. Non verrà usata come semplice validatore di licenze per bloccare funzioni già presenti nel plugin.
 
+### Decisione Free + Pro
+
+La versione Free non è una demo e non è un contenitore per funzioni bloccate. È il plugin principale, possiede il motore di normalizzazione, le regole, le scansioni, il repository dei risultati e l'interfaccia di diagnosi. Deve poter essere installata e usata per intero senza Pro, account, chiave o ConfigCraft.
+
+La futura versione Pro sarà un add-on separato, installato separatamente e dipendente dalla Free. Userà contratti pubblici del core per aggiungere regole, workflow, AI, protocolli avanzati e servizi multi-store; non duplicherà classi, scansioni o tabelle del motore. Se il Pro è assente, incompatibile, senza licenza o offline, tutte le funzioni Free continuano a lavorare.
+
+Il plugin WordPress.org non conterrà codice premium disabilitato, non convaliderà licenze, non scaricherà add-on e non userà un updater esterno. Questa separazione segue la raccomandazione della linea guida WordPress.org sul trialware, che indica add-on esterni per escludere il codice premium.
+
 ## Proposta di valore
 
 In pochi minuti il merchant deve poter rispondere a tre domande:
@@ -76,7 +84,7 @@ La pre-release 0.2.0 ha già completato circa il 55% del nucleo tecnico:
 - PHPUnit, WordPress Coding Standards e smoke test WordPress/WooCommerce;
 - CI su PHP 7.4, 8.1 e 8.4.
 
-Prima della 1.0.0 restano da completare rebranding, robustezza della scansione, diagnosi del negozio, filtri ed export, accessibilità, internazionalizzazione, compatibilità, Plugin Check, asset e procedura WordPress.org.
+Prima della 1.0.0 restano da completare robustezza della scansione, diagnosi del negozio, filtri ed export, accessibilità, internazionalizzazione, compatibilità, Plugin Check, asset e procedura WordPress.org. Il rebranding è completato.
 
 ## Perimetro funzionale 1.0.0
 
@@ -493,6 +501,10 @@ La versione è pronta per WordPress.org solo quando:
 - lettura di clienti, ordini, pagamenti o dati personali.
 
 Questi elementi verranno valutati soltanto dopo approvazione, stabilità e feedback della versione 1.0.0.
+
+Le funzioni locali che completano il motore — correzioni manuali sicure, storico locale limitato, confronto prima/dopo, esclusioni, `llms.txt`, catalogo JSON di sola lettura e anteprima agente — sono candidate alle versioni Free 1.1–1.2. AI, bulk avanzato, protocolli transazionali, analytics, alert e multi-store appartengono invece all'add-on Pro o al servizio ConfigCraft.
+
+La matrice dei concorrenti e la motivazione di questa ripartizione sono in [competitive-analysis.md](competitive-analysis.md). Il contratto tecnico fra i due plugin è in [free-pro-architecture.md](free-pro-architecture.md).
 
 ## Rischi e mitigazioni
 

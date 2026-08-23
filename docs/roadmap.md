@@ -30,4 +30,24 @@ The detailed scope, schedule, gates, and acceptance criteria are in [mvp-plan.md
 
 ## Post-MVP parking lot
 
-No post-MVP item is developed before the WordPress.org release is stable. Candidates include optional ConfigCraft monitoring, multi-store reporting, history and alerts, discovery simulation, and protocol adapters after specification validation.
+No post-MVP item is developed before the WordPress.org release is stable.
+
+### Free 1.1–1.2
+
+- [ ] Manual fix workspace with preview, approval, audit log, and undo.
+- [ ] Bounded local scan history and before/after comparison.
+- [ ] Product exclusions and public-visibility test suite.
+- [ ] Read-only `llms.txt` and JSON catalog with atomic snapshots.
+- [ ] Structured-data diagnostics and agent-view preview.
+- [ ] Stable extension registry and compatibility contract.
+
+### Separate Pro add-on
+
+- [ ] AI suggestions and rewrites with human approval.
+- [ ] Safe bulk workflows.
+- [ ] Scheduled monitoring, alerts, and long-term trends.
+- [ ] Advanced protocol adapters after specification validation.
+- [ ] Privacy-aware agent traffic and order attribution.
+- [ ] ConfigCraft multi-store, team, reporting, and automation services.
+
+Free remains the required engine. The Pro add-on will depend on it and will never duplicate or replace it. See [competitive-analysis.md](competitive-analysis.md) and [free-pro-architecture.md](free-pro-architecture.md).
