@@ -73,3 +73,4 @@ jobs:
           build-dir: './build/destinx-ai-commerce'
           include-experimental: false
           slug: destinx-ai-commerce
+          strict: true

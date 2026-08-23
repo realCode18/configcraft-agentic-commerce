@@ -193,7 +193,7 @@ final class Audit_Repository {
 			'ORDER BY snapshot.score ASC, snapshot.product_id DESC LIMIT %d OFFSET %d',
 			array( $per_page, $offset )
 		);
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Prepared by prepare_filtered_query().
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Fully prepared by prepare_filtered_query(); select and suffix are internal constants.
 		$rows = $wpdb->get_results( $query, ARRAY_A );
 
 		foreach ( $rows as &$row ) {
@@ -224,7 +224,7 @@ final class Audit_Repository {
 		}
 
 		$query = $this->prepare_filtered_query( 'COUNT(*)', $scan_id, $filters );
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Prepared by prepare_filtered_query().
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Fully prepared by prepare_filtered_query(); select and suffix are internal constants.
 		return (int) $wpdb->get_var( $query );
 	}
 
