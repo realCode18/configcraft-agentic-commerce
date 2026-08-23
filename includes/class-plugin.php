@@ -56,7 +56,9 @@ final class Plugin {
 		$meta_box = new Product_Meta_Box( $extractor, $evaluator );
 		$meta_box->hooks();
 
-		$admin_page = new Admin_Page( $auditor, $repository, $background );
+		$store_extractor = new Store_Data_Extractor();
+		$store_evaluator = new Store_Readiness_Evaluator();
+		$admin_page      = new Admin_Page( $auditor, $repository, $background, $store_extractor, $store_evaluator );
 		$admin_page->hooks();
 	}
 

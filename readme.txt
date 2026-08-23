@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.4.0
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,8 @@ The plugin adds an AI Commerce screen under WooCommerce. It provides a quick pre
 
 Every product receives a score and a list of actionable findings. Full-scan results are saved locally, ordered by the lowest score, and split into manageable pages. A product editor panel explains how to correct each finding.
 
+A separate Store Readiness checklist checks HTTPS, search visibility, permalinks, WooCommerce location and currency, cart and checkout pages, privacy, terms, refunds and returns, REST availability, published products, and shipping configuration. Store checks never change product scores and do not claim legal compliance.
+
 Full scans run in small background batches through WooCommerce Action Scheduler, with WordPress Cron as a fallback. The previous completed snapshot remains visible until the replacement scan finishes. Duplicate jobs, temporary failures, catalog changes, and stale scans are handled without publishing partial results.
 
 All analysis runs locally. This version does not contact external services and does not collect telemetry.
@@ -42,7 +44,7 @@ Important: The plugin improves catalog data quality. It does not guarantee place
 
 = Does the plugin send product data to an AI provider? =
 
-No. Version 0.4.0 performs its audit locally and makes no external requests.
+No. Version 0.5.0 performs its audit locally and makes no external requests.
 
 = Does it guarantee that ChatGPT or Gemini will show my products? =
 
@@ -55,9 +57,19 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 == Screenshots ==
 
 1. Catalog readiness summary, full-scan progress, and product findings.
-2. Product editor panel with score and remediation guidance.
+2. Store readiness checklist with direct links to relevant local settings.
+3. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.5.0 =
+
+* Added a 15-point technical Store Readiness checklist separate from product scoring.
+* Added checks for HTTPS, indexing visibility, permalinks, location, address, and currency.
+* Added checks for WooCommerce cart, checkout, account, privacy, terms, and refund pages.
+* Added published-product, REST API, and physical-store shipping checks.
+* Added digital-only handling so shipping is marked not applicable when appropriate.
+* Added direct remediation guidance and local settings links for every problem.
 
 = 0.4.0 =
 

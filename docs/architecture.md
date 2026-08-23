@@ -9,7 +9,10 @@ The plugin is split into small services with explicit responsibilities:
 5. `Audit_Repository` persists product results in the plugin-owned audit table.
 6. `Issue_Catalog` maps stable issue codes to translated labels and practical guidance.
 7. `Product_Meta_Box` shows live readiness guidance in the WooCommerce product editor.
-8. `Admin_Page` renders progress, aggregate metrics, and paginated results without exposing a public API.
+8. `Store_Data_Extractor` normalizes local WordPress and WooCommerce configuration.
+9. `Store_Readiness_Evaluator` applies a versioned, product-score-independent checklist.
+10. `Store_Issue_Catalog` maps store checks to translated guidance and local settings links.
+11. `Admin_Page` renders progress, aggregate metrics, store checks, and paginated product results without exposing a public API.
 
 The evaluator is kept independent from WooCommerce objects so its versioned rules can be unit tested and later reused by WP-CLI commands, read-only protocol adapters, and optional add-ons. Full scans use WooCommerce Action Scheduler when available and fall back to a single WordPress Cron event.
 

@@ -331,12 +331,26 @@ if ( empty( $failures ) ) {
 		}
 
 		wp_set_current_user( 1 );
-		$admin_page = new DestinX\AICommerce\Admin_Page( $auditor, $repository, $background );
+		$store_extractor = new DestinX\AICommerce\Store_Data_Extractor();
+		$store_evaluator = new DestinX\AICommerce\Store_Readiness_Evaluator();
+		$store_data      = $store_extractor->extract();
+		$store_readiness = $store_evaluator->evaluate( $store_data );
+		if ( 15 !== count( $store_readiness['checks'] ) || '1.0.0' !== $store_readiness['model_version'] ) {
+			$failures[] = 'The store readiness evaluator did not return its complete versioned checklist.';
+		}
+		if ( empty( $store_data['has_published_products'] ) || empty( $store_data['has_physical_products'] ) ) {
+			$failures[] = 'The store extractor did not detect the published physical smoke products.';
+		}
+
+		$admin_page = new DestinX\AICommerce\Admin_Page( $auditor, $repository, $background, $store_extractor, $store_evaluator );
 		ob_start();
 		$admin_page->render();
 		$dashboard_html = ob_get_clean();
 		if ( false === strpos( $dashboard_html, 'Catalog results' ) || false === strpos( $dashboard_html, '6/6' ) ) {
 			$failures[] = 'The persisted catalog dashboard did not render its completed results.';
+		}
+		if ( false === strpos( $dashboard_html, 'Store readiness' ) || false === strpos( $dashboard_html, 'Technical store settings are checked separately' ) ) {
+			$failures[] = 'The store readiness checklist did not render separately from product scoring.';
 		}
 
 		$meta_box = new DestinX\AICommerce\Product_Meta_Box( $extractor, $evaluator );

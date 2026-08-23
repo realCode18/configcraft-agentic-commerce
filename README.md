@@ -15,6 +15,7 @@ The plugin is intentionally local and diagnostic. It does not call AI providers,
 - Scores product title, description, price, image, category, brand, identifier, SKU, attributes, shipping data, variations, and purchasability with model version 1.0.0.
 - Links every finding back to the WooCommerce product editor.
 - Adds live scoring and practical remediation guidance to each product editor.
+- Checks 15 site-level readiness conditions separately from product scores, including HTTPS, indexing, store pages, policies, REST, and shipping.
 - Provides filters for custom product data and catalog-specific rules.
 
 ## Requirements
@@ -47,6 +48,7 @@ Copy or symlink the repository into `wp-content/plugins/destinx-ai-commerce`, ac
 
 - `destinx_ai_commerce_product_data`
 - `destinx_ai_commerce_product_issues`
+- `destinx_ai_commerce_store_data`
 - `destinx_ai_commerce_audit_limit`
 - `destinx_ai_commerce_batch_size`
 - `destinx_ai_commerce_max_retries`

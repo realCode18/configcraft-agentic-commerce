@@ -35,6 +35,20 @@ final class Admin_Page {
 	private $background;
 
 	/**
+	 * Store configuration adapter.
+	 *
+	 * @var Store_Data_Extractor
+	 */
+	private $store_extractor;
+
+	/**
+	 * Store readiness rules.
+	 *
+	 * @var Store_Readiness_Evaluator
+	 */
+	private $store_evaluator;
+
+	/**
 	 * Registered WordPress admin page hook.
 	 *
 	 * @var string
@@ -44,14 +58,18 @@ final class Admin_Page {
 	/**
 	 * Constructor.
 	 *
-	 * @param Catalog_Auditor  $auditor    Preview audit service.
-	 * @param Audit_Repository $repository Stored result service.
-	 * @param Background_Audit $background Background scan service.
+	 * @param Catalog_Auditor           $auditor         Preview audit service.
+	 * @param Audit_Repository          $repository      Stored result service.
+	 * @param Background_Audit          $background      Background scan service.
+	 * @param Store_Data_Extractor      $store_extractor Store configuration adapter.
+	 * @param Store_Readiness_Evaluator $store_evaluator Store readiness rules.
 	 */
-	public function __construct( Catalog_Auditor $auditor, Audit_Repository $repository, Background_Audit $background ) {
-		$this->auditor    = $auditor;
-		$this->repository = $repository;
-		$this->background = $background;
+	public function __construct( Catalog_Auditor $auditor, Audit_Repository $repository, Background_Audit $background, Store_Data_Extractor $store_extractor, Store_Readiness_Evaluator $store_evaluator ) {
+		$this->auditor         = $auditor;
+		$this->repository      = $repository;
+		$this->background      = $background;
+		$this->store_extractor = $store_extractor;
+		$this->store_evaluator = $store_evaluator;
 	}
 
 	/**
@@ -123,10 +141,11 @@ final class Admin_Page {
 			wp_die( esc_html__( 'You do not have permission to access this page.', 'destinx-ai-commerce' ) );
 		}
 
-		$page           = max( 1, (int) filter_input( INPUT_GET, 'dxaic_paged', FILTER_SANITIZE_NUMBER_INT ) );
-		$per_page       = 20;
-		$state          = $this->background->get_state();
-		$stored_summary = $this->repository->get_summary();
+		$page            = max( 1, (int) filter_input( INPUT_GET, 'dxaic_paged', FILTER_SANITIZE_NUMBER_INT ) );
+		$per_page        = 20;
+		$state           = $this->background->get_state();
+		$stored_summary  = $this->repository->get_summary();
+		$store_readiness = $this->store_evaluator->evaluate( $this->store_extractor->extract() );
 
 		if ( 0 < $stored_summary['scanned'] ) {
 			$products   = $this->hydrate_stored_results( $this->repository->get_page( $page, $per_page ) );
@@ -159,6 +178,8 @@ final class Admin_Page {
 				<?php $this->render_metric( __( 'At risk', 'destinx-ai-commerce' ), $summary['at_risk'], 'danger' ); ?>
 			</div>
 
+			<?php $this->render_store_readiness( $store_readiness ); ?>
+
 			<?php if ( empty( $products ) ) : ?>
 				<div class="notice notice-info inline"><p><?php esc_html_e( 'No published WooCommerce products were found.', 'destinx-ai-commerce' ); ?></p></div>
 			<?php else : ?>
@@ -179,6 +200,61 @@ final class Admin_Page {
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render site-level technical readiness checks separately from product scoring.
+	 *
+	 * @param array<string, mixed> $readiness Store readiness result.
+	 * @return void
+	 */
+	private function render_store_readiness( array $readiness ) {
+		?>
+		<div class="dxaic-panel dxaic-store-panel">
+			<div class="dxaic-store-heading">
+				<div>
+					<h2><?php esc_html_e( 'Store readiness', 'destinx-ai-commerce' ); ?></h2>
+					<p><?php esc_html_e( 'Technical store settings are checked separately and never change product scores.', 'destinx-ai-commerce' ); ?></p>
+				</div>
+				<p class="dxaic-store-summary">
+					<span class="dxaic-check-status dxaic-check-status--pass">
+						<?php /* translators: %d: number of store checks that passed. */ ?>
+						<?php echo esc_html( sprintf( __( '%d passed', 'destinx-ai-commerce' ), $readiness['summary']['pass'] ) ); ?>
+					</span>
+					<span class="dxaic-check-status dxaic-check-status--warning">
+						<?php /* translators: %d: number of store checks that need review. */ ?>
+						<?php echo esc_html( sprintf( __( '%d to review', 'destinx-ai-commerce' ), $readiness['summary']['warning'] ) ); ?>
+					</span>
+					<span class="dxaic-check-status dxaic-check-status--fail">
+						<?php /* translators: %d: number of store checks that need action. */ ?>
+						<?php echo esc_html( sprintf( __( '%d actions needed', 'destinx-ai-commerce' ), $readiness['summary']['fail'] ) ); ?>
+					</span>
+				</p>
+			</div>
+			<ul class="dxaic-store-checks">
+				<?php foreach ( $readiness['checks'] as $check ) : ?>
+					<?php
+					$status     = sanitize_key( $check['status'] );
+					$action_url = Store_Issue_Catalog::action_url( $check['code'] );
+					?>
+					<li class="dxaic-store-check dxaic-store-check--<?php echo esc_attr( $status ); ?>">
+						<div>
+							<span class="dxaic-check-status dxaic-check-status--<?php echo esc_attr( $status ); ?>"><?php echo esc_html( Store_Issue_Catalog::status_label( $status ) ); ?></span>
+							<strong><?php echo esc_html( Store_Issue_Catalog::label( $check['code'] ) ); ?></strong>
+						</div>
+						<?php if ( ! in_array( $status, array( 'pass', 'not_applicable' ), true ) ) : ?>
+							<p>
+								<?php echo esc_html( Store_Issue_Catalog::guidance( $check['code'] ) ); ?>
+								<?php if ( $action_url ) : ?>
+									<a href="<?php echo esc_url( $action_url ); ?>"><?php esc_html_e( 'Review setting', 'destinx-ai-commerce' ); ?></a>
+								<?php endif; ?>
+							</p>
+						<?php endif; ?>
+					</li>
+				<?php endforeach; ?>
+			</ul>
 		</div>
 		<?php
 	}

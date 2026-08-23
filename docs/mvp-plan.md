@@ -350,6 +350,8 @@ Gate: scansioni consecutive e interrotte non producono duplicati, risultati parz
 
 ### Fase 2 — Store readiness
 
+Stato: completata in anticipo il 23 agosto 2026 nella pre-release 0.5.0.
+
 Attività:
 
 - implementare valutatore del negozio indipendente;
