@@ -246,6 +246,15 @@ if ( empty( $failures ) ) {
 			$failures[] = 'The initial snapshot was not activated.';
 		}
 
+		if ( ! $background->start( true ) ) {
+			$failures[] = 'The immediate first-batch scan did not start.';
+		} else {
+			$immediate_state = $background->get_state();
+			if ( 'complete' !== $immediate_state['status'] || 1 !== $immediate_state['processed'] ) {
+				$failures[] = 'The immediate first batch did not complete the small catalog scan.';
+			}
+		}
+
 		$incomplete_product_ids = array();
 		for ( $index = 1; $index <= 5; $index++ ) {
 			$incomplete_product = new WC_Product_Simple();

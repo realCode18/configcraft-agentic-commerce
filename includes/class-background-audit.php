@@ -95,9 +95,12 @@ final class Background_Audit {
 		}
 
 		check_admin_referer( 'dxaic_start_catalog_audit' );
-		$started = $this->start();
+		$started = $this->start( true );
 		$state   = $this->get_state();
 		$notice  = $started ? 'started' : 'already_running';
+		if ( $started && 'complete' === $state['status'] ) {
+			$notice = 'completed';
+		}
 		if ( $started && 'failed' === $state['status'] ) {
 			$notice = 'failed';
 		}
@@ -115,9 +118,10 @@ final class Background_Audit {
 	/**
 	 * Initialize a new full-catalog scan.
 	 *
+	 * @param bool $process_first_batch Whether to process the first bounded batch immediately.
 	 * @return bool Whether a new scan was initialized.
 	 */
-	public function start() {
+	public function start( $process_first_batch = false ) {
 		$start_token = $this->acquire_option_lock( self::START_LOCK_OPTION, 'start', 30 );
 		if ( '' === $start_token ) {
 			return false;
@@ -156,6 +160,11 @@ final class Background_Audit {
 					$this->fail_scan( $state, __( 'The empty catalog snapshot could not be activated.', 'destinx-ai-commerce' ) );
 				}
 
+				return true;
+			}
+
+			if ( $process_first_batch ) {
+				$this->process_batch( $scan_id, 1, 0 );
 				return true;
 			}
 

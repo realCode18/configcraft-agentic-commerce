@@ -341,7 +341,10 @@ final class Admin_Page {
 	private function render_notice() {
 		$notice = sanitize_key( (string) filter_input( INPUT_GET, 'dxaic_notice', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) );
 		if ( 'started' === $notice ) {
-			echo '<div class="notice notice-success inline"><p>' . esc_html__( 'The full catalog scan was queued successfully.', 'destinx-ai-commerce' ) . '</p></div>';
+			echo '<div class="notice notice-success inline"><p>' . esc_html__( 'The full catalog scan started successfully and will continue in the background.', 'destinx-ai-commerce' ) . '</p></div>';
+		}
+		if ( 'completed' === $notice ) {
+			echo '<div class="notice notice-success inline"><p>' . esc_html__( 'The full catalog scan completed successfully.', 'destinx-ai-commerce' ) . '</p></div>';
 		}
 		if ( 'already_running' === $notice ) {
 			echo '<div class="notice notice-warning inline"><p>' . esc_html__( 'A catalog scan is already running.', 'destinx-ai-commerce' ) . '</p></div>';

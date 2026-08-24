@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.11.0
+Stable tag: 0.11.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,12 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 4. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.11.1 =
+
+* Started the first bounded catalog batch directly from the authenticated dashboard action.
+* Removed the initial zero-progress wait caused by delayed Action Scheduler or WP-Cron runners.
+* Added accurate success feedback when a small catalog finishes before the dashboard reloads.
 
 = 0.11.0 =
 

@@ -47,7 +47,7 @@ Regenerate the translation template with WP-CLI after changing a user-facing str
 wp i18n make-pot . languages/destinx-ai-commerce.pot \
   --slug=destinx-ai-commerce \
   --domain=destinx-ai-commerce \
-  --exclude=vendor,tests,docs \
+  --exclude=vendor,tests,docs,build \
   --skip-js \
   --headers='{"Report-Msgid-Bugs-To":"https://github.com/realCode18/destinx-ai-commerce/issues"}'
 ```
