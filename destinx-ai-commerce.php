@@ -3,7 +3,7 @@
  * Plugin Name:       DestinX AI Commerce for WooCommerce
  * Plugin URI:        https://github.com/realCode18/destinx-ai-commerce
  * Description:       Audits WooCommerce product catalogs for AI discovery and agentic commerce readiness.
- * Version:           0.11.1
+ * Version:           0.12.0
  * Requires at least: 6.6
  * Requires PHP:      7.4
  * Requires Plugins:  woocommerce
@@ -21,7 +21,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DXAIC_VERSION', '0.11.1' );
+define( 'DXAIC_VERSION', '0.12.0' );
+define( 'DXAIC_EXTENSION_API_VERSION', '1.0.0' );
 define( 'DXAIC_FILE', __FILE__ );
 define( 'DXAIC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'DXAIC_URL', plugin_dir_url( __FILE__ ) );
@@ -45,6 +46,7 @@ require_once DXAIC_PATH . 'includes/class-audit-repository.php';
 require_once DXAIC_PATH . 'includes/class-catalog-csv-exporter.php';
 require_once DXAIC_PATH . 'includes/class-scan-state.php';
 require_once DXAIC_PATH . 'includes/class-background-audit.php';
+require_once DXAIC_PATH . 'includes/class-public-api.php';
 require_once DXAIC_PATH . 'includes/class-issue-catalog.php';
 require_once DXAIC_PATH . 'includes/class-store-issue-catalog.php';
 require_once DXAIC_PATH . 'includes/class-product-meta-box.php';
@@ -55,3 +57,16 @@ register_activation_hook( DXAIC_FILE, array( 'DestinX\\AICommerce\\Database', 'a
 register_deactivation_hook( DXAIC_FILE, array( 'DestinX\\AICommerce\\Database', 'deactivate' ) );
 add_action( 'before_woocommerce_init', array( 'DestinX\\AICommerce\\Plugin', 'declare_woocommerce_compatibility' ) );
 add_action( 'plugins_loaded', array( 'DestinX\\AICommerce\\Plugin', 'instance' ), 20 );
+
+/**
+ * Return the public read-only extension API when WooCommerce is available.
+ *
+ * @return \DestinX\AICommerce\Public_API|null
+ */
+function destinx_ai_commerce_api() {
+	if ( ! did_action( 'plugins_loaded' ) ) {
+		return null;
+	}
+
+	return \DestinX\AICommerce\Plugin::instance()->api();
+}

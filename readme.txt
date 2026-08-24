@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.11.1
+Stable tag: 0.12.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,12 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 4. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.12.0 =
+
+* Added a versioned, read-only extension API for compatible add-ons.
+* Added a public engine-ready hook and an atomic full-scan completion event.
+* Exposed bounded snapshot results, summary data, metadata, and scan state without exposing mutable internals.
 
 = 0.11.1 =
 

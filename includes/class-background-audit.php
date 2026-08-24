@@ -158,6 +158,8 @@ final class Background_Audit {
 			if ( ! $total ) {
 				if ( ! $this->repository->activate_scan( $scan_id ) ) {
 					$this->fail_scan( $state, __( 'The empty catalog snapshot could not be activated.', 'destinx-ai-commerce' ) );
+				} else {
+					$this->emit_completed_event( $state );
 				}
 
 				return true;
@@ -304,11 +306,34 @@ final class Background_Audit {
 			$state['finished_at'] = current_time( 'mysql', true );
 			$state['error']       = '';
 			$this->save_state( $state );
+			$this->emit_completed_event( $state );
 		} catch ( \Throwable $exception ) {
 			$this->handle_batch_failure( $scan_id, $page, $attempt, $exception );
 		} finally {
 			$this->release_option_lock( self::PROCESS_LOCK_OPTION, $lock_token );
 		}
+	}
+
+	/**
+	 * Announce one completed and already activated catalog snapshot.
+	 *
+	 * @param array<string, mixed> $state Completed scan state.
+	 * @return void
+	 */
+	private function emit_completed_event( array $state ) {
+		$payload = array(
+			'api_version' => Public_API::VERSION,
+			'scan'        => $state,
+			'snapshot'    => $this->repository->get_snapshot_metadata(),
+			'summary'     => $this->repository->get_summary(),
+		);
+
+		/**
+		 * Fires after a full scan snapshot has been atomically activated.
+		 *
+		 * @param array<string, mixed> $payload Scan, snapshot, summary, and API version.
+		 */
+		do_action( 'destinx_ai_commerce_scan_completed', $payload );
 	}
 
 	/**

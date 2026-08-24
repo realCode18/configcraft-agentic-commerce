@@ -36,6 +36,7 @@
       "php -l includes/class-catalog-csv-exporter.php",
       "php -l includes/class-scan-state.php",
       "php -l includes/class-background-audit.php",
+      "php -l includes/class-public-api.php",
       "php -l includes/class-issue-catalog.php",
       "php -l includes/class-store-issue-catalog.php",
       "php -l includes/class-product-meta-box.php",

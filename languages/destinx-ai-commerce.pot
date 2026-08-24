@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: DestinX AI Commerce for WooCommerce 0.11.1\n"
+"Project-Id-Version: DestinX AI Commerce for WooCommerce 0.12.0\n"
 "Report-Msgid-Bugs-To: https://github.com/realCode18/destinx-ai-commerce/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-24T07:55:31+00:00\n"
+"POT-Creation-Date: 2026-08-24T08:20:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: destinx-ai-commerce\n"
@@ -357,35 +357,35 @@ msgstr ""
 msgid "The empty catalog snapshot could not be activated."
 msgstr ""
 
-#: includes/class-background-audit.php:172
+#: includes/class-background-audit.php:174
 msgid "The first catalog audit batch could not be scheduled."
 msgstr ""
 
-#: includes/class-background-audit.php:246
+#: includes/class-background-audit.php:248
 msgid "The product audit result could not be saved."
 msgstr ""
 
-#: includes/class-background-audit.php:265
+#: includes/class-background-audit.php:267
 msgid "The next catalog audit batch could not be scheduled."
 msgstr ""
 
-#: includes/class-background-audit.php:272
+#: includes/class-background-audit.php:274
 msgid "Products that are no longer published could not be removed from the snapshot."
 msgstr ""
 
-#: includes/class-background-audit.php:290
+#: includes/class-background-audit.php:292
 msgid "The catalog changed during the scan and the reconciliation pass could not be scheduled."
 msgstr ""
 
-#: includes/class-background-audit.php:298
+#: includes/class-background-audit.php:300
 msgid "The completed catalog snapshot could not be activated."
 msgstr ""
 
-#: includes/class-background-audit.php:325
+#: includes/class-background-audit.php:350
 msgid "The scan stopped responding and was released. Start a new scan to try again."
 msgstr ""
 
-#: includes/class-background-audit.php:411
+#: includes/class-background-audit.php:436
 msgid "The retry batch could not be scheduled."
 msgstr ""
 
@@ -573,7 +573,7 @@ msgstr ""
 msgid "Review this product field and provide clear, structured information."
 msgstr ""
 
-#: includes/class-plugin.php:93
+#: includes/class-plugin.php:118
 msgid "DestinX AI Commerce for WooCommerce requires WooCommerce to be installed and active."
 msgstr ""
 

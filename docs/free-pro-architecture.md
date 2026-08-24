@@ -39,6 +39,11 @@ La Free non deve verificare se il Pro esiste. Conosce solo contratti generici di
 
 ### Già disponibile
 
+- costante `DXAIC_EXTENSION_API_VERSION`, separata dalla versione del plugin;
+- funzione read-only `destinx_ai_commerce_api()` con versione contratto `1.0.0`;
+- metodi pubblici per metadati snapshot, riepilogo, risultati paginati e stato scansione;
+- hook `destinx_ai_commerce_loaded` dopo il bootstrap completo;
+- evento `destinx_ai_commerce_scan_completed` emesso soltanto dopo lo switch atomico dello snapshot;
 - `destinx_ai_commerce_product_data`
 - `destinx_ai_commerce_product_issues`
 - `destinx_ai_commerce_pricing_adapters`
@@ -61,17 +66,13 @@ il filtro generico resta disponibile per ConfigCraft e integrazioni proprietarie
 
 ### Da stabilizzare prima dell'ecosistema add-on
 
-- costante/versione del contratto API distinta dalla versione del plugin;
-- hook `destinx_ai_commerce_loaded` dopo il bootstrap completo;
-- evento dopo una scansione completata e dopo lo switch dello snapshot;
 - registry per regole con ID univoco, severità, penalità e callback;
 - registry per moduli della dashboard e colonne export;
-- servizi read-only per snapshot, aggregati e singolo prodotto;
 - capability dedicate per audit, export e correzioni;
 - oggetti risultato immutabili o array con schema documentato;
 - deprecation policy di almeno un ciclo minor prima della rimozione.
 
-I nomi definitivi verranno congelati soltanto con test di integrazione; fino ad allora questa sezione descrive il contratto richiesto, non API già pubbliche.
+Le API elencate come disponibili sono coperte dal test d'integrazione Free/Pro. Le restanti voci descrivono il contratto richiesto e verranno congelate soltanto dopo i relativi test.
 
 ## Flusso di bootstrap
 

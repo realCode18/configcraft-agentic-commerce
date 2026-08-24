@@ -14,6 +14,13 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Plugin {
 	/**
+	 * Public read-only extension API.
+	 *
+	 * @var Public_API|null
+	 */
+	private $api = null;
+
+	/**
 	 * Declare compatibility only for WooCommerce features the plugin actually touches.
 	 *
 	 * @return void
@@ -48,6 +55,15 @@ final class Plugin {
 	}
 
 	/**
+	 * Return the public extension API after a successful WooCommerce bootstrap.
+	 *
+	 * @return Public_API|null
+	 */
+	public function api() {
+		return $this->api;
+	}
+
+	/**
 	 * Register plugin services.
 	 *
 	 * @return void
@@ -76,6 +92,15 @@ final class Plugin {
 		$store_evaluator = new Store_Readiness_Evaluator();
 		$admin_page      = new Admin_Page( $auditor, $repository, $background, $store_extractor, $store_evaluator );
 		$admin_page->hooks();
+
+		$this->api = new Public_API( $repository, $background );
+
+		/**
+		 * Fires after the Free engine and its public read-only API are ready.
+		 *
+		 * @param Public_API $api Stable extension API.
+		 */
+		do_action( 'destinx_ai_commerce_loaded', $this->api );
 	}
 
 	/**

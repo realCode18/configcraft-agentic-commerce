@@ -246,12 +246,23 @@ if ( empty( $failures ) ) {
 			$failures[] = 'The initial snapshot was not activated.';
 		}
 
+		$scan_complete_event = null;
+		add_action(
+			'destinx_ai_commerce_scan_completed',
+			static function ( $payload ) use ( &$scan_complete_event ) {
+				$scan_complete_event = $payload;
+			}
+		);
+
 		if ( ! $background->start( true ) ) {
 			$failures[] = 'The immediate first-batch scan did not start.';
 		} else {
 			$immediate_state = $background->get_state();
 			if ( 'complete' !== $immediate_state['status'] || 1 !== $immediate_state['processed'] ) {
 				$failures[] = 'The immediate first batch did not complete the small catalog scan.';
+			}
+			if ( ! is_array( $scan_complete_event ) || '1.0.0' !== ( $scan_complete_event['api_version'] ?? '' ) || 1 !== ( $scan_complete_event['summary']['scanned'] ?? 0 ) ) {
+				$failures[] = 'The completed scan did not emit the stable extension event payload.';
 			}
 		}
 
@@ -325,6 +336,13 @@ if ( empty( $failures ) ) {
 		}
 		if ( 0 !== $stored_summary['needs_work'] || 5 !== $stored_summary['at_risk'] ) {
 			$failures[] = 'The stored status totals are incorrect.';
+		}
+
+		$public_api = function_exists( 'destinx_ai_commerce_api' ) ? destinx_ai_commerce_api() : null;
+		if ( ! $public_api instanceof DestinX\AICommerce\Public_API || '1.0.0' !== $public_api->get_version() || DXAIC_VERSION !== $public_api->get_plugin_version() ) {
+			$failures[] = 'The public read-only extension API is unavailable or has an unexpected version.';
+		} elseif ( 6 !== $public_api->get_summary()['scanned'] || 2 !== count( $public_api->get_results( 1, 2 ) ) || 'complete' !== $public_api->get_scan_state()['status'] ) {
+			$failures[] = 'The public extension API did not expose the active Free snapshot correctly.';
 		}
 
 		$first_page  = $repository->get_page( 1, 5 );

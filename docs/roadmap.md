@@ -24,6 +24,7 @@ The only active objective is a complete, local, WordPress.org-ready 1.0.0 releas
 - [x] Expanded version, upgrade-lifecycle, performance, and catalog-size test matrix.
 - [x] Plugin Check with zero errors and zero warnings in strict mode.
 - [x] Stable pricing-adapter registry and verified compatibility contract.
+- [x] Versioned read-only extension API and post-snapshot completion event for add-ons.
 - [ ] WordPress.org icons, banners, screenshots, readme, and release ZIP.
 - [ ] Real staging test and 1.0.0 submission.
 
@@ -44,6 +45,9 @@ No post-MVP item is developed before the WordPress.org release is stable.
 
 ### Separate Pro add-on
 
+- [x] Free dependency guard and versioned API compatibility check.
+- [x] ConfigCraft annual-license client and signed private-update channel.
+- [x] Read-only priority workspace powered entirely by the Free snapshot.
 - [ ] AI suggestions and rewrites with human approval.
 - [ ] Safe bulk workflows.
 - [ ] Scheduled monitoring, alerts, and long-term trends.
