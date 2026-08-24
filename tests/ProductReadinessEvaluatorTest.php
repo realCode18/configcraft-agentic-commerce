@@ -11,15 +11,17 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 		$this->assertSame( 100, $result['score'] );
 		$this->assertSame( 'ready', $result['status'] );
 		$this->assertSame( array(), $result['issues'] );
-		$this->assertSame( '1.1.0', $result['model_version'] );
+		$this->assertSame( '1.2.0', $result['model_version'] );
 		$this->assertTrue( $result['pricing']['is_available'] );
+		$this->assertTrue( $result['pricing']['uses_woocommerce_purchase_state'] );
+		$this->assertSame( 'native', $result['pricing']['confidence'] );
 	}
 
 	public function test_external_dynamic_price_is_available_without_native_woocommerce_price() {
-		$evaluator         = new Product_Readiness_Evaluator();
-		$product           = $this->complete_product();
-		$product['price']  = '';
-		$product['pricing'] = array(
+		$evaluator                 = new Product_Readiness_Evaluator();
+		$product                   = $this->complete_product();
+		$product['price']          = '';
+		$product['pricing']        = array(
 			'mode'         => 'dynamic',
 			'source'       => 'configcraft',
 			'label'        => 'ConfigCraft',
@@ -51,6 +53,23 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 		$result = $evaluator->evaluate( $product );
 
 		$this->assertContains( 'price_missing', array_column( $result['issues'], 'code' ) );
+	}
+
+	public function test_dynamic_modifier_can_keep_native_purchasability_checks() {
+		$evaluator                 = new Product_Readiness_Evaluator();
+		$product                   = $this->complete_product();
+		$product['is_purchasable'] = false;
+		$product['pricing']        = array(
+			'mode'                            => 'dynamic',
+			'source'                          => 'measurement_engine',
+			'label'                           => 'Measurement engine',
+			'is_available'                    => true,
+			'uses_woocommerce_purchase_state' => true,
+		);
+
+		$result = $evaluator->evaluate( $product );
+
+		$this->assertContains( 'product_not_purchasable', array_column( $result['issues'], 'code' ) );
 	}
 
 	public function test_missing_commerce_fields_reduce_score() {
@@ -86,9 +105,9 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 	}
 
 	public function test_high_severity_issue_prevents_ready_status() {
-		$evaluator         = new Product_Readiness_Evaluator();
-		$product           = $this->complete_product();
-		$product['name']   = 'Shoe';
+		$evaluator       = new Product_Readiness_Evaluator();
+		$product         = $this->complete_product();
+		$product['name'] = 'Shoe';
 
 		$result = $evaluator->evaluate( $product );
 
@@ -98,13 +117,13 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 	}
 
 	public function test_variable_product_reports_purchasability_and_child_gaps() {
-		$evaluator                                      = new Product_Readiness_Evaluator();
-		$product                                        = $this->complete_product();
-		$product['is_variable']                         = true;
-		$product['variation_count']                     = 2;
-		$product['purchasable_variation_count']         = 0;
-		$product['variation_missing_price_count']       = 1;
-		$product['variation_missing_attribute_count']   = 1;
+		$evaluator                                    = new Product_Readiness_Evaluator();
+		$product                                      = $this->complete_product();
+		$product['is_variable']                       = true;
+		$product['variation_count']                   = 2;
+		$product['purchasable_variation_count']       = 0;
+		$product['variation_missing_price_count']     = 1;
+		$product['variation_missing_attribute_count'] = 1;
 
 		$result = $evaluator->evaluate( $product );
 		$codes  = array_column( $result['issues'], 'code' );
@@ -133,12 +152,12 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 	}
 
 	public function test_physical_product_without_weight_or_complete_dimensions_has_shipping_finding() {
-		$evaluator          = new Product_Readiness_Evaluator();
-		$product            = $this->complete_product();
-		$product['weight']  = '';
-		$product['length']  = '30';
-		$product['width']   = '';
-		$product['height']  = '12';
+		$evaluator         = new Product_Readiness_Evaluator();
+		$product           = $this->complete_product();
+		$product['weight'] = '';
+		$product['length'] = '30';
+		$product['width']  = '';
+		$product['height'] = '12';
 
 		$result = $evaluator->evaluate( $product );
 
@@ -148,12 +167,12 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 	}
 
 	public function test_non_purchasable_configuration_is_distinct_from_normal_out_of_stock_state() {
-		$evaluator                  = new Product_Readiness_Evaluator();
-		$product                    = $this->complete_product();
-		$product['is_purchasable']  = false;
-		$not_purchasable            = $evaluator->evaluate( $product );
-		$product['stock_status']    = 'outofstock';
-		$normal_out_of_stock        = $evaluator->evaluate( $product );
+		$evaluator                 = new Product_Readiness_Evaluator();
+		$product                   = $this->complete_product();
+		$product['is_purchasable'] = false;
+		$not_purchasable           = $evaluator->evaluate( $product );
+		$product['stock_status']   = 'outofstock';
+		$normal_out_of_stock       = $evaluator->evaluate( $product );
 
 		$this->assertContains( 'product_not_purchasable', array_column( $not_purchasable['issues'], 'code' ) );
 		$this->assertNotContains( 'product_not_purchasable', array_column( $normal_out_of_stock['issues'], 'code' ) );
@@ -177,36 +196,36 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 
 	private function complete_product() {
 		return array(
-			'name'            => 'Waterproof hiking shoe for mountain trails',
-			'description'     => str_repeat( 'Detailed product information. ', 5 ),
-			'price'           => '119.00',
-			'pricing'         => array(
+			'name'                                   => 'Waterproof hiking shoe for mountain trails',
+			'description'                            => str_repeat( 'Detailed product information. ', 5 ),
+			'price'                                  => '119.00',
+			'pricing'                                => array(
 				'mode'         => 'fixed',
 				'source'       => 'woocommerce',
 				'label'        => 'WooCommerce',
 				'is_available' => true,
 			),
-			'image_id'        => 10,
-			'category_ids'    => array( 2 ),
-			'brand'           => 'Example Brand',
-			'identifier'      => '1234567890123',
-			'sku'             => 'SHOE-001',
-			'attribute_count' => 3,
-			'is_virtual'      => false,
-			'is_downloadable' => false,
-			'weight'          => '0.8',
-			'length'          => '30',
-			'width'           => '20',
-			'height'          => '12',
-			'is_variable'     => false,
-			'variation_count' => 0,
-			'purchasable_variation_count' => 0,
-			'variation_missing_price_count' => 0,
-			'variation_missing_attribute_count' => 0,
-			'has_variation_shipping_data' => false,
+			'image_id'                               => 10,
+			'category_ids'                           => array( 2 ),
+			'brand'                                  => 'Example Brand',
+			'identifier'                             => '1234567890123',
+			'sku'                                    => 'SHOE-001',
+			'attribute_count'                        => 3,
+			'is_virtual'                             => false,
+			'is_downloadable'                        => false,
+			'weight'                                 => '0.8',
+			'length'                                 => '30',
+			'width'                                  => '20',
+			'height'                                 => '12',
+			'is_variable'                            => false,
+			'variation_count'                        => 0,
+			'purchasable_variation_count'            => 0,
+			'variation_missing_price_count'          => 0,
+			'variation_missing_attribute_count'      => 0,
+			'has_variation_shipping_data'            => false,
 			'all_variations_virtual_or_downloadable' => false,
-			'is_purchasable' => true,
-			'stock_status'   => 'instock',
+			'is_purchasable'                         => true,
+			'stock_status'                           => 'instock',
 		);
 	}
 }

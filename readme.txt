@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.10.0
+Stable tag: 0.11.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,8 @@ The plugin adds an AI Commerce screen under WooCommerce. It provides a quick pre
 * Variable completeness, variation prices, attributes, and purchasability.
 
 Every product receives a score and a list of actionable findings. Full-scan results are saved locally, ordered by the lowest score, and split into manageable pages. A product editor panel explains how to correct each finding.
+
+Dynamic and externally managed prices are evaluated through a local compatibility registry. The plugin automatically recognizes supported Name Your Price, request-a-quote, call-for-price, composite, bundle, mix-and-match, measurement, and product add-on pricing paths. The dashboard shows whether pricing was read natively, verified automatically, or declared by another integration.
 
 Saved results can be searched by partial product name or exact SKU and filtered by status, finding, and product category. The current result set can be exported as a UTF-8 CSV. Export cells are neutralized against spreadsheet formulas, and the download requires the same WooCommerce management permission and a valid WordPress nonce.
 
@@ -74,6 +76,14 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 4. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.11.0 =
+
+* Added a deterministic, failure-isolated pricing adapter registry for third-party extensions.
+* Added verified compatibility for Name Your Price, YITH Request a Quote, Call for Price, Composite Products, Product Bundles, Mix and Match, Measurement Price Calculator, and Product Add-Ons.
+* Distinguished extensions that replace WooCommerce purchase rules from extensions that retain native base-price and variation validation.
+* Added pricing verification details to catalog results, product panels, stored snapshots, and CSV exports.
+* Added unit and real-plugin integration tests for the pricing compatibility layer.
 
 = 0.10.0 =
 

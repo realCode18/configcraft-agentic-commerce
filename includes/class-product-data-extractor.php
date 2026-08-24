@@ -14,6 +14,22 @@ defined( 'ABSPATH' ) || exit;
  */
 final class Product_Data_Extractor {
 	/**
+	 * Third-party pricing compatibility registry.
+	 *
+	 * @var Pricing_Adapter_Registry
+	 */
+	private $pricing_adapters;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Pricing_Adapter_Registry|null $pricing_adapters Optional registry for tests or extensions.
+	 */
+	public function __construct( ?Pricing_Adapter_Registry $pricing_adapters = null ) {
+		$this->pricing_adapters = $pricing_adapters ? $pricing_adapters : Pricing_Adapter_Registry::with_defaults();
+	}
+
+	/**
 	 * Convert a WooCommerce product into a stable audit payload.
 	 *
 	 * @param \WC_Product $product Product instance.
@@ -51,6 +67,7 @@ final class Product_Data_Extractor {
 			'is_purchasable'                         => $product->is_purchasable(),
 			'stock_status'                           => $product->get_stock_status(),
 		);
+		$data['pricing']   = $this->pricing_adapters->resolve( $product, $data );
 
 		/**
 		 * Filter the normalized product data before readiness evaluation.

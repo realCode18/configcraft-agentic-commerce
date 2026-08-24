@@ -16,7 +16,7 @@ Audit data remains in the site's own WordPress database. The custom audit table 
 - product ID;
 - readiness score and status;
 - finding codes and severities;
-- normalized pricing mode, provider label, availability, and optional minimum/maximum amounts;
+- normalized pricing mode, provider label, adapter ID, verification level, purchase-state ownership, availability, and optional minimum/maximum amounts;
 - product-data hash;
 - scoring-model version;
 - scan timestamp.

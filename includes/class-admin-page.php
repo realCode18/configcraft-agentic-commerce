@@ -506,9 +506,10 @@ final class Admin_Page {
 								</span>
 							<?php endif; ?>
 							<?php if ( ! empty( $product['pricing'] ) ) : ?>
-								<span class="dxaic-product-pricing dxaic-product-pricing--<?php echo esc_attr( $product['pricing']['mode'] ); ?>">
+								<span class="dxaic-product-pricing dxaic-product-pricing--<?php echo esc_attr( $product['pricing']['mode'] ); ?>" title="<?php echo esc_attr( Pricing_Context::verification_label( $product['pricing'] ) ); ?>">
 									<?php echo esc_html( Pricing_Context::display_label( $product['pricing'] ) ); ?>
 								</span>
+								<span class="dxaic-pricing-verification"><?php echo esc_html( Pricing_Context::verification_label( $product['pricing'] ) ); ?></span>
 							<?php endif; ?>
 						</td>
 						<td><strong><?php echo esc_html( $product['score'] ); ?>/100</strong></td>

@@ -23,6 +23,7 @@ The only active objective is a complete, local, WordPress.org-ready 1.0.0 releas
 - [x] Multisite and WooCommerce compatibility declarations.
 - [x] Expanded version, upgrade-lifecycle, performance, and catalog-size test matrix.
 - [x] Plugin Check with zero errors and zero warnings in strict mode.
+- [x] Stable pricing-adapter registry and verified compatibility contract.
 - [ ] WordPress.org icons, banners, screenshots, readme, and release ZIP.
 - [ ] Real staging test and 1.0.0 submission.
 
@@ -39,7 +40,7 @@ No post-MVP item is developed before the WordPress.org release is stable.
 - [ ] Product exclusions and public-visibility test suite.
 - [ ] Read-only `llms.txt` and JSON catalog with atomic snapshots.
 - [ ] Structured-data diagnostics and agent-view preview.
-- [ ] Stable extension registry and compatibility contract.
+- [ ] Stable rule, dashboard-module, and export-column extension registries.
 
 ### Separate Pro add-on
 

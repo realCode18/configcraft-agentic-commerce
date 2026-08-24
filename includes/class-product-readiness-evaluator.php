@@ -11,7 +11,7 @@ namespace DestinX\AICommerce;
  * Applies deterministic readiness rules to normalized product data.
  */
 final class Product_Readiness_Evaluator {
-	const MODEL_VERSION = '1.1.0';
+	const MODEL_VERSION = '1.2.0';
 
 	/**
 	 * Evaluate normalized product data.

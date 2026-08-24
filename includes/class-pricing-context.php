@@ -21,12 +21,15 @@ final class Pricing_Context {
 	 */
 	public static function from_woocommerce_price( $price ) {
 		return array(
-			'mode'         => 'fixed',
-			'source'       => 'woocommerce',
-			'label'        => 'WooCommerce',
-			'is_available' => '' !== trim( (string) $price ),
-			'min_price'    => '',
-			'max_price'    => '',
+			'mode'                            => 'fixed',
+			'source'                          => 'woocommerce',
+			'label'                           => 'WooCommerce',
+			'is_available'                    => '' !== trim( (string) $price ),
+			'min_price'                       => '',
+			'max_price'                       => '',
+			'adapter'                         => 'woocommerce_native',
+			'confidence'                      => 'native',
+			'uses_woocommerce_purchase_state' => true,
 		);
 	}
 
@@ -72,13 +75,33 @@ final class Pricing_Context {
 			$is_available = true;
 		}
 
+		$adapter = isset( $context['adapter'] ) ? self::key( $context['adapter'] ) : '';
+		if ( '' === $adapter ) {
+			$adapter = 'woocommerce' === $source ? 'woocommerce_native' : $source;
+		}
+
+		$confidence = isset( $context['confidence'] ) ? self::key( $context['confidence'] ) : '';
+		if ( ! in_array( $confidence, array( 'native', 'verified', 'declared', 'inferred' ), true ) ) {
+			$confidence = 'woocommerce' === $source ? 'native' : 'declared';
+		}
+
+		$uses_woocommerce_purchase_state = array_key_exists( 'uses_woocommerce_purchase_state', $context )
+			? (bool) $context['uses_woocommerce_purchase_state']
+			: ( 'fixed' === $mode && 'woocommerce' === $source );
+		if ( 'not_applicable' === $mode ) {
+			$uses_woocommerce_purchase_state = false;
+		}
+
 		return array(
-			'mode'         => $mode,
-			'source'       => substr( $source, 0, 100 ),
-			'label'        => $label,
-			'is_available' => $is_available,
-			'min_price'    => self::amount( isset( $context['min_price'] ) ? $context['min_price'] : '' ),
-			'max_price'    => self::amount( isset( $context['max_price'] ) ? $context['max_price'] : '' ),
+			'mode'                            => $mode,
+			'source'                          => substr( $source, 0, 100 ),
+			'label'                           => $label,
+			'is_available'                    => $is_available,
+			'min_price'                       => self::amount( isset( $context['min_price'] ) ? $context['min_price'] : '' ),
+			'max_price'                       => self::amount( isset( $context['max_price'] ) ? $context['max_price'] : '' ),
+			'adapter'                         => substr( $adapter, 0, 100 ),
+			'confidence'                      => $confidence,
+			'uses_woocommerce_purchase_state' => $uses_woocommerce_purchase_state,
 		);
 	}
 
@@ -89,7 +112,26 @@ final class Pricing_Context {
 	 * @return bool
 	 */
 	public static function uses_woocommerce_purchase_state( array $context ) {
-		return 'fixed' === $context['mode'] && 'woocommerce' === $context['source'];
+		$context = self::normalize( $context );
+		return ! empty( $context['uses_woocommerce_purchase_state'] );
+	}
+
+	/**
+	 * Explain how the pricing context was established.
+	 *
+	 * @param array<string, mixed> $context Normalized pricing context.
+	 * @return string
+	 */
+	public static function verification_label( array $context ) {
+		$context = self::normalize( $context );
+		$labels  = array(
+			'native'   => __( 'Native WooCommerce price', 'destinx-ai-commerce' ),
+			'verified' => __( 'Automatically verified compatibility', 'destinx-ai-commerce' ),
+			'declared' => __( 'Declared by an integration', 'destinx-ai-commerce' ),
+			'inferred' => __( 'Inferred pricing context', 'destinx-ai-commerce' ),
+		);
+
+		return isset( $labels[ $context['confidence'] ] ) ? $labels[ $context['confidence'] ] : $labels['declared'];
 	}
 
 	/**

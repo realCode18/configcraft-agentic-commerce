@@ -15,8 +15,9 @@ The plugin is intentionally local and diagnostic. It does not call AI providers,
 - Searches full-scan results by partial product name or exact SKU and filters them by status, finding, and category.
 - Exports the current filtered result set as a nonce-protected, spreadsheet-safe UTF-8 CSV.
 - Shows when the visible catalog snapshot was updated and which scoring model produced it.
-- Scores product title, description, price, image, category, brand, identifier, SKU, attributes, shipping data, variations, and purchasability with model version 1.1.0.
-- Supports fixed, dynamic, quote-based, externally managed, and not-applicable pricing contexts through a public extension contract.
+- Scores product title, description, price, image, category, brand, identifier, SKU, attributes, shipping data, variations, and purchasability with model version 1.2.0.
+- Supports fixed, dynamic, quote-based, externally managed, and not-applicable pricing contexts through a public adapter registry and extension contract.
+- Automatically verifies compatible pricing paths for Name Your Price, YITH Request a Quote, Call for Price, Composite Products, Product Bundles, Mix and Match, Measurement Price Calculator, and Product Add-Ons.
 - Links every finding back to the WooCommerce product editor.
 - Adds live scoring and practical remediation guidance to each product editor.
 - Checks 15 site-level readiness conditions separately from product scores, including HTTPS, indexing, store pages, policies, REST, and shipping.
@@ -70,6 +71,15 @@ npx --yes @wp-playground/cli@latest php \
   -- /wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-multisite-smoke.php
 ```
 
+Run the real-plugin pricing compatibility test:
+
+```bash
+npx --yes @wp-playground/cli@3.1.50 php \
+  --mount=.:/wordpress/wp-content/plugins/destinx-ai-commerce \
+  --blueprint=tests/playground-pricing-compatibility-blueprint.json \
+  -- /wordpress/wp-content/plugins/destinx-ai-commerce/tests/playground-pricing-compatibility-smoke.php
+```
+
 Run the progressive 0, 1, 26, 500, and 5,000-product scale test:
 
 ```bash
@@ -98,6 +108,7 @@ All analysis and storage are local. The plugin does not read customer, order, pa
 ## Extension hooks
 
 - `destinx_ai_commerce_product_data`
+- `destinx_ai_commerce_pricing_adapters`
 - `destinx_ai_commerce_product_issues`
 - `destinx_ai_commerce_store_data`
 - `destinx_ai_commerce_audit_limit`
@@ -105,7 +116,26 @@ All analysis and storage are local. The plugin does not read customer, order, pa
 - `destinx_ai_commerce_max_retries`
 - `destinx_ai_commerce_stale_scan_seconds`
 
-### External pricing contract
+### Pricing adapter registry
+
+The Free plugin checks known pricing extensions before it evaluates a product.
+Adapters are read-only, run in deterministic priority order, and are isolated so
+one faulty integration cannot interrupt a catalog scan. A third-party add-on can
+append an object implementing `DestinX\AICommerce\Pricing_Adapter`:
+
+```php
+add_filter( 'destinx_ai_commerce_pricing_adapters', function ( $adapters ) {
+	$adapters[] = new My_Pricing_Adapter();
+	return $adapters;
+} );
+```
+
+An adapter has a stable ID, an integer priority, and a `detect( $product, $data )`
+method. It returns `null` when it does not own the product. A match must return a
+pricing array with an explicit `is_available` value. The registry records the
+adapter ID and marks the context as automatically verified.
+
+### Generic pricing contract
 
 Pricing engines can use `destinx_ai_commerce_product_data` to replace the
 normalized `pricing` element. The missing-price finding is suppressed only when
@@ -115,12 +145,15 @@ the provider explicitly sets `is_available` to `true`:
 add_filter( 'destinx_ai_commerce_product_data', function ( $data, $product ) {
 	if ( my_pricing_engine_manages( $product ) ) {
 		$data['pricing'] = array(
-			'mode'         => 'dynamic',
-			'source'       => 'my_pricing_engine',
-			'label'        => 'My Pricing Engine',
-			'is_available' => true,
-			'min_price'    => '',
-			'max_price'    => '',
+			'mode'                            => 'dynamic',
+			'source'                          => 'my_pricing_engine',
+			'label'                           => 'My Pricing Engine',
+			'is_available'                    => true,
+			'min_price'                       => '',
+			'max_price'                       => '',
+			'adapter'                         => 'my_pricing_engine',
+			'confidence'                      => 'declared',
+			'uses_woocommerce_purchase_state' => false,
 		);
 	}
 
@@ -129,9 +162,10 @@ add_filter( 'destinx_ai_commerce_product_data', function ( $data, $product ) {
 ```
 
 Supported modes are `fixed`, `dynamic`, `quote`, `external`, and
-`not_applicable`. Dynamic providers also own their purchasability state, so the
-core evaluator does not apply native WooCommerce price/variation purchase rules
-to those products.
+`not_applicable`. `uses_woocommerce_purchase_state` distinguishes extensions
+that replace WooCommerce pricing and purchase rules from those that only add a
+calculated amount to a valid native base price. Older declarations remain
+compatible and are normalized conservatively.
 
 ## Roadmap
 

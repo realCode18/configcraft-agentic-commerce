@@ -87,6 +87,7 @@ final class Product_Meta_Box {
 		<p class="dxaic-product-pricing dxaic-product-pricing--<?php echo esc_attr( $evaluation['pricing']['mode'] ); ?>">
 			<?php echo esc_html( Pricing_Context::display_label( $evaluation['pricing'] ) ); ?>
 		</p>
+		<p class="dxaic-pricing-verification"><?php echo esc_html( Pricing_Context::verification_label( $evaluation['pricing'] ) ); ?></p>
 		<?php if ( empty( $evaluation['issues'] ) ) : ?>
 			<p class="dxaic-clear"><?php esc_html_e( 'No catalog findings for this product.', 'destinx-ai-commerce' ); ?></p>
 		<?php else : ?>

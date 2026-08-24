@@ -142,7 +142,7 @@ Il punteggio resta deterministico e spiegabile:
 - `Needs work`: 50–79, oppure 80–100 con almeno un problema ad alta severità;
 - `At risk`: 0–49.
 
-La pre-release 0.4.0 ha introdotto il modello `1.0.0`; la 0.10.0 lo porta a `1.1.0` per distinguere in modo esplicito i prezzi nativi dai prezzi dinamici o gestiti esternamente. Ogni futura variazione sostanziale dei pesi o della semantica incrementerà la versione del modello e verrà dichiarata nel changelog. Il pannello deve sempre spiegare quali penalità hanno prodotto il risultato; non useremo un punteggio opaco generato da AI.
+La pre-release 0.4.0 ha introdotto il modello `1.0.0`; la 0.10.0 lo porta a `1.1.0` per distinguere i prezzi nativi da quelli dinamici o esterni; la 0.11.0 introduce il modello `1.2.0`, che separa i provider che sostituiscono le regole di acquisto WooCommerce da quelli che mantengono i controlli nativi sul prezzo base e sulle variazioni. Ogni futura variazione sostanziale dei pesi o della semantica incrementerà la versione del modello e verrà dichiarata nel changelog. Il pannello deve sempre spiegare quali penalità hanno prodotto il risultato; non useremo un punteggio opaco generato da AI.
 
 ### 5. Controlli a livello negozio
 

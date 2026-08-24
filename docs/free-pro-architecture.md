@@ -41,14 +41,23 @@ La Free non deve verificare se il Pro esiste. Conosce solo contratti generici di
 
 - `destinx_ai_commerce_product_data`
 - `destinx_ai_commerce_product_issues`
+- `destinx_ai_commerce_pricing_adapters`
 - `destinx_ai_commerce_audit_limit`
 - `destinx_ai_commerce_batch_size`
 
-Il payload prodotto espone gia` un contesto `pricing` normalizzato. Un motore
-esterno puo` dichiarare modalita`, sorgente, etichetta, disponibilita` e range
-facoltativo senza cambiare il valutatore Free o falsificare il prezzo nativo
-WooCommerce. La disponibilita` deve essere esplicita: la sola modalita`
-`dynamic` non elimina il finding di prezzo mancante.
+Il payload prodotto espone già un contesto `pricing` normalizzato. Un motore
+esterno può dichiarare modalità, sorgente, etichetta, disponibilità, adapter,
+livello di verifica, proprietà dello stato di acquisto e range facoltativo senza
+cambiare il valutatore Free o falsificare il prezzo nativo WooCommerce. La
+disponibilità deve essere esplicita: la sola modalità `dynamic` non elimina il
+finding di prezzo mancante.
+
+Il registro pricing della Free accetta oggetti che implementano
+`DestinX\AICommerce\Pricing_Adapter`. ID duplicati o non validi vengono ignorati,
+gli adapter sono ordinati per priorità e ID, e un'eccezione di una singola
+integrazione non interrompe la scansione. Gli adapter inclusi verificano le
+principali famiglie di prezzo dinamico, preventivo e prodotto configurabile;
+il filtro generico resta disponibile per ConfigCraft e integrazioni proprietarie.
 
 ### Da stabilizzare prima dell'ecosistema add-on
 

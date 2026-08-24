@@ -19,7 +19,33 @@ if ( ! function_exists( 'apply_filters' ) ) {
 	}
 }
 
+if ( ! function_exists( '__' ) ) {
+	function __( $text ) {
+		return $text;
+	}
+}
+
+if ( ! function_exists( 'get_option' ) ) {
+	function get_option( $name, $default = false ) {
+		return isset( $GLOBALS['dxaic_test_options'][ $name ] ) ? $GLOBALS['dxaic_test_options'][ $name ] : $default;
+	}
+}
+
+if ( ! function_exists( 'wc_get_product' ) ) {
+	function wc_get_product( $product_id ) {
+		return isset( $GLOBALS['dxaic_test_products'][ $product_id ] ) ? $GLOBALS['dxaic_test_products'][ $product_id ] : false;
+	}
+}
+
 require_once dirname( __DIR__ ) . '/includes/class-pricing-context.php';
+require_once dirname( __DIR__ ) . '/includes/interface-pricing-adapter.php';
+require_once dirname( __DIR__ ) . '/includes/class-name-your-price-adapter.php';
+require_once dirname( __DIR__ ) . '/includes/class-yith-request-a-quote-adapter.php';
+require_once dirname( __DIR__ ) . '/includes/class-call-for-price-adapter.php';
+require_once dirname( __DIR__ ) . '/includes/class-container-pricing-adapter.php';
+require_once dirname( __DIR__ ) . '/includes/class-measurement-price-calculator-adapter.php';
+require_once dirname( __DIR__ ) . '/includes/class-product-addons-adapter.php';
+require_once dirname( __DIR__ ) . '/includes/class-pricing-adapter-registry.php';
 require_once dirname( __DIR__ ) . '/includes/class-product-readiness-evaluator.php';
 require_once dirname( __DIR__ ) . '/includes/class-scan-state.php';
 require_once dirname( __DIR__ ) . '/includes/class-store-readiness-evaluator.php';

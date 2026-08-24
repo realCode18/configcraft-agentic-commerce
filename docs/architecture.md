@@ -3,18 +3,20 @@
 The plugin is split into small services with explicit responsibilities:
 
 1. `Pricing_Context` normalizes native, dynamic, quote-based, externally managed, and not-applicable pricing metadata.
-2. `Product_Data_Extractor` converts WooCommerce products into a stable, filterable payload.
-3. `Product_Readiness_Evaluator` applies pure readiness rules and returns machine-readable issues.
-4. `Catalog_Auditor` provides the non-persistent quick catalog preview.
-5. `Background_Audit` processes the full published catalog in bounded batches.
-6. `Audit_Repository` persists product results in the plugin-owned audit table.
-7. `Issue_Catalog` maps stable issue codes to translated labels and practical guidance.
-8. `Product_Meta_Box` shows live readiness guidance in the WooCommerce product editor.
-9. `Store_Data_Extractor` normalizes local WordPress and WooCommerce configuration.
-10. `Store_Readiness_Evaluator` applies a versioned, product-score-independent checklist.
-11. `Store_Issue_Catalog` maps store checks to translated guidance and local settings links.
-12. `Catalog_Csv_Exporter` streams permission-checked, nonce-protected, spreadsheet-safe filtered exports without creating public files.
-13. `Admin_Page` renders progress, aggregate metrics, store checks, searchable and filterable product results, pricing provenance, and snapshot freshness without exposing a public API.
+2. `Pricing_Adapter_Registry` runs read-only compatibility adapters in deterministic priority order and isolates adapter failures.
+3. Built-in adapters recognize supported customer-priced, quote, configurable-container, measurement, and add-on pricing paths.
+4. `Product_Data_Extractor` converts WooCommerce products into a stable, filterable payload, applies the registry, then exposes the generic product-data filter.
+5. `Product_Readiness_Evaluator` applies pure readiness rules and returns machine-readable issues.
+6. `Catalog_Auditor` provides the non-persistent quick catalog preview.
+7. `Background_Audit` processes the full published catalog in bounded batches.
+8. `Audit_Repository` persists product results in the plugin-owned audit table.
+9. `Issue_Catalog` maps stable issue codes to translated labels and practical guidance.
+10. `Product_Meta_Box` shows live readiness guidance in the WooCommerce product editor.
+11. `Store_Data_Extractor` normalizes local WordPress and WooCommerce configuration.
+12. `Store_Readiness_Evaluator` applies a versioned, product-score-independent checklist.
+13. `Store_Issue_Catalog` maps store checks to translated guidance and local settings links.
+14. `Catalog_Csv_Exporter` streams permission-checked, nonce-protected, spreadsheet-safe filtered exports without creating public files.
+15. `Admin_Page` renders progress, aggregate metrics, store checks, searchable and filterable product results, pricing provenance, and snapshot freshness without exposing a public API.
 
 The evaluator is kept independent from WooCommerce objects so its versioned rules can be unit tested and later reused by WP-CLI commands, read-only protocol adapters, and optional add-ons. Full scans use WooCommerce Action Scheduler when available and fall back to a single WordPress Cron event.
 
