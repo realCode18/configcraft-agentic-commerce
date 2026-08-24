@@ -202,17 +202,41 @@ final class Audit_Repository {
 		$rows = $wpdb->get_results( $query, ARRAY_A );
 
 		foreach ( $rows as &$row ) {
-			$row['product_id'] = (int) $row['product_id'];
-			$row['score']      = (int) $row['score'];
-			$row['issues']     = json_decode( $row['issues'], true );
-			if ( ! is_array( $row['issues'] ) ) {
-				$row['issues'] = array();
-			}
-			$row['pricing'] = Pricing_Context::normalize( json_decode( $row['pricing'], true ) );
+			$row = $this->normalize_result_row( $row );
 		}
 		unset( $row );
 
 		return $rows;
+	}
+
+	/**
+	 * Return one exact product result from the visible completed snapshot.
+	 *
+	 * @param int $product_id Product ID.
+	 * @return array<string, mixed>|null
+	 */
+	public function get_product_result( $product_id ) {
+		global $wpdb;
+
+		$scan_id    = $this->get_active_scan_id();
+		$product_id = absint( $product_id );
+		if ( '' === $scan_id || 1 > $product_id ) {
+			return null;
+		}
+
+		$table_name = Database::table_name();
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				'SELECT product_id, score, status, issues, pricing, product_hash, model_version, scanned_at FROM %i WHERE scan_id = %s AND product_id = %d LIMIT 1',
+				$table_name,
+				$scan_id,
+				$product_id
+			),
+			ARRAY_A
+		);
+
+		return is_array( $row ) ? $this->normalize_result_row( $row ) : null;
 	}
 
 	/**
@@ -400,6 +424,24 @@ final class Audit_Repository {
 
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- SQL fragments are internal constants and every dynamic value uses a placeholder.
 		return $wpdb->prepare( $query, $args );
+	}
+
+	/**
+	 * Normalize one stored row for the public read-only contract.
+	 *
+	 * @param array<string, mixed> $row Raw database row.
+	 * @return array<string, mixed>
+	 */
+	private function normalize_result_row( array $row ) {
+		$row['product_id'] = isset( $row['product_id'] ) ? (int) $row['product_id'] : 0;
+		$row['score']      = isset( $row['score'] ) ? (int) $row['score'] : 0;
+		$row['issues']     = isset( $row['issues'] ) ? json_decode( (string) $row['issues'], true ) : array();
+		if ( ! is_array( $row['issues'] ) ) {
+			$row['issues'] = array();
+		}
+		$row['pricing'] = Pricing_Context::normalize( isset( $row['pricing'] ) ? json_decode( (string) $row['pricing'], true ) : array() );
+
+		return $row;
 	}
 
 	/**

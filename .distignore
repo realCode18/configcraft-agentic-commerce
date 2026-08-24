@@ -11,3 +11,8 @@
 /phpcs.xml.dist
 /README.md
 /vendor
+/build
+/.phpunit.result.cache
+/output
+/tmp
+/report_generator.py

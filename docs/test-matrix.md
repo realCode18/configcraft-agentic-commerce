@@ -1,6 +1,6 @@
 # Test and performance matrix
 
-This document records the reproducible quality gate for DestinX AI Commerce 0.12.0. Measurements are development-environment reference values, not hosting guarantees.
+This document records the reproducible quality gate for DestinX AI Commerce 0.13.0. Measurements are development-environment reference values, not hosting guarantees.
 
 ## Supported-version matrix
 

@@ -246,6 +246,17 @@ if ( empty( $failures ) ) {
 			$failures[] = 'The initial snapshot was not activated.';
 		}
 
+		$extension_api = destinx_ai_commerce_api();
+		$exact_result  = $extension_api ? $extension_api->get_result( $product_id ) : null;
+		if ( ! $extension_api || '1.1.0' !== $extension_api->get_version() ) {
+			$failures[] = 'The Free extension API 1.1.0 contract is unavailable.';
+		} elseif ( ! is_array( $exact_result ) || $product_id !== $exact_result['product_id'] || 100 !== $exact_result['score'] ) {
+			$failures[] = 'The extension API did not return the exact active-snapshot product result.';
+		}
+		if ( null !== $extension_api->get_result( 999999999 ) ) {
+			$failures[] = 'The extension API returned a result for a product outside the active snapshot.';
+		}
+
 		$scan_complete_event = null;
 		add_action(
 			'destinx_ai_commerce_scan_completed',
@@ -261,7 +272,7 @@ if ( empty( $failures ) ) {
 			if ( 'complete' !== $immediate_state['status'] || 1 !== $immediate_state['processed'] ) {
 				$failures[] = 'The immediate first batch did not complete the small catalog scan.';
 			}
-			if ( ! is_array( $scan_complete_event ) || '1.0.0' !== ( $scan_complete_event['api_version'] ?? '' ) || 1 !== ( $scan_complete_event['summary']['scanned'] ?? 0 ) ) {
+			if ( ! is_array( $scan_complete_event ) || '1.1.0' !== ( $scan_complete_event['api_version'] ?? '' ) || 1 !== ( $scan_complete_event['summary']['scanned'] ?? 0 ) ) {
 				$failures[] = 'The completed scan did not emit the stable extension event payload.';
 			}
 		}
@@ -339,7 +350,7 @@ if ( empty( $failures ) ) {
 		}
 
 		$public_api = function_exists( 'destinx_ai_commerce_api' ) ? destinx_ai_commerce_api() : null;
-		if ( ! $public_api instanceof DestinX\AICommerce\Public_API || '1.0.0' !== $public_api->get_version() || DXAIC_VERSION !== $public_api->get_plugin_version() ) {
+		if ( ! $public_api instanceof DestinX\AICommerce\Public_API || '1.1.0' !== $public_api->get_version() || DXAIC_VERSION !== $public_api->get_plugin_version() ) {
 			$failures[] = 'The public read-only extension API is unavailable or has an unexpected version.';
 		} elseif ( 6 !== $public_api->get_summary()['scanned'] || 2 !== count( $public_api->get_results( 1, 2 ) ) || 'complete' !== $public_api->get_scan_state()['status'] ) {
 			$failures[] = 'The public extension API did not expose the active Free snapshot correctly.';

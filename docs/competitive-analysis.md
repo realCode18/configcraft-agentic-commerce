@@ -1,145 +1,142 @@
-# Analisi competitiva — WooCommerce AI readiness e agentic commerce
+# Competitive analysis - WooCommerce AI readiness and agentic commerce
 
-Analisi aggiornata al 23 agosto 2026. Le informazioni derivano dalle schede pubbliche dei plugin e dai relativi changelog; non è stato copiato codice, testo commerciale, design o materiale proprietario. I prodotti concorrenti sono usati soltanto per individuare bisogni ricorrenti, rischi e opportunità di posizionamento.
+Updated on 24 August 2026. This document uses public product pages, WordPress.org listings, and vendor changelogs to identify recurring customer needs, product risks, and positioning opportunities. It does not copy competitor code, commercial copy, interfaces, or proprietary material.
 
-## Sintesi esecutiva
+## Executive summary
 
-Il mercato si sta dividendo in quattro famiglie:
+The market is separating into four overlapping product families:
 
-1. audit della qualità del catalogo;
-2. feed e superfici di discovery (`llms.txt`, JSON-LD, ACP, UCP, MCP);
-3. correzioni manuali o generate con AI;
-4. analytics, attribuzione ordini e gestione multi-store.
+1. catalog-quality audits and product-data scoring;
+2. discovery surfaces such as feeds, structured data, `llms.txt`, ACP, UCP, and MCP;
+3. manual or AI-assisted remediation workflows;
+4. monitoring, traffic analysis, order attribution, and multi-store management.
 
-La soglia minima competitiva non è più un semplice punteggio. Un prodotto credibile deve spiegare i problemi, lavorare su cataloghi grandi, mostrare le priorità, consentire un percorso di correzione e mantenere trasparenti dati e limiti.
+A score alone is no longer a sufficient product. A credible tool must explain findings, work on large catalogs, prioritize effort, support a safe remediation loop, and describe its data boundaries precisely.
 
-DestinX adotterà questa posizione:
+DestinX uses the following position:
 
-- **Free come prodotto e motore principale**, installabile e utile da solo;
-- audit locale, deterministico, spiegabile e senza limiti artificiali;
-- correzioni sempre controllate dall'utente, con anteprima e possibilità di annullamento quando verranno introdotte;
-- protocolli separati dal modello dati, perché le specifiche sono ancora in evoluzione;
-- Pro come add-on che registra capacità aggiuntive sul motore Free;
-- ConfigCraft Suite come servizio opzionale sostanziale per AI, storico remoto e multi-store, mai come dipendenza della Free.
+- **Free is the complete product and required engine.** It is useful without payment, account, key, Pro, or ConfigCraft.
+- The Free audit is local, deterministic, explainable, and not artificially limited.
+- Every product change requires an administrator action, a visible preview, and a conflict-safe path.
+- Discovery protocols remain adapters around one normalized catalog model because the specifications continue to evolve.
+- Pro is a separately installed add-on that consumes the public, versioned Free API.
+- ConfigCraft Suite is the optional commercial and service control plane for licensing, private updates, future AI credits, long history, and multi-store reporting. It is never a Free dependency.
 
-## Matrice dei concorrenti
+## Direct category competitors
 
-| Prodotto | Funzioni pubbliche rilevanti | Modello Free/Pro o cloud | Cosa impariamo |
+| Product | Publicly described capabilities | Model | Product lesson |
 | --- | --- | --- | --- |
-| [MerchantStamp Catalog Audit](https://wordpress.org/plugins/merchantstamp-catalog-audit/) | ShopScore, copertura campi, problemi prioritari, JSON-LD, feed, storico di 60 scansioni, confronto e alert di degrado | Tutto il plugin locale è dichiarato gratuito; il servizio opzionale aggiunge multi-store e verifica remota | La diagnosi deve portare a priorità misurabili e confronto nel tempo; il cloud deve risolvere un problema realmente non locale |
-| [AgenticTrack](https://en-ca.wordpress.org/plugins/agentictrack-agent-readiness-for-woocommerce/) | Audit prodotto/negozio, correzioni manuali con anteprima e undo, `llms.txt`, crawler rules, pannello prodotto | Audit, fix manuali e discovery Free; riscritture AI e analytics ordini Pro | Il percorso audit → correzione → nuova misura è più utile del solo score; AI e attribuzione sono una separazione premium comprensibile |
-| [CodeAtoZ AI Readiness](https://wordpress.org/plugins/codeatoz-ai-readiness-woocommerce/) | Score, suggerimenti, `llms.txt`, scheduler, bot log, email, bulk fix, schema, export, multilingua e knowledge base | Dichiara esecuzione locale e nessuna API esterna | Il mercato apprezza una suite ampia, ma changelog e superficie estesa mostrano il costo di sicurezza, compatibilità e manutenzione |
-| [Clustova Commerce](https://en-gb.wordpress.org/plugins/clustova-commerce/) | Feed ACP, `llms.txt`, schema senza duplicazioni, score e rilevazione basilare del canale AI | Fondazione Free; UCP/MCP, AI enrichment, revenue e ad tracking Pro | Il plugin principale può possedere il modello dati e i feed di base, mentre l'add-on aggiunge automazioni e analytics |
-| [Goppa Agentic Commerce](https://wordpress.org/plugins/goppa-agentic-commerce/) | UCP, `llms.txt`, MCP di sola lettura e catalogo JSON; reporting opzionale | Endpoint locali senza account; reporting cloud opzionale | Dichiarare soltanto capacità realmente implementate. I changelog mostrano rischi concreti: prodotti nascosti esposti e manifest inizialmente non conforme |
-| [UCPtools](https://wordpress.org/plugins/ucptools-ai-agent-discovery-for-woocommerce/) | Profilo UCP e funnel agenti registrato localmente | Storico locale Free; cloud per storico lungo, multi-store e alert | Retention limitata e reporting locale sono un buon modello privacy; multi-store è un servizio ConfigCraft naturale |
-| [KaliCart Bridge](https://wordpress.org/plugins/kalicart-bridge/) | Checklist feed, conteggio gap, filtri prodotto, CSV, risoluzione brand e snapshot atomici | Funzioni presentate nel plugin principale | La robustezza operativa del feed conta: validazione per riga, esclusioni esplicite e conservazione dell'ultimo snapshot valido |
-| [Goppa/Agentabile e altri feed-first](https://wordpress.org/plugins/agentabile/) | Attivazione rapida e feed pubblici senza configurazione | Generalmente Free o ponte verso un servizio | Il time-to-value è forte, ma un endpoint pubblico richiede controlli severi su visibilità, cache, invalidazione e privacy |
-| [UCP Ready](https://wordpress.org/plugins/universal-commerce-protocol-ucp-for-woocommerce/) | Discovery, catalogo, OAuth, checkout, spedizione, coupon, ordini e simulatore | Implementazione locale estesa | Checkout e identità moltiplicano il rischio; DestinX li esclude finché specifiche, threat model e test end-to-end non saranno maturi |
+| MerchantStamp Catalog Audit | Shop score, field coverage, recommendations, feed, history, comparisons, and alerts | Local Free plugin plus optional remote service | Diagnosis becomes more valuable when it proves change over time. Cloud features must solve a genuinely remote problem. |
+| AgenticTrack | Product/store audit, manual fixes, preview, undo, discovery files, and product panel | Previously Free plus Pro; listing under review in August 2026 | Preview and undo are strong trust features. Plugin-review compliance is an operational product risk. |
+| CodeAtoZ AI Readiness | Score, suggestions, feed, scheduler, bot log, email, bulk fixes, schema, export, and multilingual features | Declared local execution | A broad suite is attractive, but every extra protocol increases security, compatibility, and maintenance cost. |
+| Clustova Commerce | ACP feed, `llms.txt`, schema, score, basic channel detection, and Pro enrichment | Free foundation plus Pro | The main plugin can own the data model and base feed while the add-on owns automation and analytics. |
+| Agentic Commerce - LLMs.txt | `llms.txt`, version history, rollback, exclusions, and refresh | Free with premium upsell | History, rollback, and visibility controls are easier to value than speculative protocol coverage. |
+| Goppa Agentic Commerce | UCP, `llms.txt`, read-only MCP, catalog JSON, and optional reporting | Local endpoints plus optional cloud reporting | Public endpoints require strict visibility, cache, invalidation, and privacy controls. |
+| UCPtools | UCP profile and local agent funnel history | Local Free history plus cloud long-term reporting | Limited local retention and opt-in multi-store reporting are a credible privacy model. |
+| KaliCart Bridge | Feed checklist, gap counts, product filters, CSV, brand resolution, and atomic snapshots | Main-plugin functionality | Per-row validation, explicit exclusions, and last-known-good snapshots are important operational safeguards. |
 
-## Funzioni ricorrenti
+The direct category remains young and fragmented. Many 2026 listings report fewer than ten active installations. DestinX therefore must sell the concrete job - find errors, correct them safely, prevent regressions, and prepare reliable feeds - instead of depending on the phrase "AI readiness" as an established category.
 
-### Baseline del mercato
+## Mature adjacent competitors
 
-- score per prodotto e score aggregato del negozio;
-- elenco ordinabile dei prodotti problematici;
-- problemi principali e copertura dei campi;
-- consigli concreti e link alla modifica;
-- scansioni a lotti e aggiornamento pianificato;
-- identificatori, brand, prezzo, stock, immagini, attributi e descrizioni;
-- export CSV o JSON;
-- pannello nel prodotto;
-- `llms.txt` e catalogo strutturato;
-- compatibilità con plugin SEO e assenza di JSON-LD duplicato;
-- comportamento locale senza account per il nucleo Free.
+| Budget category | Representative products | Customer expectation created by the category |
+| --- | --- | --- |
+| WooCommerce SEO | Yoast WooCommerce SEO, Rank Math, AIOSEO, SEOPress | Structured data, content checks, broad compatibility, updates, and support. |
+| Product feeds | Google for WooCommerce, WebToffee, CTX Feed, AdTribes | Channel mapping, validation, scheduling, filtering, and reliable refresh. |
+| AI content automation | Kestrel AI, StoreAgent, AltText.ai | Previewable drafts, usage boundaries, clear provider cost, and time savings. |
+| Catalog operations | Native WooCommerce bulk editing and specialist tools | Filtering, bounded batches, retries, exclusions, auditability, and recoverability. |
 
-### Differenziatori che creano valore
+These products validate that merchants already spend time or money on product data, feeds, SEO, and automation. They do not prove that merchants are searching for a standalone AI-readiness product. DestinX must connect its score to an operational outcome.
 
-- priorità basata su impatto atteso e sforzo di correzione;
-- anteprima della modifica, approvazione esplicita e undo;
-- storico prima/dopo con versione del modello di scoring;
-- snapshot atomici: l'ultimo risultato valido resta disponibile durante scansioni o rebuild;
-- simulatore di ciò che un agente può effettivamente leggere;
-- esclusioni esplicite e verifica di prodotti nascosti, privati o protetti;
-- integrazione multilingua;
-- analytics locali con retention limitata;
-- alert, storico lungo e vista multi-store in un servizio centralizzato.
+## Recurring customer needs
 
-### Funzioni ad alto rischio
+### Explain what is wrong
 
-- scrittura automatica dei contenuti senza anteprima;
-- modifica globale di `robots.txt` con regole permissive;
-- feed pubblici che includono prodotti nascosti, protetti o destinati al B2B;
-- schema JSON-LD aggiunto senza rilevare quello esistente;
-- telemetria o attribuzione ordini attiva per impostazione predefinita;
-- OAuth, checkout, coupon, pagamenti e ordini pilotati da agenti;
-- dichiarazioni di conformità a protocolli emergenti senza test contro una specifica versionata;
-- promesse di ranking, indicizzazione, raccomandazioni o vendite.
+Every finding needs a stable code, severity, penalty, plain-English label, remediation guidance, and scoring-model version. The merchant must be able to reproduce and challenge the result.
 
-## Decisione di prodotto DestinX
+### Work on real catalog sizes
 
-### Free 1.0.0 — invio WordPress.org
+Full-catalog scans require bounded batches, retries, stale-job recovery, atomic snapshots, filters, pagination, and export. A dashboard that works only on the latest products is not a catalog product.
 
-La prima versione deve essere concentrata e già completa nel proprio scopo:
+### Correct without losing control
 
-- scansione locale illimitata del catalogo;
-- score deterministico e versione delle regole;
-- controlli prodotto e negozio;
-- scansione completa a lotti con snapshot atomico;
-- dashboard, ricerca, filtri, priorità e CSV;
-- pannello diagnostico nel prodotto;
-- istruzioni di correzione e collegamenti diretti;
-- nessuna modifica automatica, telemetria, licenza o servizio esterno.
+The workflow is:
 
-### Evoluzione Free dopo l'approvazione
+1. select a finding or product;
+2. build a proposal;
+3. show source data and before/after values;
+4. approve explicit fields;
+5. apply through WooCommerce CRUD;
+6. record an audit event;
+7. allow undo only when the written values are unchanged;
+8. run the Free scan again to prove the result.
 
-Queste funzioni resteranno nel plugin principale perché completano il motore e ne aumentano il valore senza richiedere un servizio:
+Autonomous background writes are outside the MVP.
 
-- workspace di correzione manuale con anteprima, conferma e undo;
-- storico locale limitato e confronto prima/dopo;
-- esclusioni per prodotto e controlli rigorosi sulla visibilità;
-- `llms.txt`, catalogo JSON di sola lettura e diagnostica dello schema;
-- snapshot validati e rigenerazione su modifica catalogo;
-- anteprima di ciò che un consumatore automatico riceve;
-- API e hook stabili per gli add-on.
+### Handle non-native pricing
 
-L'introduzione di feed pubblici avverrà soltanto dopo la 1.0.0, con specifica versionata, escape contestuale, cache invalidation, test su prodotti nascosti/protetti e disattivazione semplice.
+Name Your Price, request-a-quote, call-for-price, bundles, composites, measurement pricing, and add-ons can make a blank native price valid. DestinX therefore uses a local pricing-context contract and verified adapters instead of assuming that every empty WooCommerce price is an error.
 
-### Add-on Pro
+### Control public visibility
 
-Il Pro sfrutterà i dati, le regole, le code, il repository e le interfacce della Free. Aggiungerà:
+Feeds and machine-readable endpoints must respect product status, catalog visibility, exclusions, and last-known-good snapshots. Public discovery work must not expose hidden or private products.
 
-- suggerimenti e riscritture AI con revisione umana;
-- azioni bulk sicure e workflow di approvazione;
-- monitoraggio programmato, alert e storico avanzato;
-- multilingua avanzato;
-- adapter ACP/UCP/MCP e validatori dedicati, quando maturi;
-- analytics del traffico agente e attribuzione, con privacy by design;
-- connessione ConfigCraft per multi-store, team, report e automazioni.
+### Prove change over time
 
-### ConfigCraft Suite
+A before/after comparison, model-versioned history, and regression alerts support renewal more convincingly than adding another speculative protocol.
 
-ConfigCraft potrà gestire:
+## DestinX differentiation
 
-- account, organizzazioni, ruoli e negozi;
-- sottoscrizione e licenza del solo add-on Pro;
-- quote e fatturazione delle elaborazioni AI;
-- dashboard multi-store, storico remoto, alert e report;
-- download e aggiornamenti dell'add-on distribuito fuori da WordPress.org;
-- termini, privacy, consensi e audit delle chiamate esterne.
+| Pillar | Product proof |
+| --- | --- |
+| Explainable by default | Stable finding codes, versioned rules, visible penalties, and practical guidance. |
+| Safe to change | Explicit field selection, immutable preview, WooCommerce CRUD, optimistic conflict checks, audit log, and undo. |
+| Pricing-engine aware | A deterministic adapter registry for native, dynamic, quote, and externally managed prices. |
+| Local core | Free scanning and diagnostics require no account, remote service, telemetry, or AI provider. |
+| Protocol-ready, not protocol-led | One normalized product model can support validated adapters without rewriting the engine. |
+| Free survives everything | Pro, license, ConfigCraft, or an AI provider can disappear without disabling the Free product. |
 
-Non gestirà il funzionamento della Free, non sarà contattato dalla Free e non riceverà dati finché l'utente non avrà installato/configurato il Pro e accettato il servizio.
+## Free and Pro boundary
 
-## Vantaggio che vogliamo costruire
+Free owns every capability required to understand the base score and complete a local catalog diagnosis:
 
-Non competiamo sul numero di sigle o di schermate. Il vantaggio DestinX sarà un ciclo affidabile e verificabile:
+- product normalization and pricing context;
+- scoring rules and finding content;
+- quick and full scans;
+- atomic snapshots and scan recovery;
+- filters, pagination, CSV, and product guidance;
+- Store Readiness;
+- the versioned read-only extension API.
 
-`misura → ordina per impatto/sforzo → correggi con controllo → confronta → pubblica soltanto dati validati`
+Pro may own capabilities that save material operating time or coordinate scale:
 
-Ogni risultato deve essere spiegabile, ogni scrittura reversibile, ogni endpoint verificabile e ogni invio esterno esplicito.
+- reviewable remediation proposals;
+- approved WooCommerce CRUD writes and undo;
+- resumable bulk workflows;
+- scheduled monitoring, history, trends, and reports;
+- premium vertical adapters after real compatibility testing;
+- optional ConfigCraft AI, long history, team, and multi-store services with explicit consent.
 
-## Fonti ufficiali WordPress
+## Features deliberately deferred
 
-- [Detailed Plugin Guidelines](https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/)
-- [Common issues found during plugin review](https://developer.wordpress.org/plugins/wordpress-org/common-issues/)
+- autonomous AI writes;
+- checkout or payment protocols;
+- customer, order, or payment-data transmission;
+- automated order attribution;
+- unlimited AI usage;
+- simultaneous implementation of every draft discovery protocol;
+- multi-store catalog synchronization.
 
-Le linee guida vietano trialware e funzioni locali presenti ma bloccate da pagamento; raccomandano add-on esterni per il codice premium. I servizi a pagamento sono ammessi quando forniscono funzionalità sostanziale, sono documentati e le comunicazioni esterne avvengono con consenso.
+Each deferred item requires separate product evidence, a stable specification, a threat model, privacy review, and end-to-end testing.
+
+## Validation gates
+
+The competitive position is considered validated only when the product can demonstrate:
+
+- full-scan completion on representative catalog sizes;
+- a low false-positive rate for supported pricing configurations;
+- a complete proposal, preview, apply, undo, and re-scan path;
+- no overwrite during concurrent product edits;
+- measurable time saved in beta;
+- a clear reason for customers to renew beyond receiving updates;
+- English product UI, readme, public documentation, screenshots, and support copy.

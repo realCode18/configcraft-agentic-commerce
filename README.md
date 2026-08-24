@@ -111,7 +111,7 @@ The versioned, read-only add-on contract is available through
 `destinx_ai_commerce_api()` after `destinx_ai_commerce_loaded` fires. Contract
 version `DXAIC_EXTENSION_API_VERSION` is independent from the plugin version.
 The API exposes only the visible completed snapshot, its bounded results,
-aggregate summary, metadata, and normalized scan state. Add-ons can listen to
+exact product-result lookup, aggregate summary, metadata, and normalized scan state. Add-ons can listen to
 `destinx_ai_commerce_scan_completed` for the atomic completion payload.
 
 - `destinx_ai_commerce_product_data`

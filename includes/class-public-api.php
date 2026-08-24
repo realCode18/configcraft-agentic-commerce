@@ -16,7 +16,7 @@ final class Public_API {
 	/**
 	 * Version of this extension contract, independent from the plugin version.
 	 */
-	const VERSION = '1.0.0';
+	const VERSION = '1.1.0';
 
 	/**
 	 * Audit snapshot repository.
@@ -92,6 +92,16 @@ final class Public_API {
 		$per_page = max( 1, min( 100, (int) $per_page ) );
 
 		return $this->repository->get_page( $page, $per_page, $filters );
+	}
+
+	/**
+	 * Return one exact product result from the visible completed snapshot.
+	 *
+	 * @param int $product_id Product ID.
+	 * @return array<string, mixed>|null
+	 */
+	public function get_result( $product_id ) {
+		return $this->repository->get_product_result( $product_id );
 	}
 
 	/**
