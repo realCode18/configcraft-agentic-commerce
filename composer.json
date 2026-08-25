@@ -42,6 +42,7 @@
       "php -l includes/class-product-meta-box.php",
       "php -l includes/class-admin-page.php",
       "php -l tests/ProductReadinessEvaluatorTest.php",
+      "php -l tests/ArchitectureBoundaryTest.php",
       "php -l tests/PricingAdapterRegistryTest.php",
       "php -l tests/PricingAdaptersTest.php",
       "php -l tests/ScanStateTest.php",
