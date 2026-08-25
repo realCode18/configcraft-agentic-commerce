@@ -11,7 +11,7 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 		$this->assertSame( 100, $result['score'] );
 		$this->assertSame( 'ready', $result['status'] );
 		$this->assertSame( array(), $result['issues'] );
-		$this->assertSame( '1.2.0', $result['model_version'] );
+		$this->assertSame( '1.2.1', $result['model_version'] );
 		$this->assertTrue( $result['pricing']['is_available'] );
 		$this->assertTrue( $result['pricing']['uses_woocommerce_purchase_state'] );
 		$this->assertSame( 'native', $result['pricing']['confidence'] );
@@ -151,6 +151,27 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 		$this->assertNotContains( 'shipping_data_missing', array_column( $result['issues'], 'code' ) );
 	}
 
+	public function test_external_and_grouped_products_do_not_receive_direct_purchase_or_shipping_findings() {
+		$evaluator = new Product_Readiness_Evaluator();
+
+		foreach ( array( 'external', 'grouped' ) as $product_type ) {
+			$product                   = $this->complete_product();
+			$product['product_type']   = $product_type;
+			$product['is_purchasable'] = false;
+			$product['weight']         = '';
+			$product['length']         = '';
+			$product['width']          = '';
+			$product['height']         = '';
+
+			$result = $evaluator->evaluate( $product );
+			$codes  = array_column( $result['issues'], 'code' );
+
+			$this->assertSame( 100, $result['score'], $product_type );
+			$this->assertNotContains( 'product_not_purchasable', $codes, $product_type );
+			$this->assertNotContains( 'shipping_data_missing', $codes, $product_type );
+		}
+	}
+
 	public function test_physical_product_without_weight_or_complete_dimensions_has_shipping_finding() {
 		$evaluator         = new Product_Readiness_Evaluator();
 		$product           = $this->complete_product();
@@ -196,6 +217,7 @@ final class ProductReadinessEvaluatorTest extends TestCase {
 
 	private function complete_product() {
 		return array(
+			'product_type'                           => 'simple',
 			'name'                                   => 'Waterproof hiking shoe for mountain trails',
 			'description'                            => str_repeat( 'Detailed product information. ', 5 ),
 			'price'                                  => '119.00',

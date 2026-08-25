@@ -11,7 +11,7 @@ namespace DestinX\AICommerce;
  * Applies deterministic readiness rules to normalized product data.
  */
 final class Product_Readiness_Evaluator {
-	const MODEL_VERSION = '1.2.0';
+	const MODEL_VERSION = '1.2.1';
 
 	/**
 	 * Evaluate normalized product data.
@@ -43,7 +43,9 @@ final class Product_Readiness_Evaluator {
 		if ( ! $has_price ) {
 			$issues[] = $this->issue( 'price_missing', 'high', 20 );
 		}
-		$uses_woocommerce_purchase_state = Pricing_Context::uses_woocommerce_purchase_state( $pricing );
+		$product_type                    = isset( $data['product_type'] ) ? (string) $data['product_type'] : '';
+		$is_indirect_product             = in_array( $product_type, array( 'external', 'grouped' ), true );
+		$uses_woocommerce_purchase_state = Pricing_Context::uses_woocommerce_purchase_state( $pricing ) && ! $is_indirect_product;
 
 		if ( empty( $data['image_id'] ) ) {
 			$issues[] = $this->issue( 'image_missing', 'medium', 8 );
@@ -70,7 +72,7 @@ final class Product_Readiness_Evaluator {
 		}
 
 		$is_variable = ! empty( $data['is_variable'] );
-		$is_physical = empty( $data['is_virtual'] ) && empty( $data['is_downloadable'] );
+		$is_physical = empty( $data['is_virtual'] ) && empty( $data['is_downloadable'] ) && ! $is_indirect_product;
 		if ( $is_variable && ! empty( $data['all_variations_virtual_or_downloadable'] ) ) {
 			$is_physical = false;
 		}
