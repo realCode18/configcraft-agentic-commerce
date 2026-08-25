@@ -16,7 +16,8 @@ The plugin is split into small services with explicit responsibilities:
 12. `Store_Readiness_Evaluator` applies a versioned, product-score-independent checklist.
 13. `Store_Issue_Catalog` maps store checks to translated guidance and local settings links.
 14. `Catalog_Csv_Exporter` streams permission-checked, nonce-protected, spreadsheet-safe filtered exports without creating public files.
-15. `Admin_Page` renders progress, aggregate metrics, store checks, searchable and filterable product results, pricing provenance, and snapshot freshness without exposing a public API.
+15. `Admin_Page` renders progress, aggregate metrics, store checks, searchable and filterable product results, pricing provenance, and snapshot freshness.
+16. `Public_API` exposes versioned, bounded, read-only access to completed snapshot metadata, summary, pages, exact product results, and scan state for compatible add-ons.
 
 The evaluator is kept independent from WooCommerce objects so its versioned rules can be unit tested and later reused by WP-CLI commands, read-only protocol adapters, and optional add-ons. Full scans use WooCommerce Action Scheduler when available and fall back to a single WordPress Cron event.
 
@@ -27,7 +28,7 @@ Each full scan writes to an isolated `scan_id`. The active snapshot pointer chan
 - The free WordPress.org plugin is the primary product and the only owner of the core engine.
 - The free plugin must remain fully functional without payment, an account, ConfigCraft, or a premium add-on.
 - Premium code will not be committed to this public repository.
-- The future Pro product is a separate dependent add-on. It extends public contracts and must not copy or replace the engine.
+- The Pro product is a separate dependent add-on. It consumes public contracts and must not copy or replace the engine.
 - The core never checks a Pro license and must not install or update premium code.
 - Hosted features must require explicit opt-in before sending store data.
 - Protocol adapters must remain separate from the normalized catalog audit model.

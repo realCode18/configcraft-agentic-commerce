@@ -40,6 +40,7 @@ final class Product_Data_Extractor {
 		$price             = $product->get_price();
 		$data              = array(
 			'id'                                     => $product->get_id(),
+			'product_type'                           => $product->get_type(),
 			'name'                                   => $product->get_name(),
 			'description'                            => $product->get_description(),
 			'short_description'                      => $product->get_short_description(),
