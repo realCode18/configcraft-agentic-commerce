@@ -52,6 +52,75 @@
 		}
 	}
 
+	var dashboard = document.querySelector('.dxaic-wrap[data-dxaic-preferences-url]');
+	if (dashboard && window.fetch && window.FormData) {
+		document.addEventListener('submit', function (event) {
+			var form = event.target.closest('.dxaic-preference-form');
+			if (!form) {
+				return;
+			}
+
+			event.preventDefault();
+			var button = form.querySelector('button[type="submit"]');
+			var status = dashboard.querySelector('.dxaic-preference-status');
+			var effect = form.dataset.dxaicEffect;
+			if (button) {
+				button.disabled = true;
+			}
+			form.setAttribute('aria-busy', 'true');
+
+			window.fetch(dashboard.dataset.dxaicPreferencesUrl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				body: new window.FormData(form)
+			}).then(function (response) {
+				if (!response.ok) {
+					throw new Error('Dashboard preference request failed.');
+				}
+				return response.json();
+			}).then(function (result) {
+				if (!result || !result.success) {
+					throw new Error('Dashboard preference was rejected.');
+				}
+
+				var onboarding = dashboard.querySelector('.dxaic-onboarding');
+				var reopen = dashboard.querySelector('.dxaic-onboarding-reopen');
+				if (effect === 'hide-onboarding' && onboarding && reopen) {
+					onboarding.hidden = true;
+					reopen.hidden = false;
+					var reopenButton = reopen.querySelector('button');
+					if (reopenButton) {
+						reopenButton.focus();
+					}
+				} else if (effect === 'show-onboarding' && onboarding && reopen) {
+					reopen.hidden = true;
+					onboarding.hidden = false;
+					var onboardingTitle = onboarding.querySelector('h2');
+					if (onboardingTitle) {
+						onboardingTitle.focus();
+					}
+				} else if (effect === 'hide-addon') {
+					var addonCard = form.closest('.dxaic-addon-card');
+					if (addonCard) {
+						addonCard.hidden = true;
+					}
+				}
+
+				if (status) {
+					status.textContent = dashboard.dataset.dxaicPreferencesSaved;
+				}
+			}).catch(function () {
+				if (button) {
+					button.disabled = false;
+				}
+				form.removeAttribute('aria-busy');
+				if (status) {
+					status.textContent = dashboard.dataset.dxaicPreferencesError;
+				}
+			});
+		});
+	}
+
 	if (!document.querySelector('.dxaic-results-panel') || !window.fetch || !window.DOMParser || !window.URL || !window.URLSearchParams) {
 		return;
 	}

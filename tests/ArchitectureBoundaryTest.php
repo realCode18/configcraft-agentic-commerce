@@ -66,6 +66,69 @@ final class ArchitectureBoundaryTest extends TestCase {
 		}
 	}
 
+	public function test_free_runtime_contains_no_dormant_commercial_controls() {
+		$forbidden_patterns = array(
+			'/\b(?:trial|trialware)\b/i',
+			'/\b(?:activate|validate|verify)[_-]?license\b/i',
+			'/\b(?:premium|pro)[_-]?(?:feature|module|implementation|code)\b/i',
+			'/\bupgrade[_-]?url\b/i',
+		);
+
+		foreach ( $this->get_runtime_files() as $file ) {
+			$source = file_get_contents( $file );
+
+			$this->assertIsString( $source, 'The runtime source must be readable: ' . $file );
+			foreach ( $forbidden_patterns as $pattern ) {
+				$this->assertDoesNotMatchRegularExpression(
+					$pattern,
+					$source,
+					'The Free runtime must not ship dormant commercial controls: ' . $file
+				);
+			}
+		}
+	}
+
+	public function test_admin_assets_contain_no_remote_resource_or_service_urls() {
+		$root = dirname( __DIR__ );
+		foreach ( array( $root . '/assets/admin.js', $root . '/assets/admin.css' ) as $file ) {
+			$source = file_get_contents( $file );
+
+			$this->assertIsString( $source, 'The runtime asset must be readable: ' . $file );
+			$this->assertDoesNotMatchRegularExpression(
+				'#(?:https?:)?//#i',
+				$source,
+				'The Free admin assets must not load a remote resource or service: ' . $file
+			);
+		}
+	}
+
+	public function test_release_metadata_is_aligned_and_readme_is_bounded() {
+		$root   = dirname( __DIR__ );
+		$main   = file_get_contents( $root . '/destinx-ai-commerce.php' );
+		$readme = file_get_contents( $root . '/readme.txt' );
+		$pot    = file_get_contents( $root . '/languages/destinx-ai-commerce.pot' );
+
+		$this->assertIsString( $main );
+		$this->assertIsString( $readme );
+		$this->assertIsString( $pot );
+		$this->assertMatchesRegularExpression( '/^ \* Version:\s+([^\s]+)$/m', $main );
+		preg_match( '/^ \* Version:\s+([^\s]+)$/m', $main, $header_match );
+		preg_match( "/define\( 'DXAIC_VERSION', '([^']+)' \);/", $main, $constant_match );
+		preg_match( '/^Stable tag:\s+([^\s]+)$/m', $readme, $stable_match );
+
+		$this->assertNotEmpty( $constant_match );
+		$this->assertNotEmpty( $stable_match );
+		$this->assertSame( $header_match[1], $constant_match[1] );
+		$this->assertSame( $header_match[1], $stable_match[1] );
+		$this->assertStringContainsString( 'Project-Id-Version: DestinX AI Commerce for WooCommerce ' . $header_match[1], $pot );
+		$this->assertMatchesRegularExpression( '/^Contributors:\s+destinx$/m', $readme );
+		$this->assertLessThan( 10000, strlen( $readme ), 'WordPress.org readme.txt must remain below 10,000 bytes.' );
+
+		preg_match( '/^Tags:\s*(.+)$/m', $readme, $tags_match );
+		$this->assertNotEmpty( $tags_match );
+		$this->assertLessThanOrEqual( 5, count( array_filter( array_map( 'trim', explode( ',', $tags_match[1] ) ) ) ) );
+	}
+
 	public function test_free_plugin_does_not_claim_an_external_update_channel() {
 		$source = file_get_contents( dirname( __DIR__ ) . '/destinx-ai-commerce.php' );
 

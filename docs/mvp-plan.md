@@ -120,7 +120,7 @@ Store checks remain separate from product scores and do not claim legal complian
 - Every administration action requires `manage_woocommerce` and a valid nonce.
 - Output is escaped at the final rendering boundary.
 - CSV cells are neutralized against formula execution.
-- Uninstall removes Free tables, options, locks, and scheduled work, including Multisite cleanup.
+- Uninstall removes Free tables, options, locks, scheduled work, and per-user dashboard preferences, including Multisite cleanup.
 
 ### Public extension API
 

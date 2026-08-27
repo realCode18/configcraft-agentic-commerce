@@ -1,0 +1,95 @@
+DestinX AI Commerce for WooCommerce - release history
+
+0.13.0
+- Extended the read-only add-on API with exact product-result lookup from the active completed snapshot.
+- Kept the extension boundary local, bounded, and free of write operations or remote requests.
+
+0.12.0
+- Added a versioned, read-only extension API for compatible add-ons.
+- Added a public engine-ready hook and an atomic full-scan completion event.
+- Exposed bounded snapshot results, summary data, metadata, and scan state without exposing mutable internals.
+
+0.11.1
+- Started the first bounded catalog batch directly from the authenticated dashboard action.
+- Removed the initial zero-progress wait caused by delayed Action Scheduler or WP-Cron runners.
+- Added accurate success feedback when a small catalog finishes before the dashboard reloads.
+
+0.11.0
+- Added a deterministic, failure-isolated pricing adapter registry for third-party extensions.
+- Added verified compatibility for Name Your Price, YITH Request a Quote, Call for Price, Composite Products, Product Bundles, Mix and Match, Measurement Price Calculator, and Product Add-Ons.
+- Distinguished extensions that replace WooCommerce purchase rules from extensions that retain native base-price and variation validation.
+- Added pricing verification details to catalog results, product panels, stored snapshots, and CSV exports.
+- Added unit and real-plugin integration tests for the pricing compatibility layer.
+
+0.10.0
+- Added a public pricing-context contract for dynamic, quote-based, and externally managed product prices.
+- External pricing engines can prevent false missing-price and purchasability findings by declaring price availability.
+- Added visible pricing-source context to catalog results, product panels, stored snapshots, and CSV exports.
+- Changed SKU lookup to exact matching while preserving partial product-title search.
+
+0.9.0
+- Redesigned the dashboard with a spacious interface aligned with the DestinX visual system.
+- Added a clearer dashboard hero, privacy-first service information, and focused scan controls.
+- Refined store checks, catalog filters, tables, status pills, buttons, focus states, and responsive layouts.
+- Updated the product editor readiness panel to use the same visual language.
+
+0.8.0
+- Added automated compatibility coverage for WordPress 6.6 through 7.1 and WooCommerce 8.2.5, 10.9.4, and the latest stable release.
+- Added progressive catalog tests for 0, 1, 26, 500, and 5,000 products with batch, dashboard, query, and memory budgets.
+- Added upgrade tests from versions 0.6.0 and 0.7.0, including data-preserving deactivation and reactivation.
+- Deactivation cancels pending scan actions, clears scan locks, and discards only incomplete staging results.
+- Expanded scoring tests for physical, virtual, downloadable, purchasability, shipping, and stock-status behavior.
+
+0.7.0
+- Added network-wide activation, new-site initialization, and complete Multisite uninstall cleanup.
+- Declared WooCommerce HPOS compatibility and added tested WooCommerce version headers.
+- Added an official translation template and documented its reproducible WP-CLI command.
+- Added accessible live status, progress labeling, table-region semantics, and descriptive control names.
+- Added pause and resume controls for automatic scan refresh, with reduced-motion support.
+- Documented the exact local data inventory, privacy boundaries, and uninstall behavior.
+- Added automated WooCommerce compatibility, accessibility markup, Multisite lifecycle, and uninstall tests.
+- Added official WordPress Plugin Check to the distribution-package CI gate.
+
+0.6.0
+- Added product-name and SKU search across the active full-catalog snapshot.
+- Added combinable status, finding, and product-category filters.
+- Added matching-result counts and filter-preserving pagination.
+- Added protected UTF-8 CSV export for the current filtered result set.
+- Added spreadsheet formula-injection protection to exported cells.
+- Added visible snapshot freshness and scoring-model information.
+- Added SKU context directly below each catalog result.
+
+0.5.0
+- Added a 15-point technical Store Readiness checklist separate from product scoring.
+- Added checks for HTTPS, indexing visibility, permalinks, location, address, and currency.
+- Added checks for WooCommerce cart, checkout, account, privacy, terms, and refund pages.
+- Added published-product, REST API, and physical-store shipping checks.
+- Added digital-only handling so shipping is marked not applicable when appropriate.
+- Added direct remediation guidance and local settings links for every problem.
+
+0.4.0
+- Added atomic scan snapshots with a stable active-result pointer.
+- Added Action Scheduler and WP-Cron job deduplication.
+- Added expiring locks, bounded retries, heartbeats, and stale-scan recovery.
+- Added catalog reconciliation when products change during a scan.
+- Added migration of pre-snapshot audit results without losing the last valid scan.
+- Added product data hashes and scoring model version 1.0.0.
+- Expanded variable-product, variation, stock-status, and purchasability checks.
+
+0.3.0
+- Renamed the plugin to DestinX AI Commerce for WooCommerce.
+- Aligned the plugin slug, text domain, namespace, hooks, and internal prefixes.
+- Added the detailed WordPress.org MVP and submission plan.
+
+0.2.0
+- Added full-catalog scans using Action Scheduler or WordPress Cron.
+- Added persistent, paginated results ordered by lowest readiness score.
+- Added scan progress and aggregate status totals.
+- Added product editor remediation guidance.
+- Added complete cleanup on uninstall.
+
+0.1.0
+- Initial development release.
+- Added product readiness scoring.
+- Added the WooCommerce AI Commerce dashboard.
+- Added checks for core catalog fields and variable products.

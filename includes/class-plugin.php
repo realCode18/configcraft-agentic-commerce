@@ -71,6 +71,7 @@ final class Plugin {
 	private function boot() {
 		Database::maybe_upgrade();
 		add_action( 'wp_initialize_site', array( 'DestinX\\AICommerce\\Database', 'initialize_site' ), 200 );
+		add_filter( 'plugin_action_links_' . plugin_basename( DXAIC_FILE ), array( $this, 'add_plugin_action_links' ) );
 
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			add_action( 'admin_notices', array( $this, 'render_woocommerce_notice' ) );
@@ -101,6 +102,29 @@ final class Plugin {
 		 * @param Public_API $api Stable extension API.
 		 */
 		do_action( 'destinx_ai_commerce_loaded', $this->api );
+	}
+
+	/**
+	 * Add a direct, non-disruptive entry point from the Plugins screen.
+	 *
+	 * @param array<int, string> $links Existing plugin action links.
+	 * @return array<int, string>
+	 */
+	public function add_plugin_action_links( array $links ) {
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			return $links;
+		}
+
+		$dashboard_link = sprintf(
+			'<a href="%1$s" aria-label="%2$s">%3$s</a>',
+			esc_url( admin_url( 'admin.php?page=destinx-ai-commerce' ) ),
+			esc_attr__( 'Open the DestinX AI Commerce setup guide', 'destinx-ai-commerce' ),
+			esc_html__( 'Open AI Commerce', 'destinx-ai-commerce' )
+		);
+
+		array_unshift( $links, $dashboard_link );
+
+		return $links;
 	}
 
 	/**

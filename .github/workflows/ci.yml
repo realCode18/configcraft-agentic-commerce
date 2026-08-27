@@ -162,10 +162,10 @@ jobs:
           git archive --format=tar HEAD \
             LICENSE.md \
             assets \
-            composer.json \
             destinx-ai-commerce.php \
             includes \
             languages \
+            changelog.txt \
             readme.txt \
             uninstall.php \
             | tar -x -C build/destinx-ai-commerce

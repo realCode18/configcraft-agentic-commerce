@@ -31,6 +31,12 @@ if ( ! class_exists( 'DestinX\\AICommerce\\Catalog_Auditor' ) ) {
 	$failures[] = 'Plugin services did not load.';
 }
 
+wp_set_current_user( 1 );
+$plugin_action_links = apply_filters( 'plugin_action_links_destinx-ai-commerce/destinx-ai-commerce.php', array() );
+if ( empty( $plugin_action_links ) || false === strpos( $plugin_action_links[0], 'Open AI Commerce' ) || false === strpos( $plugin_action_links[0], 'page=destinx-ai-commerce' ) ) {
+	$failures[] = 'The Plugins screen is missing its direct AI Commerce setup link.';
+}
+
 if ( class_exists( 'Automattic\\WooCommerce\\Utilities\\FeaturesUtil' ) ) {
 	$compatibility = Automattic\WooCommerce\Utilities\FeaturesUtil::get_compatible_features_for_plugin( 'destinx-ai-commerce/destinx-ai-commerce.php' );
 	if ( ! in_array( 'custom_order_tables', $compatibility['compatible'], true ) ) {
@@ -531,6 +537,12 @@ if ( empty( $failures ) ) {
 		if ( false === strpos( $dashboard_html, 'Catalog results' ) || false === strpos( $dashboard_html, '6/6' ) ) {
 			$failures[] = 'The persisted catalog dashboard did not render its completed results.';
 		}
+		if ( false === strpos( $dashboard_html, 'Your first catalog audit, step by step' ) || false === strpos( $dashboard_html, 'Go to full scan' ) || false === strpos( $dashboard_html, 'Edit lowest-scoring product' ) ) {
+			$failures[] = 'The dashboard did not render the actionable first-run guide.';
+		}
+		if ( false === strpos( $dashboard_html, 'Optional add-on' ) || false === strpos( $dashboard_html, 'Hide optional add-on for 24 hours' ) || false === strpos( $dashboard_html, 'dxaic-preference-form' ) ) {
+			$failures[] = 'The contextual optional add-on card is missing its dismissible preference control.';
+		}
 		if ( false === strpos( $dashboard_html, 'Store readiness' ) || false === strpos( $dashboard_html, 'Technical store settings are checked separately' ) ) {
 			$failures[] = 'The store readiness checklist did not render separately from product scoring.';
 		}
@@ -545,6 +557,29 @@ if ( empty( $failures ) ) {
 		}
 		if ( false === strpos( $dashboard_html, 'aria-live="polite"' ) || false === strpos( $dashboard_html, 'Scrollable catalog results' ) || false === strpos( $dashboard_html, '<caption class="screen-reader-text">' ) ) {
 			$failures[] = 'The dashboard is missing its accessible status or table-region semantics.';
+		}
+
+		update_user_meta( get_current_user_id(), DestinX\AICommerce\Database::USER_META_ONBOARDING_HIDDEN, '1' );
+		update_user_meta( get_current_user_id(), DestinX\AICommerce\Database::USER_META_ADDON_DISMISSED, time() );
+		ob_start();
+		$admin_page->render();
+		$personalized_dashboard_html = ob_get_clean();
+		delete_user_meta( get_current_user_id(), DestinX\AICommerce\Database::USER_META_ONBOARDING_HIDDEN );
+		delete_user_meta( get_current_user_id(), DestinX\AICommerce\Database::USER_META_ADDON_DISMISSED );
+		if ( false === strpos( $personalized_dashboard_html, 'class="dxaic-panel dxaic-onboarding" aria-labelledby="dxaic-onboarding-title" hidden' ) || false === strpos( $personalized_dashboard_html, 'Show setup guide' ) ) {
+			$failures[] = 'The per-user onboarding preference did not hide the guide or provide a reopen control.';
+		}
+		if ( false !== strpos( $personalized_dashboard_html, 'Hide optional add-on for 24 hours' ) ) {
+			$failures[] = 'The 24-hour optional add-on dismissal was not respected.';
+		}
+
+		update_user_meta( get_current_user_id(), DestinX\AICommerce\Database::USER_META_ADDON_DISMISSED, time() - DAY_IN_SECONDS - 1 );
+		ob_start();
+		$admin_page->render();
+		$expired_dismissal_html = ob_get_clean();
+		delete_user_meta( get_current_user_id(), DestinX\AICommerce\Database::USER_META_ADDON_DISMISSED );
+		if ( false === strpos( $expired_dismissal_html, 'Hide optional add-on for 24 hours' ) ) {
+			$failures[] = 'The optional add-on card did not return after its 24-hour dismissal expired.';
 		}
 
 		$complete_state = get_option( DestinX\AICommerce\Background_Audit::STATE_OPTION );

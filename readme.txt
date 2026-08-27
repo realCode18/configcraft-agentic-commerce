@@ -1,11 +1,11 @@
 === DestinX AI Commerce for WooCommerce ===
-Contributors: realcode18
+Contributors: destinx
 Tags: woocommerce, artificial intelligence, product feed, catalog, ecommerce
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.13.2
+Stable tag: 0.13.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,9 +33,11 @@ A separate Store Readiness checklist checks HTTPS, search visibility, permalinks
 
 Full scans run in small background batches through WooCommerce Action Scheduler, with WordPress Cron as a fallback. The previous completed snapshot remains visible until the replacement scan finishes. Duplicate jobs, temporary failures, catalog changes, and stale scans are handled without publishing partial results.
 
+A first-run guide explains the complete workflow with four concrete steps and direct actions. Each user can hide and reopen that guide. A separate, contextual note explains that independently installed add-ons are optional; it appears only on the plugin screen and can be dismissed for 24 hours.
+
 All analysis runs locally. This version does not contact external services and does not collect telemetry.
 
-The plugin does not read customer, order, payment, or checkout data. It does not set cookies or load remote assets. It stores only catalog audit results and operational scan state in the local WordPress database, and removes those records on uninstall, including across WordPress Multisite networks.
+The plugin does not read customer, order, payment, or checkout data. It does not set cookies or load remote assets. It stores catalog audit results, operational scan state, and per-user dashboard display preferences in the local WordPress database, and removes those records on uninstall, including across WordPress Multisite networks.
 
 Important: The plugin improves catalog data quality. It does not guarantee placement, ranking, recommendation, or legal compliance on any third-party AI platform.
 
@@ -44,7 +46,10 @@ Important: The plugin improves catalog data quality. It does not guarantee place
 1. Install and activate WooCommerce.
 2. Upload the plugin directory to `/wp-content/plugins/` or install the ZIP through Plugins > Add New.
 3. Activate DestinX AI Commerce for WooCommerce.
-4. Open WooCommerce > AI Commerce.
+4. Select Open AI Commerce on the Plugins screen, or open WooCommerce > AI Commerce.
+5. In Getting started, select Go to full scan, then select Scan full catalog.
+6. When the scan finishes, review the lowest-scoring products first.
+7. Select a product name, correct the findings in its WooCommerce editor, save it, and scan again.
 
 == Frequently Asked Questions ==
 
@@ -54,11 +59,15 @@ No. The current Free plugin performs its audit locally and makes no external req
 
 = What data does the plugin collect or store? =
 
-It stores product IDs, readiness scores, finding codes, normalized pricing context, a product-data hash, scoring-model version, timestamps, and scan state in the local WordPress database. It does not read or store customer, order, payment, checkout, or visitor data, and it does not add cookies or telemetry.
+It stores product IDs, readiness scores, finding codes, normalized pricing context, a product-data hash, scoring-model version, timestamps, scan state, and the current user's dashboard display preferences in the local WordPress database. It does not read or store customer, order, payment, checkout, or visitor data, and it does not add cookies or telemetry.
 
 = What happens to plugin data on uninstall? =
 
-Uninstall removes the plugin's audit tables, options, locks, and scheduled work. On WordPress Multisite, cleanup runs separately for every site in the network. Deactivation alone preserves the latest audit.
+Uninstall removes the plugin's audit tables, options, locks, scheduled work, and per-user dashboard display preferences. On WordPress Multisite, site data is cleaned separately and shared user preferences are removed once. Deactivation alone preserves the latest audit.
+
+= Is the optional add-on required? =
+
+No. The WordPress.org plugin is the complete Free engine. The add-on note is informational, appears only on WooCommerce > AI Commerce, can be hidden for 24 hours, and does not lock or limit any Free feature.
 
 = Does it guarantee that ChatGPT or Gemini will show my products? =
 
@@ -70,12 +79,21 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 
 == Screenshots ==
 
-1. Catalog readiness summary, full-scan progress, and product findings.
-2. Search, status, finding, and category filters with secure CSV export.
-3. Store readiness checklist with direct links to relevant local settings.
-4. Product editor panel with score and remediation guidance.
+1. Four-step Getting started guide and full-scan control.
+2. Catalog readiness summary, full-scan progress, and product findings.
+3. Search, status, finding, and category filters with secure CSV export.
+4. Store readiness checklist with direct links to relevant local settings.
+5. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.13.3 =
+
+* Added a four-step first-run guide with direct actions, per-user dismissal, and a persistent reopen control.
+* Added an Open AI Commerce link to the Plugins screen without forcing an activation redirect.
+* Added a contextual optional add-on note that can be dismissed for 24 hours per user and never limits the Free plugin.
+* Removed the optional note's user metadata during uninstall, including on Multisite.
+* Strengthened the WordPress.org package audit against dormant commercial code and shortened this readme below the repository limit.
 
 = 0.13.2 =
 
@@ -88,110 +106,10 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 * Prevented false shipping-data findings on products fulfilled outside the store or through grouped children.
 * Added permanent mixed-catalog coverage for virtual, downloadable, external, grouped, and draft products.
 
-= 0.13.0 =
+Earlier release history is included in `changelog.txt` inside the plugin package.
 
-* Extended the read-only add-on API with exact product-result lookup from the active completed snapshot.
-* Kept the extension boundary local, bounded, and free of write operations or remote requests.
+== Upgrade Notice ==
 
-= 0.12.0 =
+= 0.13.3 =
 
-* Added a versioned, read-only extension API for compatible add-ons.
-* Added a public engine-ready hook and an atomic full-scan completion event.
-* Exposed bounded snapshot results, summary data, metadata, and scan state without exposing mutable internals.
-
-= 0.11.1 =
-
-* Started the first bounded catalog batch directly from the authenticated dashboard action.
-* Removed the initial zero-progress wait caused by delayed Action Scheduler or WP-Cron runners.
-* Added accurate success feedback when a small catalog finishes before the dashboard reloads.
-
-= 0.11.0 =
-
-* Added a deterministic, failure-isolated pricing adapter registry for third-party extensions.
-* Added verified compatibility for Name Your Price, YITH Request a Quote, Call for Price, Composite Products, Product Bundles, Mix and Match, Measurement Price Calculator, and Product Add-Ons.
-* Distinguished extensions that replace WooCommerce purchase rules from extensions that retain native base-price and variation validation.
-* Added pricing verification details to catalog results, product panels, stored snapshots, and CSV exports.
-* Added unit and real-plugin integration tests for the pricing compatibility layer.
-
-= 0.10.0 =
-
-* Added a public pricing-context contract for dynamic, quote-based, and externally managed product prices.
-* External pricing engines can now prevent false missing-price and purchasability findings by explicitly declaring price availability.
-* Added visible pricing-source context to catalog results, product panels, and CSV exports.
-* Changed SKU lookup to exact matching while preserving partial product-title search.
-
-= 0.9.0 =
-
-* Redesigned the AI Commerce dashboard with a spacious, Apple-inspired interface aligned with the ConfigCraft visual system.
-* Added a clearer dashboard hero, privacy-first service information, softer metric cards, and more focused scan controls.
-* Refined store checks, catalog filters, tables, status pills, buttons, focus states, and responsive layouts.
-* Updated the product editor readiness panel to use the same visual language.
-
-= 0.8.0 =
-
-* Added automated compatibility coverage for WordPress 6.6 through 7.1 and WooCommerce 8.2.5, 10.9.4, and the latest stable release.
-* Added progressive catalog tests for 0, 1, 26, 500, and 5,000 products with batch, dashboard, query, and memory budgets.
-* Added upgrade tests from versions 0.6.0 and 0.7.0, including data-preserving deactivation and reactivation.
-* Deactivation now cancels every pending scan action, clears scan locks, and discards only incomplete staging results.
-* Expanded scoring tests for physical, virtual, downloadable, purchasability, shipping, and stock-status behavior.
-
-= 0.7.0 =
-
-* Added network-wide activation, new-site initialization, and complete Multisite uninstall cleanup.
-* Declared WooCommerce HPOS compatibility and added tested WooCommerce version headers.
-* Added an official translation template and documented its reproducible WP-CLI command.
-* Added accessible live status, progress labeling, table-region semantics, and descriptive control names.
-* Added pause and resume controls for automatic scan refresh, with reduced-motion support.
-* Documented the exact local data inventory, privacy boundaries, and uninstall behavior.
-* Added automated WooCommerce compatibility, accessibility markup, Multisite lifecycle, and uninstall tests.
-* Added official WordPress Plugin Check to the distribution-package CI gate.
-
-= 0.6.0 =
-
-* Added product-name and SKU search across the active full-catalog snapshot.
-* Added combinable status, finding, and product-category filters.
-* Added matching-result counts and filter-preserving pagination.
-* Added protected UTF-8 CSV export for the current filtered result set.
-* Added spreadsheet formula-injection protection to exported cells.
-* Added visible snapshot freshness and scoring-model information.
-* Added SKU context directly below each catalog result.
-
-= 0.5.0 =
-
-* Added a 15-point technical Store Readiness checklist separate from product scoring.
-* Added checks for HTTPS, indexing visibility, permalinks, location, address, and currency.
-* Added checks for WooCommerce cart, checkout, account, privacy, terms, and refund pages.
-* Added published-product, REST API, and physical-store shipping checks.
-* Added digital-only handling so shipping is marked not applicable when appropriate.
-* Added direct remediation guidance and local settings links for every problem.
-
-= 0.4.0 =
-
-* Added atomic scan snapshots with a stable active-result pointer.
-* Added Action Scheduler and WP-Cron job deduplication.
-* Added expiring locks, bounded retries, heartbeats, and stale-scan recovery.
-* Added catalog reconciliation when products change during a scan.
-* Added migration of pre-snapshot audit results without losing the last valid scan.
-* Added product data hashes and scoring model version 1.0.0.
-* Expanded variable-product, variation, stock-status, and purchasability checks.
-
-= 0.3.0 =
-
-* Renamed the plugin to DestinX AI Commerce for WooCommerce.
-* Aligned the plugin slug, text domain, namespace, hooks, and internal prefixes.
-* Added the detailed WordPress.org MVP and submission plan.
-
-= 0.2.0 =
-
-* Added full-catalog scans using Action Scheduler or WordPress Cron.
-* Added persistent, paginated results ordered by lowest readiness score.
-* Added scan progress and aggregate status totals.
-* Added product editor remediation guidance.
-* Added complete cleanup on uninstall.
-
-= 0.1.0 =
-
-* Initial development release.
-* Added product readiness scoring.
-* Added the WooCommerce AI Commerce dashboard.
-* Added checks for core catalog fields and variable products.
+Adds a guided first-run workflow, per-user display controls, and stricter WordPress.org package safeguards without changing existing catalog results.

@@ -7,6 +7,7 @@ The plugin is intentionally local and diagnostic. It does not call AI providers,
 ## Current functionality
 
 - Adds **WooCommerce > AI Commerce**.
+- Shows a four-step first-run guide that can be hidden and reopened by each user.
 - Shows a quick audit of the latest 25 published products.
 - Scans the complete published catalog in small background batches.
 - Keeps the last completed snapshot visible until a replacement scan finishes atomically.
@@ -25,6 +26,7 @@ The plugin is intentionally local and diagnostic. It does not call AI providers,
 - Declares WooCommerce HPOS compatibility and does not read order tables.
 - Includes keyboard, reduced-motion, screen-reader, and responsive dashboard safeguards.
 - Provides filters for custom product data and catalog-specific rules.
+- Keeps optional add-on information contextual to the plugin screen and dismissible for 24 hours per user.
 
 ## Requirements
 
@@ -99,6 +101,14 @@ npx --yes @wp-playground/cli@latest php \
   -- /wordpress/dxaic-current/tests/playground-upgrade-smoke.php
 ```
 
+Build the curated WordPress.org ZIP from an approved commit or tag:
+
+```bash
+scripts/build-release.sh 0.13.3 HEAD
+```
+
+The archive contains only the Free runtime, local assets, license, readme, changelog, translation template, and uninstall entry point. Development dependencies, tests, documentation, CI files, and all commercial add-on code are excluded.
+
 Copy or symlink the repository into `wp-content/plugins/destinx-ai-commerce`, activate it, and open **WooCommerce > AI Commerce**.
 
 ## Privacy
@@ -122,6 +132,7 @@ exact product-result lookup, aggregate summary, metadata, and normalized scan st
 - `destinx_ai_commerce_batch_size`
 - `destinx_ai_commerce_max_retries`
 - `destinx_ai_commerce_stale_scan_seconds`
+- `destinx_ai_commerce_show_optional_addon_card`
 
 ### Pricing adapter registry
 

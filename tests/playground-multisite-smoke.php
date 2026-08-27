@@ -62,6 +62,9 @@ function dxaic_assert_site_schema( $site_id ) {
 }
 
 if ( empty( $failures ) ) {
+	update_user_meta( 1, DestinX\AICommerce\Database::USER_META_ONBOARDING_HIDDEN, '1' );
+	update_user_meta( 1, DestinX\AICommerce\Database::USER_META_ADDON_DISMISSED, time() );
+
 	$primary_site_id = get_main_site_id();
 	dxaic_assert_site_schema( $primary_site_id );
 
@@ -97,6 +100,9 @@ if ( empty( $failures ) ) {
 		} finally {
 			restore_current_blog();
 		}
+	}
+	if ( '' !== get_user_meta( 1, DestinX\AICommerce\Database::USER_META_ONBOARDING_HIDDEN, true ) || '' !== get_user_meta( 1, DestinX\AICommerce\Database::USER_META_ADDON_DISMISSED, true ) ) {
+		$failures[] = 'Uninstall left per-user dashboard preferences behind.';
 	}
 
 	// Leave the ephemeral test environment in an installed state.

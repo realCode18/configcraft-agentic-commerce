@@ -13,6 +13,9 @@ defined( 'ABSPATH' ) || exit;
  * Registers and renders the WooCommerce catalog audit screen.
  */
 final class Admin_Page {
+	const PREFERENCE_ACTION = 'dxaic_update_dashboard_preference';
+	const PREFERENCE_NONCE  = 'dxaic_update_dashboard_preference';
+
 	/**
 	 * Quick preview audit service.
 	 *
@@ -80,6 +83,52 @@ final class Admin_Page {
 	public function hooks() {
 		add_action( 'admin_menu', array( $this, 'register_page' ), 60 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		add_action( 'admin_post_' . self::PREFERENCE_ACTION, array( $this, 'update_dashboard_preference' ) );
+		add_action( 'wp_ajax_' . self::PREFERENCE_ACTION, array( $this, 'update_dashboard_preference' ) );
+	}
+
+	/**
+	 * Save a dashboard display preference for the current WooCommerce manager.
+	 *
+	 * @return void
+	 */
+	public function update_dashboard_preference() {
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_die(
+				esc_html__( 'You do not have permission to change this preference.', 'destinx-ai-commerce' ),
+				'',
+				array( 'response' => 403 )
+			);
+		}
+
+		check_admin_referer( self::PREFERENCE_NONCE, 'dxaic_preference_nonce' );
+
+		$preference = isset( $_POST['preference'] ) ? sanitize_key( wp_unslash( $_POST['preference'] ) ) : '';
+		$hidden     = isset( $_POST['hidden'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['hidden'] ) );
+		$user_id    = get_current_user_id();
+
+		if ( 'onboarding' === $preference ) {
+			if ( $hidden ) {
+				update_user_meta( $user_id, Database::USER_META_ONBOARDING_HIDDEN, '1' );
+			} else {
+				delete_user_meta( $user_id, Database::USER_META_ONBOARDING_HIDDEN );
+			}
+		} elseif ( 'optional_addon' === $preference && $hidden ) {
+			update_user_meta( $user_id, Database::USER_META_ADDON_DISMISSED, time() );
+		} else {
+			wp_die(
+				esc_html__( 'The requested dashboard preference is invalid.', 'destinx-ai-commerce' ),
+				'',
+				array( 'response' => 400 )
+			);
+		}
+
+		if ( wp_doing_ajax() ) {
+			wp_send_json_success();
+		}
+
+		wp_safe_redirect( admin_url( 'admin.php?page=destinx-ai-commerce' ) );
+		exit;
 	}
 
 	/**
@@ -167,8 +216,19 @@ final class Admin_Page {
 			$summary    = $audit['summary'];
 			$is_preview = true;
 		}
+
+		$onboarding_products = $products;
+		if ( $has_full_snapshot ) {
+			$onboarding_products = $this->hydrate_stored_results( $this->repository->get_page( 1, 1 ) );
+		}
 		?>
-		<div class="wrap dxaic-wrap">
+		<?php $onboarding_hidden = '1' === get_user_meta( get_current_user_id(), Database::USER_META_ONBOARDING_HIDDEN, true ); ?>
+		<div
+			class="wrap dxaic-wrap"
+			data-dxaic-preferences-url="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>"
+			data-dxaic-preferences-error="<?php esc_attr_e( 'The display preference could not be saved. Please try again.', 'destinx-ai-commerce' ); ?>"
+			data-dxaic-preferences-saved="<?php esc_attr_e( 'Display preference saved.', 'destinx-ai-commerce' ); ?>"
+		>
 			<header class="dxaic-hero">
 				<div class="dxaic-hero__copy">
 					<p class="dxaic-eyebrow"><?php esc_html_e( 'DestinX AI Commerce', 'destinx-ai-commerce' ); ?></p>
@@ -184,6 +244,7 @@ final class Admin_Page {
 			</header>
 
 			<?php $this->render_notice(); ?>
+			<?php $this->render_onboarding( $onboarding_hidden, $has_full_snapshot, $onboarding_products ); ?>
 			<?php $this->render_scan_control( $state, $snapshot ); ?>
 
 			<div class="dxaic-summary" aria-label="<?php esc_attr_e( 'Catalog audit summary', 'destinx-ai-commerce' ); ?>">
@@ -225,7 +286,129 @@ final class Admin_Page {
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
+
+			<?php $this->render_optional_addon(); ?>
+			<p class="screen-reader-text dxaic-preference-status" role="status" aria-live="polite"></p>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Render the first-run workflow guide and its persistent reopen control.
+	 *
+	 * @param bool                             $hidden            Whether this user hid the guide.
+	 * @param bool                             $has_full_snapshot Whether a complete scan exists.
+	 * @param array<int, array<string, mixed>> $products          Visible product results.
+	 * @return void
+	 */
+	private function render_onboarding( $hidden, $has_full_snapshot, array $products ) {
+		$has_catalog_results = $has_full_snapshot && ! empty( $products );
+		$first_product_url   = ! empty( $products[0]['edit_url'] ) ? $products[0]['edit_url'] : admin_url( 'edit.php?post_type=product' );
+		?>
+		<div class="dxaic-onboarding-reopen" <?php echo $hidden ? '' : 'hidden'; ?>>
+			<?php $this->render_preference_form( 'onboarding', false, 'show-onboarding', __( 'Show setup guide', 'destinx-ai-commerce' ), 'button' ); ?>
+		</div>
+		<section class="dxaic-panel dxaic-onboarding" aria-labelledby="dxaic-onboarding-title" <?php echo $hidden ? 'hidden' : ''; ?>>
+			<div class="dxaic-panel-heading">
+				<div>
+					<p class="dxaic-eyebrow"><?php esc_html_e( 'Getting started', 'destinx-ai-commerce' ); ?></p>
+					<h2 id="dxaic-onboarding-title" tabindex="-1"><?php esc_html_e( 'Your first catalog audit, step by step', 'destinx-ai-commerce' ); ?></h2>
+					<p><?php esc_html_e( 'Follow these four steps. The Free plugin is ready to use immediately and does not require an account, license, or API key.', 'destinx-ai-commerce' ); ?></p>
+				</div>
+				<?php $this->render_preference_form( 'onboarding', true, 'hide-onboarding', __( 'Hide setup guide', 'destinx-ai-commerce' ), 'button-link' ); ?>
+			</div>
+			<ol class="dxaic-onboarding-steps">
+				<li>
+					<span class="dxaic-step-number" aria-hidden="true">1</span>
+					<div>
+						<h3><?php esc_html_e( 'Scan every published product', 'destinx-ai-commerce' ); ?></h3>
+						<p><?php esc_html_e( 'Select Scan full catalog below. The scan runs in small background batches, so you can leave this page while it continues.', 'destinx-ai-commerce' ); ?></p>
+						<a class="button button-primary" href="#dxaic-full-scan"><?php esc_html_e( 'Go to full scan', 'destinx-ai-commerce' ); ?></a>
+					</div>
+				</li>
+				<li>
+					<span class="dxaic-step-number" aria-hidden="true">2</span>
+					<div>
+						<h3><?php esc_html_e( 'Start with the lowest scores', 'destinx-ai-commerce' ); ?></h3>
+						<p><?php esc_html_e( 'After the scan finishes, review At risk and Needs work products first. Each row lists the catalog data that needs attention.', 'destinx-ai-commerce' ); ?></p>
+						<?php if ( $has_catalog_results ) : ?>
+							<a class="button" href="#dxaic-catalog-results"><?php esc_html_e( 'Review catalog results', 'destinx-ai-commerce' ); ?></a>
+						<?php else : ?>
+							<span class="dxaic-step-waiting"><?php esc_html_e( 'Available after a full scan finds published products', 'destinx-ai-commerce' ); ?></span>
+						<?php endif; ?>
+					</div>
+				</li>
+				<li>
+					<span class="dxaic-step-number" aria-hidden="true">3</span>
+					<div>
+						<h3><?php esc_html_e( 'Improve the WooCommerce product data', 'destinx-ai-commerce' ); ?></h3>
+						<p><?php esc_html_e( 'Select a product name, then use the AI Commerce Readiness panel in the product editor to correct its findings. Save the product normally in WooCommerce.', 'destinx-ai-commerce' ); ?></p>
+						<a class="button" href="<?php echo esc_url( $first_product_url ); ?>"><?php echo esc_html( $has_catalog_results ? __( 'Edit lowest-scoring product', 'destinx-ai-commerce' ) : __( 'Open WooCommerce products', 'destinx-ai-commerce' ) ); ?></a>
+					</div>
+				</li>
+				<li>
+					<span class="dxaic-step-number" aria-hidden="true">4</span>
+					<div>
+						<h3><?php esc_html_e( 'Scan again and compare', 'destinx-ai-commerce' ); ?></h3>
+						<p><?php esc_html_e( 'Return here, select Scan again, and compare the average score and remaining findings. Repeat until the important catalog gaps are resolved.', 'destinx-ai-commerce' ); ?></p>
+						<a class="button" href="#dxaic-full-scan"><?php esc_html_e( 'Return to scan control', 'destinx-ai-commerce' ); ?></a>
+					</div>
+				</li>
+			</ol>
+		</section>
+		<?php
+	}
+
+	/**
+	 * Render a contextual, non-blocking note about separately installed add-ons.
+	 *
+	 * @return void
+	 */
+	private function render_optional_addon() {
+		$dismissed_at = (int) get_user_meta( get_current_user_id(), Database::USER_META_ADDON_DISMISSED, true );
+		$show_card    = 0 === $dismissed_at || time() >= $dismissed_at + DAY_IN_SECONDS;
+
+		/**
+		 * Filters whether the contextual optional add-on card is visible.
+		 *
+		 * @param bool $show_card Whether the card should be shown.
+		 */
+		$show_card = (bool) apply_filters( 'destinx_ai_commerce_show_optional_addon_card', $show_card );
+		if ( ! $show_card ) {
+			return;
+		}
+		?>
+		<aside class="dxaic-panel dxaic-addon-card" aria-labelledby="dxaic-addon-title">
+			<div>
+				<p class="dxaic-eyebrow"><?php esc_html_e( 'Optional add-on', 'destinx-ai-commerce' ); ?></p>
+				<h2 id="dxaic-addon-title"><?php esc_html_e( 'Extend the workflow only when you need it', 'destinx-ai-commerce' ); ?></h2>
+				<p><?php esc_html_e( 'DestinX AI Commerce can be extended by independently installed add-ons. They are optional: this Free plugin keeps its complete local scan, filters, CSV export, store checks, and product guidance.', 'destinx-ai-commerce' ); ?></p>
+				<a class="button" href="<?php echo esc_url( admin_url( 'plugins.php' ) ); ?>"><?php esc_html_e( 'Manage installed plugins', 'destinx-ai-commerce' ); ?></a>
+			</div>
+			<?php $this->render_preference_form( 'optional_addon', true, 'hide-addon', __( 'Hide optional add-on for 24 hours', 'destinx-ai-commerce' ), 'dxaic-close-button' ); ?>
+		</aside>
+		<?php
+	}
+
+	/**
+	 * Render a JavaScript-enhanced preference form with a no-script fallback.
+	 *
+	 * @param string $preference Preference allowlist key.
+	 * @param bool   $hidden     Desired hidden state.
+	 * @param string $effect     Client-side effect after saving.
+	 * @param string $label      Button label.
+	 * @param string $class_name Button class name.
+	 * @return void
+	 */
+	private function render_preference_form( $preference, $hidden, $effect, $label, $class_name ) {
+		?>
+		<form class="dxaic-preference-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" data-dxaic-effect="<?php echo esc_attr( $effect ); ?>">
+			<input type="hidden" name="action" value="<?php echo esc_attr( self::PREFERENCE_ACTION ); ?>">
+			<input type="hidden" name="preference" value="<?php echo esc_attr( $preference ); ?>">
+			<input type="hidden" name="hidden" value="<?php echo esc_attr( $hidden ? '1' : '0' ); ?>">
+			<?php wp_nonce_field( self::PREFERENCE_NONCE, 'dxaic_preference_nonce' ); ?>
+			<button type="submit" class="<?php echo esc_attr( $class_name ); ?>" aria-label="<?php echo esc_attr( $label ); ?>"><?php echo esc_html( $label ); ?></button>
+		</form>
 		<?php
 	}
 
@@ -297,7 +480,7 @@ final class Admin_Page {
 		$is_running = in_array( $state['status'], array( 'queued', 'running' ), true );
 		$progress   = $state['total'] ? (int) round( ( $state['processed'] / $state['total'] ) * 100 ) : 0;
 		?>
-		<div class="dxaic-scan-panel" data-dxaic-auto-refresh="<?php echo esc_attr( $is_running ? '1' : '0' ); ?>">
+		<div class="dxaic-scan-panel" id="dxaic-full-scan" data-dxaic-auto-refresh="<?php echo esc_attr( $is_running ? '1' : '0' ); ?>">
 			<div>
 				<h2><?php esc_html_e( 'Full catalog scan', 'destinx-ai-commerce' ); ?></h2>
 				<p aria-live="polite"><?php echo esc_html( $this->scan_status_label( $state ) ); ?></p>

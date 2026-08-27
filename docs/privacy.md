@@ -23,10 +23,12 @@ Audit data remains in the site's own WordPress database. The custom audit table 
 
 WordPress options store only the database version, scan state, locks, catalog revision, and the active snapshot identifier. These records are operational catalog data, not customer or visitor profiles.
 
+Two per-user metadata values store dashboard display preferences only: whether the Getting started guide is hidden and when the contextual optional add-on note was last dismissed. They do not contain catalog, customer, visitor, account, or license data.
+
 ## Export and removal
 
 CSV files are generated only after an authorized administrator requests an export. They are streamed to that administrator and are not saved to a public server directory by the plugin.
 
-Uninstalling the plugin removes its custom tables, options, and scheduled work from every affected site, including each site in a WordPress Multisite network. Deactivation alone preserves the last audit so it can be resumed after reactivation.
+Uninstalling the plugin removes its custom tables, options, scheduled work, and per-user display preferences from every affected installation, including each site in a WordPress Multisite network. Deactivation alone preserves the last audit so it can be resumed after reactivation.
 
 Because the current plugin does not collect personal data of its own, it does not register WordPress personal-data exporters or erasers. If a future optional service transmits data externally, it will require a separate documented privacy review and an explicit opt-in before release.

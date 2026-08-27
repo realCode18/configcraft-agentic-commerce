@@ -3,7 +3,7 @@
  * Plugin Name:       DestinX AI Commerce for WooCommerce
  * Plugin URI:        https://github.com/realCode18/destinx-ai-commerce
  * Description:       Audits WooCommerce product catalogs for AI discovery and agentic commerce readiness.
- * Version:           0.13.2
+ * Version:           0.13.3
  * Requires at least: 6.6
  * Requires PHP:      7.4
  * Requires Plugins:  woocommerce
@@ -21,7 +21,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DXAIC_VERSION', '0.13.2' );
+define( 'DXAIC_VERSION', '0.13.3' );
 define( 'DXAIC_EXTENSION_API_VERSION', '1.1.0' );
 define( 'DXAIC_FILE', __FILE__ );
 define( 'DXAIC_PATH', plugin_dir_path( __FILE__ ) );

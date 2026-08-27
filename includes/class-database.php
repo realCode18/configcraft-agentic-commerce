@@ -13,9 +13,11 @@ defined( 'ABSPATH' ) || exit;
  * Creates and upgrades the local catalog audit table.
  */
 final class Database {
-	const VERSION            = '3.0.0';
-	const VERSION_OPTION     = 'dxaic_database_version';
-	const ACTIVE_SCAN_OPTION = 'dxaic_active_audit_scan';
+	const VERSION                     = '3.0.0';
+	const VERSION_OPTION              = 'dxaic_database_version';
+	const ACTIVE_SCAN_OPTION          = 'dxaic_active_audit_scan';
+	const USER_META_ONBOARDING_HIDDEN = 'dxaic_onboarding_hidden';
+	const USER_META_ADDON_DISMISSED   = 'dxaic_optional_addon_dismissed_at';
 
 	/**
 	 * Install schema on one site or across a network activation.
@@ -147,10 +149,25 @@ final class Database {
 	public static function uninstall() {
 		if ( is_multisite() ) {
 			self::for_each_site( array( __CLASS__, 'uninstall_current_site' ) );
+			self::uninstall_user_preferences();
 			return;
 		}
 
 		self::uninstall_current_site();
+		self::uninstall_user_preferences();
+	}
+
+	/**
+	 * Remove per-user dashboard display preferences.
+	 *
+	 * User metadata is shared across a Multisite network, so it is removed once
+	 * after all site-specific data has been cleaned up.
+	 *
+	 * @return void
+	 */
+	private static function uninstall_user_preferences() {
+		delete_metadata( 'user', 0, self::USER_META_ONBOARDING_HIDDEN, '', true );
+		delete_metadata( 'user', 0, self::USER_META_ADDON_DISMISSED, '', true );
 	}
 
 	/**
