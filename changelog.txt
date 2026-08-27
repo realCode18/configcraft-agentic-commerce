@@ -1,5 +1,9 @@
 DestinX AI Commerce for WooCommerce - release history
 
+0.13.6
+- Extended the per-user Pro banner dismissal from 24 hours to 30 days.
+- Added regression coverage that keeps the banner hidden after one day and restores it only after 30 days.
+
 0.13.5
 - Moved the dismissible Pro add-on banner to the top of the plugin screen, directly below the page header.
 - Kept the complete Free workflow and the existing 24-hour per-user dismissal unchanged.

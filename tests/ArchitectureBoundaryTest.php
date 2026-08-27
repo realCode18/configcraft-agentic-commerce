@@ -72,7 +72,7 @@ final class ArchitectureBoundaryTest extends TestCase {
 		$this->assertIsString( $admin_page );
 		$this->assertSame( 1, substr_count( $admin_page, 'https://www.configcraftsuite.com/' ) );
 		$this->assertStringContainsString( 'destinx_ai_commerce_optional_addon_url', $admin_page );
-		$this->assertStringContainsString( 'Hide DestinX AI Commerce Pro for 24 hours', $admin_page );
+		$this->assertStringContainsString( 'Hide DestinX AI Commerce Pro for 30 days', $admin_page );
 		$this->assertStringContainsString( 'The Free scan, filters, CSV export, store checks, and product guidance remain complete without Pro.', $admin_page );
 		$this->assertDoesNotMatchRegularExpression( '/(?:utm_|affiliate|aff_id|referral)/i', $admin_page );
 	}

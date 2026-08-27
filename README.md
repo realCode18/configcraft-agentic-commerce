@@ -26,7 +26,7 @@ The plugin is intentionally local and diagnostic. It does not call AI providers,
 - Declares WooCommerce HPOS compatibility and does not read order tables.
 - Includes keyboard, reduced-motion, screen-reader, and responsive dashboard safeguards.
 - Provides filters for custom product data and catalog-specific rules.
-- Keeps optional add-on information contextual to the plugin screen and dismissible for 24 hours per user.
+- Keeps optional add-on information contextual to the plugin screen and dismissible for 30 days per user.
 
 ## Requirements
 

@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.13.5
+Stable tag: 0.13.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,7 +33,7 @@ A separate Store Readiness checklist checks HTTPS, search visibility, permalinks
 
 Full scans run in small background batches through WooCommerce Action Scheduler, with WordPress Cron as a fallback. The previous completed snapshot remains visible until the replacement scan finishes. Duplicate jobs, temporary failures, catalog changes, and stale scans are handled without publishing partial results.
 
-A first-run guide explains the complete workflow with four concrete steps and direct actions. Each user can hide and reopen that guide. A separate, contextual banner explains the independently installed Pro add-on, keeps the Free/Pro boundary explicit, appears only on the plugin screen, and can be dismissed for 24 hours.
+A first-run guide explains the complete workflow with four concrete steps and direct actions. Each user can hide and reopen that guide. A separate, contextual banner explains the independently installed Pro add-on, keeps the Free/Pro boundary explicit, appears only on the plugin screen, and can be dismissed for 30 days.
 
 All analysis runs locally. This version does not contact external services and does not collect telemetry.
 
@@ -67,7 +67,7 @@ Uninstall removes the plugin's audit tables, options, locks, scheduled work, and
 
 = Is the optional add-on required? =
 
-No. The WordPress.org plugin is the complete Free engine. The Pro banner is informational, appears only on WooCommerce > AI Commerce, can be hidden for 24 hours, and does not lock or limit any Free feature.
+No. The WordPress.org plugin is the complete Free engine. The Pro banner is informational, appears only on WooCommerce > AI Commerce, can be hidden for 30 days, and does not lock or limit any Free feature.
 
 = Does it guarantee that ChatGPT or Gemini will show my products? =
 
@@ -86,6 +86,11 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 5. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.13.6 =
+
+* Extended the per-user Pro banner dismissal from 24 hours to 30 days.
+* Reduced promotional repetition while keeping the banner limited to the plugin-owned screen.
 
 = 0.13.5 =
 
@@ -120,6 +125,10 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 Earlier release history is included in `changelog.txt` inside the plugin package.
 
 == Upgrade Notice ==
+
+= 0.13.6 =
+
+Reduces the optional Pro banner frequency by keeping it dismissed for 30 days per user.
 
 = 0.13.5 =
 

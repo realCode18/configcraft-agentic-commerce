@@ -367,7 +367,7 @@ final class Admin_Page {
 	 */
 	private function render_optional_addon() {
 		$dismissed_at = (int) get_user_meta( get_current_user_id(), Database::USER_META_ADDON_DISMISSED, true );
-		$show_card    = 0 === $dismissed_at || time() >= $dismissed_at + DAY_IN_SECONDS;
+		$show_card    = 0 === $dismissed_at || time() >= $dismissed_at + ( 30 * DAY_IN_SECONDS );
 
 		/**
 		 * Filters whether the contextual optional add-on card is visible.
@@ -401,7 +401,7 @@ final class Admin_Page {
 					<a class="button button-primary" href="<?php echo esc_url( $addon_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Explore DestinX AI Commerce Pro', 'destinx-ai-commerce' ); ?></a>
 				<?php endif; ?>
 			</div>
-			<?php $this->render_preference_form( 'optional_addon', true, 'hide-addon', __( 'Hide DestinX AI Commerce Pro for 24 hours', 'destinx-ai-commerce' ), 'dxaic-close-button' ); ?>
+			<?php $this->render_preference_form( 'optional_addon', true, 'hide-addon', __( 'Hide DestinX AI Commerce Pro for 30 days', 'destinx-ai-commerce' ), 'dxaic-close-button' ); ?>
 		</aside>
 		<?php
 	}
