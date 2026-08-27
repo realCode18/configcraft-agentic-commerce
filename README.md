@@ -4,6 +4,8 @@ DestinX AI Commerce for WooCommerce is a WordPress plugin that audits WooCommerc
 
 The plugin is intentionally local and diagnostic. It does not call AI providers, expose write operations, collect telemetry, or promise placement on third-party platforms.
 
+Product information is available at [configcraftsuite.com/destinx-ai-commerce](https://www.configcraftsuite.com/destinx-ai-commerce/).
+
 ## Current functionality
 
 - Adds **WooCommerce > AI Commerce**.
@@ -33,6 +35,10 @@ The plugin is intentionally local and diagnostic. It does not call AI providers,
 - WordPress 6.6 or later.
 - WooCommerce.
 - PHP 7.4 or later.
+
+## Support
+
+Free support is available through the [ConfigCraft Community](https://www.configcraftsuite.com/community/). Private ticket support is reserved for customers with an eligible paid purchase.
 
 ## Local development
 

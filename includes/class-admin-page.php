@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 final class Admin_Page {
 	const PREFERENCE_ACTION  = 'dxaic_update_dashboard_preference';
 	const PREFERENCE_NONCE   = 'dxaic_update_dashboard_preference';
-	const OPTIONAL_ADDON_URL = 'https://www.configcraftsuite.com/';
+	const OPTIONAL_ADDON_URL = 'https://www.configcraftsuite.com/destinx-ai-commerce/';
 
 	/**
 	 * Quick preview audit service.

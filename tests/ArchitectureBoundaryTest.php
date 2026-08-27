@@ -70,11 +70,24 @@ final class ArchitectureBoundaryTest extends TestCase {
 		$admin_page = file_get_contents( $root . '/includes/class-admin-page.php' );
 
 		$this->assertIsString( $admin_page );
-		$this->assertSame( 1, substr_count( $admin_page, 'https://www.configcraftsuite.com/' ) );
+		$this->assertSame( 1, substr_count( $admin_page, 'https://www.configcraftsuite.com/destinx-ai-commerce/' ) );
 		$this->assertStringContainsString( 'destinx_ai_commerce_optional_addon_url', $admin_page );
 		$this->assertStringContainsString( 'Hide DestinX AI Commerce Pro for 30 days', $admin_page );
 		$this->assertStringContainsString( 'The Free scan, filters, CSV export, store checks, and product guidance remain complete without Pro.', $admin_page );
 		$this->assertDoesNotMatchRegularExpression( '/(?:utm_|affiliate|aff_id|referral)/i', $admin_page );
+	}
+
+	public function test_public_product_and_support_destinations_are_explicit() {
+		$root   = dirname( __DIR__ );
+		$main   = file_get_contents( $root . '/destinx-ai-commerce.php' );
+		$readme = file_get_contents( $root . '/readme.txt' );
+
+		$this->assertIsString( $main );
+		$this->assertIsString( $readme );
+		$this->assertStringContainsString( 'Plugin URI:        https://www.configcraftsuite.com/destinx-ai-commerce/', $main );
+		$this->assertStringContainsString( 'https://www.configcraftsuite.com/community/', $readme );
+		$this->assertStringContainsString( 'Private ticket support is reserved for customers with an eligible paid purchase.', $readme );
+		$this->assertDoesNotMatchRegularExpression( '/(?:Pro.{0,80}ticket|ticket.{0,80}Pro)/i', $readme );
 	}
 
 	public function test_free_runtime_contains_no_dormant_commercial_controls() {

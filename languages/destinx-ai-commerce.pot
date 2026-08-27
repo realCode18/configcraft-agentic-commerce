@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: DestinX AI Commerce for WooCommerce 0.13.7\n"
+"Project-Id-Version: DestinX AI Commerce for WooCommerce 0.13.8\n"
 "Report-Msgid-Bugs-To: https://github.com/realCode18/destinx-ai-commerce/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #: destinx-ai-commerce.php
-msgid "https://github.com/realCode18/destinx-ai-commerce"
+msgid "https://www.configcraftsuite.com/destinx-ai-commerce/"
 msgstr ""
 
 #. Description of the plugin

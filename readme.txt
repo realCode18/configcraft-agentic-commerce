@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.13.7
+Stable tag: 0.13.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,8 @@ All analysis runs locally. This version does not contact external services and d
 The plugin does not read customer, order, payment, or checkout data. It does not set cookies or load remote assets. It stores catalog audit results, operational scan state, and per-user dashboard display preferences in the local WordPress database, and removes those records on uninstall, including across WordPress Multisite networks.
 
 Important: The plugin improves catalog data quality. It does not guarantee placement, ranking, recommendation, or legal compliance on any third-party AI platform.
+
+Product information and documentation are available on the [DestinX AI Commerce product page](https://www.configcraftsuite.com/destinx-ai-commerce/).
 
 == Installation ==
 
@@ -77,6 +79,10 @@ No. It identifies catalog quality issues that can make products difficult for ma
 
 The dashboard initially previews the latest 25 published products. Select Scan full catalog to process every published product in small background batches and persist the results locally.
 
+= Where can I get support? =
+
+Free support is available through the [ConfigCraft Community](https://www.configcraftsuite.com/community/). Private ticket support is reserved for customers with an eligible paid purchase.
+
 == Screenshots ==
 
 1. Four-step Getting started guide and full-scan control.
@@ -86,6 +92,11 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 5. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.13.8 =
+
+* Linked the plugin metadata to the dedicated DestinX AI Commerce product page.
+* Documented the Community support route for Free users and the separate eligibility rule for private ticket support.
 
 = 0.13.7 =
 
@@ -131,6 +142,10 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 Earlier release history is included in `changelog.txt` inside the plugin package.
 
 == Upgrade Notice ==
+
+= 0.13.8 =
+
+Adds the official product and Free support destinations without changing plugin behavior or data handling.
 
 = 0.13.7 =
 

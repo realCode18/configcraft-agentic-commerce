@@ -1,5 +1,9 @@
 DestinX AI Commerce for WooCommerce - release history
 
+0.13.8
+- Linked the plugin header and add-on information to the dedicated DestinX AI Commerce product page.
+- Documented ConfigCraft Community support for Free users and private ticket eligibility for paying customers.
+
 0.13.7
 - Added the DestinX AI Commerce vector wordmark based on the original DestinX X mark.
 - Prepared matching WordPress.org icon and banner artwork with reproducible vector sources.
