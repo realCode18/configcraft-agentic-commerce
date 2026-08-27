@@ -80,7 +80,7 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 == Screenshots ==
 
 1. Four-step Getting started guide and full-scan control.
-2. Catalog readiness summary, full-scan progress, and product findings.
+2. Full-scan status and catalog readiness summary.
 3. Search, status, finding, and category filters with secure CSV export.
 4. Store readiness checklist with direct links to relevant local settings.
 5. Product editor panel with score and remediation guidance.

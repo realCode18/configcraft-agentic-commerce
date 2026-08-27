@@ -25,7 +25,7 @@ The only active objective is a complete, local, WordPress.org-ready 1.0.0 releas
 - [x] Plugin Check with zero errors and zero warnings in strict mode.
 - [x] Stable pricing-adapter registry and verified compatibility contract.
 - [x] Versioned read-only extension API 1.1, exact product-result lookup, and post-snapshot completion event for add-ons.
-- [ ] WordPress.org icons, banners, screenshots, readme, and release ZIP.
+- [x] WordPress.org icons, banners, screenshots, readme, and release ZIP.
 - [ ] Real staging test and 1.0.0 submission.
 
 The detailed scope, schedule, gates, and acceptance criteria are in [mvp-plan.md](mvp-plan.md). The release cannot be submitted until every item in [wordpress-org-submission-checklist.md](wordpress-org-submission-checklist.md) is verified.

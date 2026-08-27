@@ -140,6 +140,21 @@ final class ArchitectureBoundaryTest extends TestCase {
 				'The WordPress.org image dimensions must match its filename: ' . $filename
 			);
 		}
+
+		$screenshots = glob( $root . '/.wordpress-org/screenshot-*.png' );
+		$this->assertIsArray( $screenshots );
+		sort( $screenshots );
+		$this->assertCount( 5, $screenshots, 'Each readme caption must have one current screenshot.' );
+
+		foreach ( $screenshots as $screenshot ) {
+			$dimensions = getimagesize( $screenshot );
+
+			$this->assertIsArray( $dimensions, 'The screenshot must be a readable image: ' . $screenshot );
+			$this->assertSame( IMAGETYPE_PNG, $dimensions[2], 'WordPress.org screenshots must be PNG files.' );
+			$this->assertGreaterThanOrEqual( 300, $dimensions[0] );
+			$this->assertGreaterThanOrEqual( 300, $dimensions[1] );
+			$this->assertLessThan( 10 * 1024 * 1024, filesize( $screenshot ) );
+		}
 	}
 
 	public function test_destinx_mark_is_consistent_across_brand_sources() {
