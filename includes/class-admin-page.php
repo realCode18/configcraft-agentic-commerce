@@ -232,7 +232,13 @@ final class Admin_Page {
 		>
 			<header class="dxaic-hero">
 				<div class="dxaic-hero__copy">
-					<p class="dxaic-eyebrow"><?php esc_html_e( 'DestinX AI Commerce', 'destinx-ai-commerce' ); ?></p>
+					<img
+						class="dxaic-brand-logo"
+						src="<?php echo esc_url( DXAIC_URL . 'assets/brand/destinx-ai-commerce-horizontal.svg' ); ?>"
+						alt="<?php esc_attr_e( 'DestinX AI Commerce for WooCommerce', 'destinx-ai-commerce' ); ?>"
+						width="430"
+						height="92"
+					>
 					<h1><?php esc_html_e( 'AI Commerce Readiness', 'destinx-ai-commerce' ); ?></h1>
 					<p class="dxaic-intro">
 						<?php esc_html_e( 'Find catalog data that may prevent AI shopping assistants from understanding and recommending your products.', 'destinx-ai-commerce' ); ?>

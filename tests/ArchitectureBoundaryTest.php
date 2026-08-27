@@ -101,14 +101,64 @@ final class ArchitectureBoundaryTest extends TestCase {
 
 	public function test_admin_assets_contain_no_remote_resource_or_service_urls() {
 		$root = dirname( __DIR__ );
-		foreach ( array( $root . '/assets/admin.js', $root . '/assets/admin.css' ) as $file ) {
+		foreach (
+			array(
+				$root . '/assets/admin.js',
+				$root . '/assets/admin.css',
+				$root . '/assets/brand/destinx-ai-commerce-horizontal.svg',
+			) as $file
+		) {
 			$source = file_get_contents( $file );
 
 			$this->assertIsString( $source, 'The runtime asset must be readable: ' . $file );
 			$this->assertDoesNotMatchRegularExpression(
-				'#(?:https?:)?//#i',
+				'#(?:https?:)?//(?!www\.w3\.org/2000/svg)#i',
 				$source,
 				'The Free admin assets must not load a remote resource or service: ' . $file
+			);
+		}
+	}
+
+	public function test_wordpress_org_brand_assets_are_complete_and_correctly_sized() {
+		$root  = dirname( __DIR__ );
+		$sizes = array(
+			'icon-128x128.png'    => array( 128, 128 ),
+			'icon-256x256.png'    => array( 256, 256 ),
+			'banner-772x250.png'  => array( 772, 250 ),
+			'banner-1544x500.png' => array( 1544, 500 ),
+		);
+
+		$this->assertFileExists( $root . '/.wordpress-org/icon.svg' );
+
+		foreach ( $sizes as $filename => $expected ) {
+			$path = $root . '/.wordpress-org/' . $filename;
+
+			$this->assertFileExists( $path );
+			$this->assertSame(
+				$expected,
+				array_slice( getimagesize( $path ), 0, 2 ),
+				'The WordPress.org image dimensions must match its filename: ' . $filename
+			);
+		}
+	}
+
+	public function test_destinx_mark_is_consistent_across_brand_sources() {
+		$root   = dirname( __DIR__ );
+		$x_path = 'M852.42,94.3a111.33,111.33,0,0,0,29.37-75.65H838.93';
+		$files  = array(
+			$root . '/.wordpress-org/icon.svg',
+			$root . '/assets/brand/destinx-ai-commerce-horizontal.svg',
+			$root . '/design/wordpress-org/banner-1544x500.svg',
+		);
+
+		foreach ( $files as $file ) {
+			$source = file_get_contents( $file );
+
+			$this->assertIsString( $source, 'The brand source must be readable: ' . $file );
+			$this->assertStringContainsString(
+				$x_path,
+				$source,
+				'Every brand asset must preserve the original DestinX X geometry: ' . $file
 			);
 		}
 	}

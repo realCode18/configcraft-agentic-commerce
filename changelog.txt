@@ -1,5 +1,9 @@
 DestinX AI Commerce for WooCommerce - release history
 
+0.13.7
+- Added the DestinX AI Commerce vector wordmark based on the original DestinX X mark.
+- Prepared matching WordPress.org icon and banner artwork with reproducible vector sources.
+
 0.13.6
 - Extended the per-user Pro banner dismissal from 24 hours to 30 days.
 - Added regression coverage that keeps the banner hidden after one day and restores it only after 30 days.

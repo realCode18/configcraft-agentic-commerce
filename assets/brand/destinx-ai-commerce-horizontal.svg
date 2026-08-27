@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 92" width="430" height="92" role="img" aria-labelledby="title description">
+  <title id="title">DestinX AI Commerce for WooCommerce</title>
+  <desc id="description">DestinX X symbol beside the AI Commerce wordmark.</desc>
+  <svg x="4" y="7" width="80" height="79" viewBox="702.88 18.65 178.91 176.29" aria-hidden="true">
+    <path fill="#4b51e8" d="M852.42,94.3a111.33,111.33,0,0,0,29.37-75.65H838.93a69.36,69.36,0,0,1-69.28,69.28h0A24,24,0,0,1,745.73,64V18.65H702.88V64a66.75,66.75,0,0,0,29.36,55.29,111.32,111.32,0,0,0-29.36,75.65h42.85A69.36,69.36,0,0,1,815,125.66h0a24,24,0,0,1,23.92,23.92v45.35h42.86V149.59A66.76,66.76,0,0,0,852.42,94.3Z"/>
+  </svg>
+  <text x="106" y="19" fill="#4b51e8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="750" letter-spacing="3.4">DESTINX</text>
+  <text x="104" y="56" fill="#111522" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="34" font-weight="730" letter-spacing="-1.15">AI Commerce</text>
+  <text x="106" y="77" fill="#4b51e8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="10" font-weight="700" letter-spacing="2.45">FOR WOOCOMMERCE</text>
+</svg>

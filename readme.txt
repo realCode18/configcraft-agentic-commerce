@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.13.6
+Stable tag: 0.13.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,12 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 
 == Changelog ==
 
+= 0.13.7 =
+
+* Added the DestinX AI Commerce brand system based on the original DestinX X mark.
+* Aligned the plugin header with the icon and banner prepared for the WordPress.org listing.
+* Added reproducible, GPL-compatible publication artwork without remote fonts or assets.
+
 = 0.13.6 =
 
 * Extended the per-user Pro banner dismissal from 24 hours to 30 days.
@@ -125,6 +131,10 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 Earlier release history is included in `changelog.txt` inside the plugin package.
 
 == Upgrade Notice ==
+
+= 0.13.7 =
+
+Aligns the plugin interface with its new DestinX AI Commerce publication artwork.
 
 = 0.13.6 =
 

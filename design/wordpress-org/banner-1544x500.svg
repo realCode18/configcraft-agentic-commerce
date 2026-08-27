@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1544 500" width="1544" height="500" role="img" aria-labelledby="title description">
+  <title id="title">DestinX AI Commerce for WooCommerce</title>
+  <desc id="description">DestinX AI Commerce brand beside a catalog readiness dashboard preview.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1544" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f8f9ff"/>
+      <stop offset="0.58" stop-color="#f0f2ff"/>
+      <stop offset="1" stop-color="#dfe2ff"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="90" y1="95" x2="220" y2="245" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7277ff"/>
+      <stop offset="0.52" stop-color="#4b51e8"/>
+      <stop offset="1" stop-color="#2c31c8"/>
+    </linearGradient>
+    <linearGradient id="score" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5b62f0"/>
+      <stop offset="1" stop-color="#3f45dc"/>
+    </linearGradient>
+    <filter id="tile-shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#292ea8" flood-opacity="0.2"/>
+    </filter>
+    <filter id="panel-shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="14" stdDeviation="20" flood-color="#2c315e" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="1544" height="500" fill="url(#background)"/>
+  <path d="M0 418C215 372 394 469 622 439C852 408 1006 354 1225 392C1350 414 1443 447 1544 434V500H0Z" fill="#ffffff" opacity="0.66"/>
+  <g fill="#7076f4" opacity="0.35">
+    <circle cx="72" cy="68" r="4"/><circle cx="104" cy="68" r="4"/><circle cx="136" cy="68" r="4"/>
+    <circle cx="72" cy="100" r="4"/><circle cx="104" cy="100" r="4"/><circle cx="136" cy="100" r="4"/>
+  </g>
+
+  <g filter="url(#tile-shadow)">
+    <rect x="80" y="104" width="144" height="144" rx="35" fill="url(#tile)"/>
+    <rect x="87" y="111" width="130" height="130" rx="29" fill="none" stroke="#b4b7ff" stroke-opacity="0.48" stroke-width="2"/>
+    <svg x="107" y="131" width="90" height="89" viewBox="702.88 18.65 178.91 176.29" aria-hidden="true">
+      <path fill="#ffffff" d="M852.42,94.3a111.33,111.33,0,0,0,29.37-75.65H838.93a69.36,69.36,0,0,1-69.28,69.28h0A24,24,0,0,1,745.73,64V18.65H702.88V64a66.75,66.75,0,0,0,29.36,55.29,111.32,111.32,0,0,0-29.36,75.65h42.85A69.36,69.36,0,0,1,815,125.66h0a24,24,0,0,1,23.92,23.92v45.35h42.86V149.59A66.76,66.76,0,0,0,852.42,94.3Z"/>
+    </svg>
+    <circle cx="197" cy="130" r="11" fill="#76dda0" stroke="#ffffff" stroke-width="4"/>
+  </g>
+
+  <text x="270" y="125" fill="#4b51e8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="750" letter-spacing="6">DESTINX</text>
+  <text x="266" y="183" fill="#111522" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="52" font-weight="730" letter-spacing="-2">AI Commerce</text>
+  <text x="270" y="220" fill="#4b51e8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="700" letter-spacing="5.3">FOR WOOCOMMERCE</text>
+  <text x="270" y="276" fill="#515b70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="500">Find catalog data that AI shopping</text>
+  <text x="270" y="305" fill="#515b70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="500">assistants may not understand.</text>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="650">
+    <rect x="270" y="332" width="190" height="43" rx="21.5" fill="#ffffff" stroke="#d6d9f7"/>
+    <circle cx="294" cy="353.5" r="6" fill="#72d99a"/>
+    <text x="311" y="359" fill="#263045">Local catalog audit</text>
+    <rect x="474" y="332" width="197" height="43" rx="21.5" fill="#ffffff" stroke="#d6d9f7"/>
+    <text x="499" y="359" fill="#263045">No account or API key</text>
+  </g>
+
+  <g filter="url(#panel-shadow)">
+    <rect x="838" y="50" width="624" height="400" rx="34" fill="#ffffff" stroke="#d6d9ef"/>
+    <circle cx="877" cy="82" r="6" fill="#ff878c"/>
+    <circle cx="900" cy="82" r="6" fill="#ffd06d"/>
+    <circle cx="923" cy="82" r="6" fill="#73d5a1"/>
+    <rect x="962" y="74" width="244" height="16" rx="8" fill="#eef0f7"/>
+    <rect x="1366" y="72" width="62" height="20" rx="10" fill="#e6e8ff"/>
+    <path d="M838 111H1462" stroke="#e5e7ef"/>
+
+    <text x="877" y="151" fill="#4b51e8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="750" letter-spacing="2.2">CATALOG READINESS</text>
+    <text x="877" y="188" fill="#141827" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="26" font-weight="720">Trail Shoe</text>
+    <text x="877" y="214" fill="#717a8c" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="14">SKU: TRAIL-001 · Fixed price</text>
+
+    <rect x="877" y="239" width="154" height="121" rx="20" fill="#f7f7ff" stroke="#e2e3f6"/>
+    <text x="897" y="269" fill="#6a7284" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">SCORE</text>
+    <text x="897" y="318" fill="#111522" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="42" font-weight="750">72</text>
+    <text x="955" y="318" fill="#788094" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650">/100</text>
+    <rect x="897" y="334" width="112" height="8" rx="4" fill="#e1e3ee"/>
+    <rect x="897" y="334" width="81" height="8" rx="4" fill="url(#score)"/>
+
+    <rect x="1051" y="239" width="377" height="121" rx="20" fill="#ffffff" stroke="#e2e3ed"/>
+    <text x="1074" y="268" fill="#6a7284" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="1.2">FINDINGS</text>
+    <rect x="1074" y="286" width="141" height="34" rx="17" fill="#fff5df"/>
+    <text x="1092" y="308" fill="#8b6509" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="650">Brand missing</text>
+    <rect x="1225" y="286" width="145" height="34" rx="17" fill="#fff5df"/>
+    <text x="1244" y="308" fill="#8b6509" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="650">GTIN missing</text>
+    <text x="1074" y="342" fill="#566075" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="14">Clear guidance for every catalog gap.</text>
+
+    <rect x="877" y="381" width="551" height="41" rx="14" fill="#171c2c"/>
+    <circle cx="902" cy="401.5" r="6" fill="#72d99a"/>
+    <text x="919" y="407" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="650">Local analysis · No product data leaves WordPress</text>
+  </g>
+</svg>

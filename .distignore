@@ -1,5 +1,7 @@
 /.git
 /.github
+/design
+/.wordpress-org
 /docs
 /tests
 /.distignore

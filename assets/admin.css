@@ -54,6 +54,13 @@
 	max-width: 780px;
 }
 
+.dxaic-brand-logo {
+	display: block;
+	width: min(430px, 100%);
+	height: auto;
+	margin: 0 0 22px;
+}
+
 .dxaic-eyebrow {
 	margin: 0 0 12px;
 	color: var(--dxaic-accent) !important;
