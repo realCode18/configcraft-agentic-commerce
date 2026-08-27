@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.13.4
+Stable tag: 0.13.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,11 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 
 == Changelog ==
 
+= 0.13.5 =
+
+* Moved the dismissible Pro add-on banner to the top of the plugin screen, directly below the page header.
+* Kept the banner contextual, optional, and separate from every complete Free workflow.
+
 = 0.13.4 =
 
 * Replaced the generic add-on note with a factual, dismissible DestinX AI Commerce Pro banner.
@@ -115,6 +120,10 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 Earlier release history is included in `changelog.txt` inside the plugin package.
 
 == Upgrade Notice ==
+
+= 0.13.5 =
+
+Places the optional Pro explanation near the top of the plugin screen without changing any Free feature or stored audit data.
 
 = 0.13.4 =
 

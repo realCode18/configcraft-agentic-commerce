@@ -543,6 +543,11 @@ if ( empty( $failures ) ) {
 		if ( false === strpos( $dashboard_html, 'Optional Pro add-on' ) || false === strpos( $dashboard_html, 'Turn findings into reviewable product changes' ) || false === strpos( $dashboard_html, 'Before-and-after approval' ) || false === strpos( $dashboard_html, 'Hide DestinX AI Commerce Pro for 24 hours' ) || false === strpos( $dashboard_html, 'dxaic-preference-form' ) ) {
 			$failures[] = 'The contextual Pro add-on banner is missing its explanation or dismissible preference control.';
 		}
+		$pro_banner_position = strpos( $dashboard_html, 'class="dxaic-panel dxaic-addon-card dxaic-pro-banner"' );
+		$onboarding_position = strpos( $dashboard_html, 'class="dxaic-panel dxaic-onboarding"' );
+		if ( false === $pro_banner_position || false === $onboarding_position || $pro_banner_position >= $onboarding_position ) {
+			$failures[] = 'The contextual Pro add-on banner was not rendered above the setup guide.';
+		}
 		if ( false === strpos( $dashboard_html, 'Store readiness' ) || false === strpos( $dashboard_html, 'Technical store settings are checked separately' ) ) {
 			$failures[] = 'The store readiness checklist did not render separately from product scoring.';
 		}

@@ -1,5 +1,24 @@
 DestinX AI Commerce for WooCommerce - release history
 
+0.13.5
+- Moved the dismissible Pro add-on banner to the top of the plugin screen, directly below the page header.
+- Kept the complete Free workflow and the existing 24-hour per-user dismissal unchanged.
+
+0.13.4
+- Replaced the generic add-on note with a factual, dismissible DestinX AI Commerce Pro banner.
+- Explained the separate Pro remediation workflow without adding commercial runtime code to Free.
+
+0.13.3
+- Added a four-step first-run guide with direct actions and persistent per-user display preferences.
+- Added an Open AI Commerce link to the Plugins screen without forcing an activation redirect.
+
+0.13.2
+- Applied catalog filters, clearing, and pagination without reloading the full WordPress admin page.
+- Preserved the viewport and added accessible asynchronous status feedback.
+
+0.13.1
+- Improved mixed-catalog handling for external, grouped, virtual, and downloadable products.
+
 0.13.0
 - Extended the read-only add-on API with exact product-result lookup from the active completed snapshot.
 - Kept the extension boundary local, bounded, and free of write operations or remote requests.

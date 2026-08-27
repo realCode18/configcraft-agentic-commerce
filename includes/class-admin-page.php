@@ -245,6 +245,7 @@ final class Admin_Page {
 			</header>
 
 			<?php $this->render_notice(); ?>
+			<?php $this->render_optional_addon(); ?>
 			<?php $this->render_onboarding( $onboarding_hidden, $has_full_snapshot, $onboarding_products ); ?>
 			<?php $this->render_scan_control( $state, $snapshot ); ?>
 
@@ -288,7 +289,6 @@ final class Admin_Page {
 				</div>
 			<?php endif; ?>
 
-			<?php $this->render_optional_addon(); ?>
 			<p class="screen-reader-text dxaic-preference-status" role="status" aria-live="polite"></p>
 		</div>
 		<?php
