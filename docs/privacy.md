@@ -23,7 +23,7 @@ Audit data remains in the site's own WordPress database. The custom audit table 
 
 WordPress options store only the database version, scan state, locks, catalog revision, and the active snapshot identifier. These records are operational catalog data, not customer or visitor profiles.
 
-Two per-user metadata values store dashboard display preferences only: whether the Getting started guide is hidden and when the contextual optional add-on note was last dismissed. They do not contain catalog, customer, visitor, account, or license data.
+Two per-user metadata values store dashboard display preferences only: whether the Getting started guide is hidden and when the contextual Pro add-on banner was last dismissed. They do not contain catalog, customer, visitor, account, or license data.
 
 ## Export and removal
 

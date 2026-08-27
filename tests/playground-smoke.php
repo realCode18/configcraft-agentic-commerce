@@ -540,8 +540,8 @@ if ( empty( $failures ) ) {
 		if ( false === strpos( $dashboard_html, 'Your first catalog audit, step by step' ) || false === strpos( $dashboard_html, 'Go to full scan' ) || false === strpos( $dashboard_html, 'Edit lowest-scoring product' ) ) {
 			$failures[] = 'The dashboard did not render the actionable first-run guide.';
 		}
-		if ( false === strpos( $dashboard_html, 'Optional add-on' ) || false === strpos( $dashboard_html, 'Hide optional add-on for 24 hours' ) || false === strpos( $dashboard_html, 'dxaic-preference-form' ) ) {
-			$failures[] = 'The contextual optional add-on card is missing its dismissible preference control.';
+		if ( false === strpos( $dashboard_html, 'Optional Pro add-on' ) || false === strpos( $dashboard_html, 'Turn findings into reviewable product changes' ) || false === strpos( $dashboard_html, 'Before-and-after approval' ) || false === strpos( $dashboard_html, 'Hide DestinX AI Commerce Pro for 24 hours' ) || false === strpos( $dashboard_html, 'dxaic-preference-form' ) ) {
+			$failures[] = 'The contextual Pro add-on banner is missing its explanation or dismissible preference control.';
 		}
 		if ( false === strpos( $dashboard_html, 'Store readiness' ) || false === strpos( $dashboard_html, 'Technical store settings are checked separately' ) ) {
 			$failures[] = 'The store readiness checklist did not render separately from product scoring.';
@@ -569,8 +569,8 @@ if ( empty( $failures ) ) {
 		if ( false === strpos( $personalized_dashboard_html, 'class="dxaic-panel dxaic-onboarding" aria-labelledby="dxaic-onboarding-title" hidden' ) || false === strpos( $personalized_dashboard_html, 'Show setup guide' ) ) {
 			$failures[] = 'The per-user onboarding preference did not hide the guide or provide a reopen control.';
 		}
-		if ( false !== strpos( $personalized_dashboard_html, 'Hide optional add-on for 24 hours' ) ) {
-			$failures[] = 'The 24-hour optional add-on dismissal was not respected.';
+		if ( false !== strpos( $personalized_dashboard_html, 'Hide DestinX AI Commerce Pro for 24 hours' ) ) {
+			$failures[] = 'The 24-hour Pro add-on dismissal was not respected.';
 		}
 
 		update_user_meta( get_current_user_id(), DestinX\AICommerce\Database::USER_META_ADDON_DISMISSED, time() - DAY_IN_SECONDS - 1 );
@@ -578,8 +578,8 @@ if ( empty( $failures ) ) {
 		$admin_page->render();
 		$expired_dismissal_html = ob_get_clean();
 		delete_user_meta( get_current_user_id(), DestinX\AICommerce\Database::USER_META_ADDON_DISMISSED );
-		if ( false === strpos( $expired_dismissal_html, 'Hide optional add-on for 24 hours' ) ) {
-			$failures[] = 'The optional add-on card did not return after its 24-hour dismissal expired.';
+		if ( false === strpos( $expired_dismissal_html, 'Hide DestinX AI Commerce Pro for 24 hours' ) ) {
+			$failures[] = 'The Pro add-on banner did not return after its 24-hour dismissal expired.';
 		}
 
 		$complete_state = get_option( DestinX\AICommerce\Background_Audit::STATE_OPTION );

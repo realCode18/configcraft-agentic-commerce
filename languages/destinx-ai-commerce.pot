@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: DestinX AI Commerce for WooCommerce 0.13.3\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/destinx-ai-commerce\n"
+"Project-Id-Version: DestinX AI Commerce for WooCommerce 0.13.4\n"
+"Report-Msgid-Bugs-To: https://github.com/realCode18/destinx-ai-commerce/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-27T06:40:29+00:00\n"
+"POT-Creation-Date: 2026-08-27T07:25:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: destinx-ai-commerce\n"
@@ -39,237 +39,257 @@ msgstr ""
 msgid "https://destinx.agency/"
 msgstr ""
 
-#: includes/class-admin-page.php:98
+#: includes/class-admin-page.php:99
 msgid "You do not have permission to change this preference."
 msgstr ""
 
-#: includes/class-admin-page.php:120
+#: includes/class-admin-page.php:121
 msgid "The requested dashboard preference is invalid."
 msgstr ""
 
-#: includes/class-admin-page.php:142
-#: includes/class-admin-page.php:235
+#: includes/class-admin-page.php:143
+#: includes/class-admin-page.php:236
 #: includes/class-product-meta-box.php:58
 msgid "AI Commerce Readiness"
 msgstr ""
 
-#: includes/class-admin-page.php:143
+#: includes/class-admin-page.php:144
 msgid "AI Commerce"
 msgstr ""
 
-#: includes/class-admin-page.php:190
+#: includes/class-admin-page.php:191
 msgid "You do not have permission to access this page."
 msgstr ""
 
-#: includes/class-admin-page.php:229
+#: includes/class-admin-page.php:230
 msgid "The display preference could not be saved. Please try again."
 msgstr ""
 
-#: includes/class-admin-page.php:230
+#: includes/class-admin-page.php:231
 msgid "Display preference saved."
 msgstr ""
 
-#: includes/class-admin-page.php:234
+#: includes/class-admin-page.php:235
 msgid "DestinX AI Commerce"
 msgstr ""
 
-#: includes/class-admin-page.php:237
+#: includes/class-admin-page.php:238
 msgid "Find catalog data that may prevent AI shopping assistants from understanding and recommending your products."
 msgstr ""
 
-#: includes/class-admin-page.php:240
+#: includes/class-admin-page.php:241
 msgid "Plugin service information"
 msgstr ""
 
-#: includes/class-admin-page.php:241
+#: includes/class-admin-page.php:242
 msgid "Local catalog audit"
 msgstr ""
 
-#: includes/class-admin-page.php:242
+#: includes/class-admin-page.php:243
 msgid "No account or API key"
 msgstr ""
 
-#: includes/class-admin-page.php:250
+#: includes/class-admin-page.php:251
 msgid "Catalog audit summary"
 msgstr ""
 
-#: includes/class-admin-page.php:251
+#: includes/class-admin-page.php:252
 msgid "Average score"
 msgstr ""
 
-#: includes/class-admin-page.php:252
+#: includes/class-admin-page.php:253
 msgid "Products scanned"
 msgstr ""
 
-#: includes/class-admin-page.php:253
+#: includes/class-admin-page.php:254
 #: includes/class-issue-catalog.php:108
 msgid "Ready"
 msgstr ""
 
-#: includes/class-admin-page.php:254
+#: includes/class-admin-page.php:255
 #: includes/class-issue-catalog.php:109
 msgid "Needs work"
 msgstr ""
 
-#: includes/class-admin-page.php:255
+#: includes/class-admin-page.php:256
 #: includes/class-issue-catalog.php:110
 msgid "At risk"
 msgstr ""
 
-#: includes/class-admin-page.php:261
+#: includes/class-admin-page.php:262
 msgid "No published WooCommerce products were found."
 msgstr ""
 
-#: includes/class-admin-page.php:264
+#: includes/class-admin-page.php:265
 msgid "Quick preview"
 msgstr ""
 
-#: includes/class-admin-page.php:265
+#: includes/class-admin-page.php:266
 msgid "This preview scans the latest 25 products. Start a full catalog scan to persist, filter, and export all results."
 msgstr ""
 
-#: includes/class-admin-page.php:269
+#: includes/class-admin-page.php:270
 msgid "The latest full scan found no published WooCommerce products."
 msgstr ""
 
-#: includes/class-admin-page.php:274
+#: includes/class-admin-page.php:275
 msgid "Filtering catalog results..."
 msgstr ""
 
-#: includes/class-admin-page.php:275
+#: includes/class-admin-page.php:276
 msgid "Catalog results updated."
 msgstr ""
 
-#: includes/class-admin-page.php:277
+#: includes/class-admin-page.php:278
 msgid "Catalog results"
 msgstr ""
 
-#: includes/class-admin-page.php:278
+#: includes/class-admin-page.php:279
 msgid "Search by product or SKU, then narrow results by status, finding, or category."
 msgstr ""
 
-#: includes/class-admin-page.php:282
+#: includes/class-admin-page.php:283
 msgid "No products match the current filters."
 msgstr ""
 
-#: includes/class-admin-page.php:309
+#: includes/class-admin-page.php:310
 msgid "Show setup guide"
 msgstr ""
 
-#: includes/class-admin-page.php:314
+#: includes/class-admin-page.php:315
 msgid "Getting started"
 msgstr ""
 
-#: includes/class-admin-page.php:315
+#: includes/class-admin-page.php:316
 msgid "Your first catalog audit, step by step"
 msgstr ""
 
-#: includes/class-admin-page.php:316
+#: includes/class-admin-page.php:317
 msgid "Follow these four steps. The Free plugin is ready to use immediately and does not require an account, license, or API key."
 msgstr ""
 
-#: includes/class-admin-page.php:318
+#: includes/class-admin-page.php:319
 msgid "Hide setup guide"
 msgstr ""
 
-#: includes/class-admin-page.php:324
+#: includes/class-admin-page.php:325
 msgid "Scan every published product"
 msgstr ""
 
-#: includes/class-admin-page.php:325
+#: includes/class-admin-page.php:326
 msgid "Select Scan full catalog below. The scan runs in small background batches, so you can leave this page while it continues."
 msgstr ""
 
-#: includes/class-admin-page.php:326
+#: includes/class-admin-page.php:327
 msgid "Go to full scan"
 msgstr ""
 
-#: includes/class-admin-page.php:332
+#: includes/class-admin-page.php:333
 msgid "Start with the lowest scores"
 msgstr ""
 
-#: includes/class-admin-page.php:333
+#: includes/class-admin-page.php:334
 msgid "After the scan finishes, review At risk and Needs work products first. Each row lists the catalog data that needs attention."
 msgstr ""
 
-#: includes/class-admin-page.php:335
+#: includes/class-admin-page.php:336
 msgid "Review catalog results"
 msgstr ""
 
-#: includes/class-admin-page.php:337
+#: includes/class-admin-page.php:338
 msgid "Available after a full scan finds published products"
 msgstr ""
 
-#: includes/class-admin-page.php:344
+#: includes/class-admin-page.php:345
 msgid "Improve the WooCommerce product data"
 msgstr ""
 
-#: includes/class-admin-page.php:345
+#: includes/class-admin-page.php:346
 msgid "Select a product name, then use the AI Commerce Readiness panel in the product editor to correct its findings. Save the product normally in WooCommerce."
 msgstr ""
 
-#: includes/class-admin-page.php:346
+#: includes/class-admin-page.php:347
 msgid "Edit lowest-scoring product"
 msgstr ""
 
-#: includes/class-admin-page.php:346
+#: includes/class-admin-page.php:347
 msgid "Open WooCommerce products"
 msgstr ""
 
-#: includes/class-admin-page.php:352
+#: includes/class-admin-page.php:353
 msgid "Scan again and compare"
 msgstr ""
 
-#: includes/class-admin-page.php:353
+#: includes/class-admin-page.php:354
 msgid "Return here, select Scan again, and compare the average score and remaining findings. Repeat until the important catalog gaps are resolved."
 msgstr ""
 
-#: includes/class-admin-page.php:354
+#: includes/class-admin-page.php:355
 msgid "Return to scan control"
 msgstr ""
 
-#: includes/class-admin-page.php:383
-msgid "Optional add-on"
+#: includes/class-admin-page.php:391
+msgid "Optional Pro add-on"
 msgstr ""
 
-#: includes/class-admin-page.php:384
-msgid "Extend the workflow only when you need it"
+#: includes/class-admin-page.php:392
+msgid "Turn findings into reviewable product changes"
 msgstr ""
 
-#: includes/class-admin-page.php:385
-msgid "DestinX AI Commerce can be extended by independently installed add-ons. They are optional: this Free plugin keeps its complete local scan, filters, CSV export, store checks, and product guidance."
+#: includes/class-admin-page.php:393
+msgid "DestinX AI Commerce Pro turns completed Free scan results into a prioritized remediation workflow. Create local proposals, review every before-and-after value, approve only the fields you choose, apply changes through WooCommerce, detect conflicts, keep an audit trail, and safely undo unchanged edits."
 msgstr ""
 
-#: includes/class-admin-page.php:386
-msgid "Manage installed plugins"
+#: includes/class-admin-page.php:394
+msgid "DestinX AI Commerce Pro workflow highlights"
 msgstr ""
 
-#: includes/class-admin-page.php:388
-msgid "Hide optional add-on for 24 hours"
+#: includes/class-admin-page.php:395
+msgid "Prioritized remediation"
 msgstr ""
 
-#: includes/class-admin-page.php:426
+#: includes/class-admin-page.php:396
+msgid "Before-and-after approval"
+msgstr ""
+
+#: includes/class-admin-page.php:397
+msgid "Conflict-safe apply and undo"
+msgstr ""
+
+#: includes/class-admin-page.php:399
+msgid "Pro is installed separately and requires this Free plugin as its engine. The Free scan, filters, CSV export, store checks, and product guidance remain complete without Pro."
+msgstr ""
+
+#: includes/class-admin-page.php:401
+msgid "Explore DestinX AI Commerce Pro"
+msgstr ""
+
+#: includes/class-admin-page.php:404
+msgid "Hide DestinX AI Commerce Pro for 24 hours"
+msgstr ""
+
+#: includes/class-admin-page.php:442
 msgid "Store readiness"
 msgstr ""
 
-#: includes/class-admin-page.php:427
+#: includes/class-admin-page.php:443
 msgid "Technical store settings are checked separately and never change product scores."
 msgstr ""
 
 #. translators: %d: number of store checks that passed.
-#: includes/class-admin-page.php:432
+#: includes/class-admin-page.php:448
 #, php-format
 msgid "%d passed"
 msgstr ""
 
 #. translators: %d: number of store checks that need review.
-#: includes/class-admin-page.php:436
+#: includes/class-admin-page.php:452
 #, php-format
 msgid "%d to review"
 msgstr ""
 
 #. translators: %d: number of store checks that need action.
-#: includes/class-admin-page.php:440
+#: includes/class-admin-page.php:456
 #, php-format
 msgid "%d action needed"
 msgid_plural "%d actions needed"
@@ -277,195 +297,195 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: store readiness check label.
-#: includes/class-admin-page.php:461
+#: includes/class-admin-page.php:477
 #, php-format
 msgid "Review setting: %s"
 msgstr ""
 
 #. translators: %s: store readiness check label.
-#: includes/class-admin-page.php:461
+#: includes/class-admin-page.php:477
 msgid "Review setting"
 msgstr ""
 
-#: includes/class-admin-page.php:485
+#: includes/class-admin-page.php:501
 msgid "Full catalog scan"
 msgstr ""
 
 #. translators: 1: visible catalog data date and time, 2: scoring model version.
-#: includes/class-admin-page.php:492
+#: includes/class-admin-page.php:508
 #, php-format
 msgid "Visible catalog data updated on %1$s with scoring model %2$s."
 msgstr ""
 
-#: includes/class-admin-page.php:497
+#: includes/class-admin-page.php:513
 msgid "Catalog scan progress"
 msgstr ""
 
-#: includes/class-admin-page.php:503
-#: includes/class-admin-page.php:507
+#: includes/class-admin-page.php:519
+#: includes/class-admin-page.php:523
 msgid "Pause automatic refresh"
 msgstr ""
 
-#: includes/class-admin-page.php:504
+#: includes/class-admin-page.php:520
 msgid "Resume automatic refresh"
 msgstr ""
 
-#: includes/class-admin-page.php:518
+#: includes/class-admin-page.php:534
 msgid "Scan again"
 msgstr ""
 
-#: includes/class-admin-page.php:518
+#: includes/class-admin-page.php:534
 msgid "Scan full catalog"
 msgstr ""
 
-#: includes/class-admin-page.php:533
+#: includes/class-admin-page.php:549
 msgid "The full catalog scan started successfully and will continue in the background."
 msgstr ""
 
-#: includes/class-admin-page.php:536
+#: includes/class-admin-page.php:552
 msgid "The full catalog scan completed successfully."
 msgstr ""
 
-#: includes/class-admin-page.php:539
+#: includes/class-admin-page.php:555
 msgid "A catalog scan is already running."
 msgstr ""
 
-#: includes/class-admin-page.php:542
+#: includes/class-admin-page.php:558
 msgid "The catalog scan could not be scheduled. Review the error below and try again."
 msgstr ""
 
-#: includes/class-admin-page.php:610
+#: includes/class-admin-page.php:626
 msgid "Catalog result filters"
 msgstr ""
 
-#: includes/class-admin-page.php:614
+#: includes/class-admin-page.php:630
 msgid "Product or SKU"
 msgstr ""
 
-#: includes/class-admin-page.php:615
+#: includes/class-admin-page.php:631
 msgid "Search catalog"
 msgstr ""
 
-#: includes/class-admin-page.php:618
-#: includes/class-admin-page.php:686
+#: includes/class-admin-page.php:634
+#: includes/class-admin-page.php:702
 #: includes/class-catalog-csv-exporter.php:109
 msgid "Status"
 msgstr ""
 
-#: includes/class-admin-page.php:620
+#: includes/class-admin-page.php:636
 msgid "All statuses"
 msgstr ""
 
-#: includes/class-admin-page.php:627
+#: includes/class-admin-page.php:643
 msgid "Finding"
 msgstr ""
 
-#: includes/class-admin-page.php:629
+#: includes/class-admin-page.php:645
 msgid "All findings"
 msgstr ""
 
-#: includes/class-admin-page.php:636
+#: includes/class-admin-page.php:652
 msgid "Category"
 msgstr ""
 
-#: includes/class-admin-page.php:638
+#: includes/class-admin-page.php:654
 msgid "All categories"
 msgstr ""
 
-#: includes/class-admin-page.php:646
+#: includes/class-admin-page.php:662
 msgid "Apply filters"
 msgstr ""
 
-#: includes/class-admin-page.php:648
+#: includes/class-admin-page.php:664
 msgid "Clear filters"
 msgstr ""
 
 #. translators: %d: number of catalog products matching the current filters.
-#: includes/class-admin-page.php:656
+#: includes/class-admin-page.php:672
 #, php-format
 msgid "%d product matches"
 msgid_plural "%d products match"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin-page.php:659
+#: includes/class-admin-page.php:675
 msgid "Export catalog results"
 msgstr ""
 
-#: includes/class-admin-page.php:666
+#: includes/class-admin-page.php:682
 msgid "Export filtered CSV"
 msgstr ""
 
-#: includes/class-admin-page.php:680
+#: includes/class-admin-page.php:696
 msgid "Scrollable catalog results"
 msgstr ""
 
-#: includes/class-admin-page.php:682
+#: includes/class-admin-page.php:698
 msgid "WooCommerce products and their AI commerce readiness findings"
 msgstr ""
 
-#: includes/class-admin-page.php:684
+#: includes/class-admin-page.php:700
 #: includes/class-catalog-csv-exporter.php:104
 msgid "Product"
 msgstr ""
 
-#: includes/class-admin-page.php:685
+#: includes/class-admin-page.php:701
 #: includes/class-catalog-csv-exporter.php:108
 msgid "Score"
 msgstr ""
 
-#: includes/class-admin-page.php:687
+#: includes/class-admin-page.php:703
 #: includes/class-catalog-csv-exporter.php:111
 msgid "Findings"
 msgstr ""
 
 #. translators: %s: product SKU.
-#: includes/class-admin-page.php:697
+#: includes/class-admin-page.php:713
 #, php-format
 msgid "SKU: %s"
 msgstr ""
 
-#: includes/class-admin-page.php:743
+#: includes/class-admin-page.php:759
 msgid "No findings"
 msgstr ""
 
 #. translators: %d: number of additional catalog findings.
-#: includes/class-admin-page.php:763
+#: includes/class-admin-page.php:779
 #, php-format
 msgid "+%d more"
 msgid_plural "+%d more"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-admin-page.php:802
+#: includes/class-admin-page.php:818
 msgid "Previous"
 msgstr ""
 
-#: includes/class-admin-page.php:803
+#: includes/class-admin-page.php:819
 msgid "Next"
 msgstr ""
 
-#: includes/class-admin-page.php:844
+#: includes/class-admin-page.php:860
 msgid "The scan is queued and will start shortly."
 msgstr ""
 
 #. translators: 1: processed products, 2: total products.
-#: includes/class-admin-page.php:848
+#: includes/class-admin-page.php:864
 #, php-format
 msgid "Scanning product %1$d of %2$d."
 msgstr ""
 
 #. translators: %d: number of scanned products.
-#: includes/class-admin-page.php:852
+#: includes/class-admin-page.php:868
 #, php-format
 msgid "The last scan completed with %d products."
 msgstr ""
 
-#: includes/class-admin-page.php:855
+#: includes/class-admin-page.php:871
 msgid "The last scan stopped because of an error. You can start it again."
 msgstr ""
 
-#: includes/class-admin-page.php:858
+#: includes/class-admin-page.php:874
 msgid "Run a full scan to analyze every published product in small background batches."
 msgstr ""
 

@@ -320,11 +320,42 @@
 	position: relative;
 	margin-top: 18px;
 	padding-right: 72px;
-	background: #fafaf9;
+	background:
+		radial-gradient(circle at 100% 0, rgba(75, 81, 232, 0.13), transparent 36%),
+		linear-gradient(135deg, #ffffff 0%, #f7f7ff 100%);
 }
 
 .dxaic-addon-card .button {
 	margin-top: 16px;
+}
+
+.dxaic-pro-features {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 18px 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.dxaic-pro-features li {
+	margin: 0;
+	padding: 7px 11px;
+	border: 1px solid rgba(75, 81, 232, 0.16);
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.78);
+	color: #373da8;
+	font-size: 11px;
+	font-weight: 680;
+	line-height: 1.35;
+}
+
+.dxaic-addon-card .dxaic-pro-boundary {
+	max-width: 880px;
+	margin: 16px 0 0;
+	color: #71798a;
+	font-size: 12px;
+	line-height: 1.55;
 }
 
 .dxaic-close-button {

@@ -38,7 +38,6 @@ final class ArchitectureBoundaryTest extends TestCase {
 			'DestinX\\AICommercePro',
 			'DXAICP_',
 			'dxaicp_',
-			'configcraftsuite.com',
 			'/wp-json/dxls/',
 			'license_key',
 			'entitlement',
@@ -64,6 +63,18 @@ final class ArchitectureBoundaryTest extends TestCase {
 				'The Free runtime must remain local and must not call a remote service: ' . $file
 			);
 		}
+	}
+
+	public function test_contextual_pro_link_is_static_untracked_and_limited_to_the_plugin_screen() {
+		$root       = dirname( __DIR__ );
+		$admin_page = file_get_contents( $root . '/includes/class-admin-page.php' );
+
+		$this->assertIsString( $admin_page );
+		$this->assertSame( 1, substr_count( $admin_page, 'https://www.configcraftsuite.com/' ) );
+		$this->assertStringContainsString( 'destinx_ai_commerce_optional_addon_url', $admin_page );
+		$this->assertStringContainsString( 'Hide DestinX AI Commerce Pro for 24 hours', $admin_page );
+		$this->assertStringContainsString( 'The Free scan, filters, CSV export, store checks, and product guidance remain complete without Pro.', $admin_page );
+		$this->assertDoesNotMatchRegularExpression( '/(?:utm_|affiliate|aff_id|referral)/i', $admin_page );
 	}
 
 	public function test_free_runtime_contains_no_dormant_commercial_controls() {

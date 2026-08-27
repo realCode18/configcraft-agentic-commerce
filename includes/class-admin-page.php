@@ -13,8 +13,9 @@ defined( 'ABSPATH' ) || exit;
  * Registers and renders the WooCommerce catalog audit screen.
  */
 final class Admin_Page {
-	const PREFERENCE_ACTION = 'dxaic_update_dashboard_preference';
-	const PREFERENCE_NONCE  = 'dxaic_update_dashboard_preference';
+	const PREFERENCE_ACTION  = 'dxaic_update_dashboard_preference';
+	const PREFERENCE_NONCE   = 'dxaic_update_dashboard_preference';
+	const OPTIONAL_ADDON_URL = 'https://www.configcraftsuite.com/';
 
 	/**
 	 * Quick preview audit service.
@@ -360,7 +361,7 @@ final class Admin_Page {
 	}
 
 	/**
-	 * Render a contextual, non-blocking note about separately installed add-ons.
+	 * Render a contextual, non-blocking introduction to the separately installed Pro add-on.
 	 *
 	 * @return void
 	 */
@@ -377,15 +378,30 @@ final class Admin_Page {
 		if ( ! $show_card ) {
 			return;
 		}
+
+		/**
+		 * Filters the destination of the single contextual Pro add-on link.
+		 *
+		 * @param string $addon_url Public page describing the separately installed add-on.
+		 */
+		$addon_url = (string) apply_filters( 'destinx_ai_commerce_optional_addon_url', self::OPTIONAL_ADDON_URL );
 		?>
-		<aside class="dxaic-panel dxaic-addon-card" aria-labelledby="dxaic-addon-title">
+		<aside class="dxaic-panel dxaic-addon-card dxaic-pro-banner" aria-labelledby="dxaic-addon-title">
 			<div>
-				<p class="dxaic-eyebrow"><?php esc_html_e( 'Optional add-on', 'destinx-ai-commerce' ); ?></p>
-				<h2 id="dxaic-addon-title"><?php esc_html_e( 'Extend the workflow only when you need it', 'destinx-ai-commerce' ); ?></h2>
-				<p><?php esc_html_e( 'DestinX AI Commerce can be extended by independently installed add-ons. They are optional: this Free plugin keeps its complete local scan, filters, CSV export, store checks, and product guidance.', 'destinx-ai-commerce' ); ?></p>
-				<a class="button" href="<?php echo esc_url( admin_url( 'plugins.php' ) ); ?>"><?php esc_html_e( 'Manage installed plugins', 'destinx-ai-commerce' ); ?></a>
+				<p class="dxaic-eyebrow"><?php esc_html_e( 'Optional Pro add-on', 'destinx-ai-commerce' ); ?></p>
+				<h2 id="dxaic-addon-title"><?php esc_html_e( 'Turn findings into reviewable product changes', 'destinx-ai-commerce' ); ?></h2>
+				<p><?php esc_html_e( 'DestinX AI Commerce Pro turns completed Free scan results into a prioritized remediation workflow. Create local proposals, review every before-and-after value, approve only the fields you choose, apply changes through WooCommerce, detect conflicts, keep an audit trail, and safely undo unchanged edits.', 'destinx-ai-commerce' ); ?></p>
+				<ul class="dxaic-pro-features" aria-label="<?php esc_attr_e( 'DestinX AI Commerce Pro workflow highlights', 'destinx-ai-commerce' ); ?>">
+					<li><?php esc_html_e( 'Prioritized remediation', 'destinx-ai-commerce' ); ?></li>
+					<li><?php esc_html_e( 'Before-and-after approval', 'destinx-ai-commerce' ); ?></li>
+					<li><?php esc_html_e( 'Conflict-safe apply and undo', 'destinx-ai-commerce' ); ?></li>
+				</ul>
+				<p class="dxaic-pro-boundary"><?php esc_html_e( 'Pro is installed separately and requires this Free plugin as its engine. The Free scan, filters, CSV export, store checks, and product guidance remain complete without Pro.', 'destinx-ai-commerce' ); ?></p>
+				<?php if ( '' !== $addon_url ) : ?>
+					<a class="button button-primary" href="<?php echo esc_url( $addon_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Explore DestinX AI Commerce Pro', 'destinx-ai-commerce' ); ?></a>
+				<?php endif; ?>
 			</div>
-			<?php $this->render_preference_form( 'optional_addon', true, 'hide-addon', __( 'Hide optional add-on for 24 hours', 'destinx-ai-commerce' ), 'dxaic-close-button' ); ?>
+			<?php $this->render_preference_form( 'optional_addon', true, 'hide-addon', __( 'Hide DestinX AI Commerce Pro for 24 hours', 'destinx-ai-commerce' ), 'dxaic-close-button' ); ?>
 		</aside>
 		<?php
 	}

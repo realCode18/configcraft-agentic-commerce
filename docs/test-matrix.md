@@ -14,7 +14,7 @@ This document records the reproducible quality gate for DestinX AI Commerce 0.13
 | Lifecycle | Clean activation, schema upgrade, deactivate/reactivate, site and network uninstall, and post-network-activation site creation |
 | Pricing compatibility | Registry unit fixtures plus a real-plugin Playground smoke test with YITH Request a Quote 2.53.0 and Call for Price 4.4.0 |
 
-The integration smoke test covers simple and variable products, the external-pricing contract, persisted pricing metadata, exact-SKU collision handling, catalog reconciliation, retries, stale scans, atomic snapshots, search, combined filters, pagination, protected CSV export, Store Readiness, first-run onboarding, per-user display preferences, 24-hour card expiry, the Plugins-screen entry link, permissions, invalid nonces, accessibility markup, and the product editor panel. Unit fixtures additionally cover virtual and downloadable products, adapter ordering and failure isolation, all built-in pricing categories, and mixed customer-priced/fixed variations.
+The integration smoke test covers simple and variable products, the external-pricing contract, persisted pricing metadata, exact-SKU collision handling, catalog reconciliation, retries, stale scans, atomic snapshots, search, combined filters, pagination, protected CSV export, Store Readiness, first-run onboarding, per-user display preferences, 24-hour Pro banner expiry, the Plugins-screen entry link, permissions, invalid nonces, accessibility markup, and the product editor panel. Unit fixtures additionally cover virtual and downloadable products, adapter ordering and failure isolation, all built-in pricing categories, and mixed customer-priced/fixed variations.
 
 ## Catalog scale gate
 
