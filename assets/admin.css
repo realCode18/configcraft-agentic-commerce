@@ -277,6 +277,23 @@
 	margin-top: 18px;
 }
 
+.dxaic-results-panel .dxaic-filter-fields,
+.dxaic-results-panel .dxaic-filter-actions,
+.dxaic-results-panel .dxaic-results-toolbar,
+.dxaic-results-panel .dxaic-table-scroll,
+.dxaic-results-panel .tablenav {
+	transition: opacity 160ms ease;
+}
+
+.dxaic-results-panel.is-loading .dxaic-filter-fields,
+.dxaic-results-panel.is-loading .dxaic-filter-actions,
+.dxaic-results-panel.is-loading .dxaic-results-toolbar,
+.dxaic-results-panel.is-loading .dxaic-table-scroll,
+.dxaic-results-panel.is-loading .tablenav {
+	opacity: 0.52;
+	pointer-events: none;
+}
+
 .dxaic-store-heading {
 	display: flex;
 	align-items: flex-start;

@@ -207,9 +207,15 @@ final class Admin_Page {
 			<?php elseif ( 0 === $stored_summary['scanned'] ) : ?>
 				<div class="notice notice-info inline"><p><?php esc_html_e( 'The latest full scan found no published WooCommerce products.', 'destinx-ai-commerce' ); ?></p></div>
 			<?php else : ?>
-				<div class="dxaic-panel dxaic-results-panel">
+				<div
+					class="dxaic-panel dxaic-results-panel"
+					id="dxaic-catalog-results"
+					data-dxaic-filtering-label="<?php esc_attr_e( 'Filtering catalog results...', 'destinx-ai-commerce' ); ?>"
+					data-dxaic-updated-label="<?php esc_attr_e( 'Catalog results updated.', 'destinx-ai-commerce' ); ?>"
+				>
 					<h2><?php esc_html_e( 'Catalog results', 'destinx-ai-commerce' ); ?></h2>
 					<p><?php esc_html_e( 'Search by product or SKU, then narrow results by status, finding, or category.', 'destinx-ai-commerce' ); ?></p>
+					<p class="screen-reader-text dxaic-filter-status" role="status" aria-live="polite"></p>
 					<?php $this->render_catalog_filters( $filters, $filtered_total ); ?>
 					<?php if ( empty( $products ) ) : ?>
 						<div class="notice notice-info inline"><p><?php esc_html_e( 'No products match the current filters.', 'destinx-ai-commerce' ); ?></p></div>
@@ -456,7 +462,7 @@ final class Admin_Page {
 			<div class="dxaic-filter-actions">
 				<button type="submit" class="button button-primary"><?php esc_html_e( 'Apply filters', 'destinx-ai-commerce' ); ?></button>
 				<?php if ( $has_filters ) : ?>
-					<a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=destinx-ai-commerce' ) ); ?>"><?php esc_html_e( 'Clear filters', 'destinx-ai-commerce' ); ?></a>
+					<a class="button dxaic-clear-filters" href="<?php echo esc_url( admin_url( 'admin.php?page=destinx-ai-commerce#dxaic-catalog-results' ) ); ?>"><?php esc_html_e( 'Clear filters', 'destinx-ai-commerce' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</form>

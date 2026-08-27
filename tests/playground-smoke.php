@@ -537,6 +537,9 @@ if ( empty( $failures ) ) {
 		if ( false === strpos( $dashboard_html, 'Product or SKU' ) || false === strpos( $dashboard_html, 'Export filtered CSV' ) || false === strpos( $dashboard_html, 'Visible catalog data updated' ) ) {
 			$failures[] = 'The catalog operations toolbar or snapshot freshness message did not render.';
 		}
+		if ( false === strpos( $dashboard_html, 'id="dxaic-catalog-results"' ) || false === strpos( $dashboard_html, 'dxaic-filter-status' ) || false === strpos( $dashboard_html, 'data-dxaic-filtering-label' ) ) {
+			$failures[] = 'The catalog results are missing their asynchronous filtering and accessible status hooks.';
+		}
 		if ( false === strpos( $dashboard_html, 'Fixed price' ) || false === strpos( $dashboard_html, 'WooCommerce' ) ) {
 			$failures[] = 'The catalog dashboard did not render stored pricing context.';
 		}

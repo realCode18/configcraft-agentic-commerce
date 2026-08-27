@@ -5,7 +5,7 @@ Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
 Requires Plugins: woocommerce
-Stable tag: 0.13.1
+Stable tag: 0.13.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,11 @@ The dashboard initially previews the latest 25 published products. Select Scan f
 4. Product editor panel with score and remediation guidance.
 
 == Changelog ==
+
+= 0.13.2 =
+
+* Applied catalog filters, clearing, and pagination without reloading the full WordPress admin page.
+* Preserved the current viewport while results update, with an accessible loading state and a full-page fallback when JavaScript is unavailable.
 
 = 0.13.1 =
 
